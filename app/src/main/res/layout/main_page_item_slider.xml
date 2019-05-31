@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_margin="0dp">
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/linearLayout"
+        app:cardCornerRadius="10dp"
+        app:elevation="10dp"
+        android:layout_marginTop="10dp"
+
+
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@android:color/black"
+            android:id="@+id/slider_heading"
+            android:textAlignment="center"
+            android:layout_margin="10dp"
+            android:text="Title"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:textAlignment="center"
+                android:layout_weight="1"
+                android:layout_marginTop="35dp"
+                android:layout_marginLeft="10dp"
+                android:padding="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:id="@+id/slider_value_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="value1"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="13sp" />
+                <TextView
+                    android:id="@+id/slider_title_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="13sp"
+                    android:textAlignment="center"
+
+                    android:text="Text1"/>
+
+
+            </LinearLayout>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/darker_gray"
+                android:layout_marginTop="35dp"
+                android:layout_marginBottom="15dp"/>
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_marginTop="35dp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="center"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/slider_value_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="13sp"
+                    android:textAlignment="center"
+                    android:text="value1"
+                    />
+                <TextView
+                    android:id="@+id/slider_title_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="13sp"
+                    android:textAlignment="center"
+                    android:text="Text1"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

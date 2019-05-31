@@ -1,6 +1,8 @@
 package com.boongg.store.RecyclerViews;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.boongg.store.Fragments.CurrentBooking;
+import com.boongg.store.MainActivity;
 import com.boongg.store.Models.Buttons;
 import com.boongg.store.R;
 
@@ -59,12 +63,23 @@ public class MainButtons extends RecyclerView.Adapter<MainButtons.ButtonViewHold
         }
 
         public void bindData(final int position) {
-            Buttons i=mButtons.get(position);
+            final Buttons i=mButtons.get(position);
             buttonName.setText(i.getButtton());
             buttonName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext,"Button Clicked"+buttonName.getText(),Toast.LENGTH_LONG).show();
+                    if(i.getButtton().equals("Current Booking")){
+                        Toast.makeText(mContext,"Button Clicked"+buttonName.getText(),Toast.LENGTH_LONG).show();
+
+                        MainActivity activity = (MainActivity) v.getContext();
+                        Fragment myFragment = new CurrentBooking();
+                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, myFragment).addToBackStack(null).commit();
+
+                    }
+                    else{
+                        Toast.makeText(mContext,"Another fragment",Toast.LENGTH_LONG).show();
+
+                    }
                 }
             });
         }
