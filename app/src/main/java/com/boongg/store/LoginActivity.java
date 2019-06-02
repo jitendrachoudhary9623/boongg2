@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.boongg.store.Models.Token;
 import com.boongg.store.Networking.APIClient;
 import com.boongg.store.Networking.LoginRequest;
+import com.boongg.store.Utilities.JWTUtils;
 import com.boongg.store.Utilities.LoginToken;
 
 import retrofit2.Call;
@@ -40,9 +41,14 @@ public class LoginActivity extends AppCompatActivity {
         _loginButton=(Button)findViewById(R.id.btn_login);
         _signupLink=(TextView)findViewById(R.id.link_signup);
         SharedPreferences sp = getSharedPreferences(LoginToken.PREFS ,Context.MODE_PRIVATE);
-        String sc  = sp.getString(LoginToken.token,"");
+        String sc  = sp.getString(LoginToken.TOKEN,"");
         if (!sc.equals("")){
             LoginToken.tokenId=sc;
+            try {
+                LoginToken.id=JWTUtils.decoded(sc);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             onLoginSuccess();
         }
         _loginButton.setOnClickListener(new View.OnClickListener() {
@@ -91,16 +97,29 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
                 Token token=response.body();
-                Toast.makeText(getApplicationContext(),"This is token "+token.getToken(),Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
+                String id="";
+                try {
+                     id=JWTUtils.decoded(token.getToken());
+                    Log.e("JWT ID",id);
+                    Toast.makeText(getApplicationContext(),"This is id "+ id,Toast.LENGTH_LONG).show();
+                    LoginToken.id=id;
+                    LoginToken.tokenId=token.getToken();
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+
                 SharedPreferences sp = getSharedPreferences(LoginToken.PREFS , Context.MODE_PRIVATE);
-                sp.edit().putString(LoginToken.token,token.getToken()).commit();
+                sp.edit().putString(LoginToken.TOKEN,token.getToken()).commit();
+                sp.edit().putString(LoginToken.TOKEN_ID,id).commit();
+
                 onLoginSuccess();
             }
 
             @Override
             public void onFailure(Call<Token> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"Sorry",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Something went wrong",Toast.LENGTH_LONG).show();
 
             }
         });

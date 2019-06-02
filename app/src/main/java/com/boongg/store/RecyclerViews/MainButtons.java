@@ -3,6 +3,7 @@ package com.boongg.store.RecyclerViews;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,18 +57,20 @@ public class MainButtons extends RecyclerView.Adapter<MainButtons.ButtonViewHold
 
         TextView buttonName;
        ImageView buttonImage;
-
+CardView button;
         public ButtonViewHolder(View itemView) {
             super(itemView);
             buttonName = (TextView) itemView.findViewById(R.id.main_screen_button_name);
+            button=(CardView) itemView.findViewById(R.id.main_screen_card_view);
         }
 
         public void bindData(final int position) {
             final Buttons i=mButtons.get(position);
             buttonName.setText(i.getButtton());
-            buttonName.setOnClickListener(new View.OnClickListener() {
+            button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     if(i.getButtton().equals("Current Booking")){
                         Toast.makeText(mContext,"Button Clicked"+buttonName.getText(),Toast.LENGTH_LONG).show();
 
@@ -82,6 +85,7 @@ public class MainButtons extends RecyclerView.Adapter<MainButtons.ButtonViewHold
                     }
                 }
             });
+
         }
     }
 }

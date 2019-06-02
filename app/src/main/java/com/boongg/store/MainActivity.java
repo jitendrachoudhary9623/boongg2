@@ -1,5 +1,7 @@
 package com.boongg.store;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 
 import com.boongg.store.Fragments.MainFragment;
 import com.boongg.store.R;
+import com.boongg.store.Utilities.LoginToken;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -49,7 +52,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new MainFragment()).commit();
                 break;
             case R.id.nav_logout:
-
+                SharedPreferences preferences = getSharedPreferences(LoginToken.PREFS, 0);
+                preferences.edit().remove(LoginToken.TOKEN_ID).commit();
+                preferences.edit().remove(LoginToken.TOKEN).commit();
+                Intent i=new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(i);
                 break;
 
         }

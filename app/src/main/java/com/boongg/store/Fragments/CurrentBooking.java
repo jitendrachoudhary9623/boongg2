@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +24,19 @@ public class CurrentBooking extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_current_booking, container, false);
         bottomNav = rootView.findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
+        setHasOptionsMenu(true);
 
-        //I added this if statement to keep the selected fragment when rotating the device
         if (savedInstanceState == null) {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_2,
                     new PickUpFragment()).commit();
         }
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.current_booking, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
