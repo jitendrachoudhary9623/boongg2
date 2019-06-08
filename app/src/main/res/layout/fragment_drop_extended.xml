@@ -13,14 +13,14 @@
         <TextView
             android:layout_marginTop="200dp"
             android:gravity="center_vertical|center_horizontal"
-            android:id="@+id/today_no_msg"
+            android:id="@+id/drop_extended_no_msg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textStyle="bold"
             android:textSize="15sp"
             android:layout_gravity="center_vertical"
             android:textAlignment="center"
-            android:text="No Bookings Available"
+            android:text="No Drops Available"
             android:visibility="visible"
             android:layout_weight="1"
             />
@@ -30,7 +30,7 @@
 
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/rv_today_pickup">
+            android:id="@+id/rv_extended_drop">
 
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>

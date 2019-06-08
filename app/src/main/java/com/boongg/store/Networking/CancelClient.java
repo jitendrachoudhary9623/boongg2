@@ -1,7 +1,5 @@
 package com.boongg.store.Networking;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.boongg.store.Utilities.LoginToken;
@@ -9,8 +7,8 @@ import com.boongg.store.Utilities.LoginToken;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class OAPIClient {
-    public static final String BASE_URL = "http://18.222.139.67:3100/api/rentbooking/list/"+ LoginToken.id+"/";
+public class CancelClient {
+    public static final String BASE_URL = "http://18.222.139.67:3100/api/rentbooking/request/cancel/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {

@@ -14,4 +14,7 @@ public interface BookingRequest {
     @GET("BOOKED")
     Call<List<Booking>> getAllBookings();
 
+    @GET("ONGOING")
+    Call<List<Booking>> getDropBookings();
+
 }
