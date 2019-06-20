@@ -86,7 +86,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
 
         TextView bookingId,startDate,endDate,customberName,phoneNo,amount,status,vehicleName,mode;
         ImageView buttonImage;
-        Button cancel,checkIn;
+        TextView cancel,checkIn;
         LinearLayout call;
         public BookingViewHolder(View itemView) {
             super(itemView);
@@ -100,8 +100,8 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             vehicleName=(TextView) itemView.findViewById(R.id.rv_vehicle);
             call=(LinearLayout) itemView.findViewById(R.id.call_user);
             mode=(TextView)itemView.findViewById(R.id.rv_mode);
-            cancel=(Button)itemView.findViewById(R.id.rv_cancel_in_button);
-            checkIn=(Button)itemView.findViewById(R.id.rv_check_in_button);
+            cancel=(TextView) itemView.findViewById(R.id.rv_cancel_in_button);
+            checkIn=(TextView) itemView.findViewById(R.id.rv_check_in_button);
         }
 
 
@@ -117,7 +117,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             }
             customberName.setText(""+booking.getWebuserId().getProfile().getName());
             phoneNo.setText(""+booking.getWebuserId().getProfile().getMobileNumber());
-            amount.setText(mContext.getResources().getString(R.string.rs)+" "+String.format("%.2f",booking.getRentTotal()));
+            amount.setText(mContext.getResources().getString(R.string.rs)+" "+String.format("%.2f",booking.getTotalAmountRecived()));
 
             mode.setText(booking.getBookingType());
            /* if(booking.getStatus().equals("BOOKED")){
@@ -131,6 +131,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
                     View promptsView = li.inflate(R.layout.alert_checkin, null);
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                             mContext);
+                    final EditText start=(EditText)promptsView.findViewById(R.id.startKm);
                     alertDialogBuilder.setView(promptsView);
                     alertDialogBuilder
                             .setCancelable(false)
@@ -139,7 +140,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
                                         public void onClick(DialogInterface dialog,int id) {
 
                                             boolean isHelmetProvide=true;
-                                            String startKm="0";
+                                            String startKm=start.getText().toString();
                                             CheckIn check=new CheckIn(booking.getRentBikeKey().getId(),isHelmetProvide,booking.getId(),startKm);
 
                                             CheckInRequest checkInRequest= APIClient.getClient().create(CheckInRequest.class);
@@ -155,7 +156,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
                                                 @Override
                                                 public void onFailure(Call<UpdateResponse> call, Throwable t) {
                                                     Toast.makeText(mContext,"Something went wrong"+t.toString(),Toast.LENGTH_LONG).show();
-
+                                                Log.e("JWT",t.toString());
                                                 }
                                             });
                                         }

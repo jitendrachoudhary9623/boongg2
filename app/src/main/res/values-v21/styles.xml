@@ -6,5 +6,13 @@
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@android:color/black</item>
     </style>
+    <style name="textView_1" parent="android:Widget.TextView">
+        <item name="android:layout_gravity">center_horizontal|center_vertical</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">3dp</item>
+        <item name="android:textAlignment">center</item>
 
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:textSize">15sp</item>
+    </style>
 </resources>

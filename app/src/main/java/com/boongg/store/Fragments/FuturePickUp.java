@@ -51,13 +51,14 @@ public class FuturePickUp extends Fragment {
                 List<Booking> bookingList = new ArrayList<>();
                 bookingList = response.body();
                 //bookingList=;
-                bookingList=DateSorter.getBookings("Future",bookingList);
-                if(bookingList.size()>0) {
-                    BookingAdapter adapter = new BookingAdapter(bookingList, getContext());
-                    recyclerView.setAdapter(adapter);
-                    msg.setVisibility(View.GONE);
-                }
-                else{
+                try {
+                    bookingList = DateSorter.getBookings("Future", bookingList);
+                    if (bookingList.size() > 0) {
+                        BookingAdapter adapter = new BookingAdapter(bookingList, getContext());
+                        recyclerView.setAdapter(adapter);
+                        msg.setVisibility(View.GONE);
+                    }
+                }catch (Exception d){
                     msg.setVisibility(View.VISIBLE);
 
                 }

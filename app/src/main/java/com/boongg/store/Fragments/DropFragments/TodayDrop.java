@@ -18,6 +18,7 @@ import com.boongg.store.Networking.BookingRequest;
 import com.boongg.store.Networking.OAPIClient;
 import com.boongg.store.R;
 import com.boongg.store.RecyclerViews.DropAdapter;
+import com.boongg.store.Utilities.DateSorter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,15 +45,18 @@ public class TodayDrop extends Fragment {
             @Override
             public void onResponse(Call<List<Booking>> call, Response<List<Booking>> response) {
                 List<Booking> bookingList = new ArrayList<>();
-                bookingList = response.body();
-                //bookingList=;
-                if(bookingList.size()>0) {
-                    DropAdapter adapter = new DropAdapter(bookingList, getContext());
-                    recyclerView.setAdapter(adapter);
-                    msg.setVisibility(View.GONE);
-                }
-                else{
-                    msg.setVisibility(View.VISIBLE);
+                try {
+                    bookingList = DateSorter.getBookings("Today", response.body());
+                    //bookingList=;
+                    if (bookingList.size() > 0) {
+                        DropAdapter adapter = new DropAdapter(bookingList, getContext());
+                        recyclerView.setAdapter(adapter);
+                        msg.setVisibility(View.GONE);
+                    } else {
+                        msg.setVisibility(View.VISIBLE);
+                    }
+                }catch(Exception e){
+
                 }
                 //    Toast.makeText(getContext(),"Size "+bookingList.size(),Toast.LENGTH_LONG).show();
             }

@@ -39,6 +39,12 @@ dependencies {
     //gif
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.0'
 
+
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    //alert
+
     //test
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

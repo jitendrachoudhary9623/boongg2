@@ -41,15 +41,15 @@ public class MainFragment extends Fragment {
 
         MainButtons buttons;
         List<Buttons> btn=new ArrayList<>();
-        btn.add(new Buttons("Current Booking"));
-        btn.add(new Buttons("Create Booking"));
-        btn.add(new Buttons("Cancelled Booking"));
-        btn.add(new Buttons("Rent Calculator"));
-        btn.add(new Buttons("Vehicle Inventory"));
-        btn.add(new Buttons("Offers"));
-        btn.add(new Buttons("Account"));
-        btn.add(new Buttons("SOP"));
-        btn.add(new Buttons("Logout"));
+        btn.add(new Buttons("Current Booking",R.drawable.reading));
+        btn.add(new Buttons("Create Booking",R.drawable.notebook));
+        btn.add(new Buttons("Cancelled Booking",R.drawable.cancel_b));
+        btn.add(new Buttons("Rent Calculator",R.drawable.calculator));
+        btn.add(new Buttons("Vehicle Inventory",R.drawable.vespa));
+        btn.add(new Buttons("Offers",R.drawable.banking));
+        btn.add(new Buttons("Account",R.drawable.customer_support));
+        btn.add(new Buttons("SOP",R.drawable.management));
+        btn.add(new Buttons("Logout",R.drawable.exit));
 
 
         buttons = new MainButtons(btn, getContext());

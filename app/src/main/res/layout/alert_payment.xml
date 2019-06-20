@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_margin="15dp"
+    android:padding="10dp">
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:padding="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal">
+       <android.support.design.widget.TextInputLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="8dp"
+           android:background="@drawable/rounded"
+           android:paddingTop="1dp"
+           android:layout_weight="1"
+           android:layout_marginBottom="8dp">
+           <EditText android:id="@+id/pay_total_rent"
+               android:padding="6dp"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:inputType="number"
+               android:layout_marginBottom="2dp"
+               android:hint="Total rent" />
+       </android.support.design.widget.TextInputLayout>
+       <android.support.design.widget.TextInputLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="8dp"
+           android:background="@drawable/rounded"
+           android:paddingTop="1dp"
+           android:layout_weight="1"
+           android:layout_marginBottom="8dp">
+           <EditText android:id="@+id/pay_selected_rent"
+               android:padding="6dp"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:inputType="number"
+               android:layout_marginBottom="2dp"
+               android:hint="Suggested rent" />
+       </android.support.design.widget.TextInputLayout>
+   </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded"
+            android:paddingTop="1dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/pay_sgst"
+                android:padding="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="18"
+                android:layout_marginBottom="2dp"
+                android:hint="SGST" />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded"
+            android:paddingTop="1dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/pay_cgst"
+                android:padding="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="18"
+
+                android:layout_marginBottom="2dp"
+                android:hint="CGST" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
+        <CheckBox
+            android:id="@+id/pay_at_store"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Pay At Store"
+           />
+
+        <Spinner
+            android:layout_margin="5dp"
+
+            android:id="@+id/payment_method_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:background="@color/green_pay"
+        android:text="Pay Now"
+        android:textColor="@color/white"
+        android:id="@+id/payment_pay_now"
+        android:textAlignment="center"/>
+    </LinearLayout>
+    </android.support.v7.widget.CardView>
+</android.support.v7.widget.CardView>

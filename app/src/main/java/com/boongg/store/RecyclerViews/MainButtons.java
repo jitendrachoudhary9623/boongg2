@@ -12,10 +12,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.boongg.store.Fragments.CancelledBookingFragment;
+import com.boongg.store.Fragments.CreateBookingFragment;
 import com.boongg.store.Fragments.CurrentBooking;
+import com.boongg.store.Fragments.RentFragment;
+import com.boongg.store.Fragments.VehicleInventoryFragment;
 import com.boongg.store.MainActivity;
 import com.boongg.store.Models.Buttons;
 import com.boongg.store.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -62,27 +67,44 @@ CardView button;
             super(itemView);
             buttonName = (TextView) itemView.findViewById(R.id.main_screen_button_name);
             button=(CardView) itemView.findViewById(R.id.main_screen_card_view);
+            buttonImage=(ImageView) itemView.findViewById(R.id.main_screen_button_icon);
         }
 
+        public void switchFragment(Fragment myFragment,View v){
+
+            MainActivity activity = (MainActivity) v.getContext();
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, myFragment).addToBackStack(null).commit();
+
+        }
         public void bindData(final int position) {
             final Buttons i=mButtons.get(position);
+            Picasso.with(mContext).load(i.getImageId()).into(buttonImage);
+
             buttonName.setText(i.getButtton());
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    if(i.getButtton().equals("Current Booking")){
-                        Toast.makeText(mContext,"Button Clicked"+buttonName.getText(),Toast.LENGTH_LONG).show();
-
-                        MainActivity activity = (MainActivity) v.getContext();
-                        Fragment myFragment = new CurrentBooking();
-                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, myFragment).addToBackStack(null).commit();
-
+                    Fragment myFragment=null;
+                    switch(i.getButtton()){
+                       // Toast.makeText(mContext,"Button Clicked"+buttonName.getText(),Toast.LENGTH_LONG).show();
+                        case "Current Booking":
+                             myFragment = new CurrentBooking();
+                            break;
+                        case "Cancelled Booking":
+                            myFragment = new CancelledBookingFragment();
+                            break;
+                        case "Create Booking":
+                            myFragment=new CreateBookingFragment();
+                            break;
+                        case "Rent Calculator":
+                            myFragment=new RentFragment();
+                            break;
+                        case "Vehicle Inventory":
+                            myFragment=new VehicleInventoryFragment();
+                            break;
                     }
-                    else{
-                        Toast.makeText(mContext,"Another fragment",Toast.LENGTH_LONG).show();
+                    switchFragment(myFragment,v);
 
-                    }
                 }
             });
 

@@ -10,7 +10,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class OAPIClient {
-    public static final String BASE_URL = "http://18.222.139.67:3100/api/rentbooking/list/"+ LoginToken.id+"/";
+   // public static final String BASE_URL = "http://13.127.135.220:3100/api/rentbooking/list/"+ LoginToken.id+"/";
+    public static final String BASE_URL = RestApiURL.API_BASE_URL+"api/rentbooking/list/"+ LoginToken.id+"/";
+
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {

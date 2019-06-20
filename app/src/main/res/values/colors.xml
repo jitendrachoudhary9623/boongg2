@@ -8,4 +8,5 @@
     <color name="sgreen">#228B22</color>
     <color name="grayShade1">#c8c8c8</color>
     <color name="blue">@android:color/holo_orange_dark</color>
+    <color name="green_pay">#008B00</color>
 </resources>

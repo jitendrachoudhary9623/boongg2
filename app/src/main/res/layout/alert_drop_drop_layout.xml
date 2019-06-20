@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:layout_margin="8dp"
+    android:orientation="horizontal">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="8dp"
+    android:layout_weight="1">
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded"
+        android:paddingTop="1dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="8dp">
+        <EditText android:id="@+id/alert_drop_start_km"
+            android:padding="6dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:layout_marginBottom="2dp"
+            android:hint="Start KM" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded"
+        android:paddingTop="1dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="8dp">
+        <EditText android:id="@+id/alert_total_km_run"
+            android:padding="6dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:layout_marginBottom="2dp"
+            android:hint="Total KM Run" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded"
+        android:paddingTop="1dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="8dp">
+        <EditText android:id="@+id/alert_drop_rto"
+            android:padding="6dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:layout_marginBottom="2dp"
+            android:hint="RTO Challan" />
+    </android.support.design.widget.TextInputLayout>
+
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="8dp"
+        android:layout_weight="1">
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded"
+            android:paddingTop="1dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/alert_drop_bike_handover"
+                android:padding="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:layout_marginBottom="2dp"
+                android:hint="Enter Bike Handover End Km" />
+        </android.support.design.widget.TextInputLayout>
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Please collect helmate from user"
+          android:textStyle="bold"
+          android:textAlignment="center"
+          android:textColor="@color/colorAccent"/>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded"
+            android:paddingTop="1dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/alert_drop_fine"
+                android:padding="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:layout_marginBottom="2dp"
+                android:hint="Fine Accidental Cost" />
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -59,13 +59,15 @@ public class TodayPickUp extends Fragment {
                 List<Booking> bookingList = new ArrayList<>();
                 bookingList = response.body();
                 //bookingList=;
-                bookingList=DateSorter.getBookings("Today",bookingList);
-                if(bookingList.size()>0) {
-                    BookingAdapter adapter = new BookingAdapter(bookingList, getContext());
-                    recyclerView.setAdapter(adapter);
-                    msg.setVisibility(View.GONE);
+                try {
+                    bookingList = DateSorter.getBookings("Today", bookingList);
+                    if (bookingList.size() > 0) {
+                        BookingAdapter adapter = new BookingAdapter(bookingList, getContext());
+                        recyclerView.setAdapter(adapter);
+                        msg.setVisibility(View.GONE);
+                    }
                 }
-                else{
+                catch (Exception e){
                     msg.setVisibility(View.VISIBLE);
 
                 }

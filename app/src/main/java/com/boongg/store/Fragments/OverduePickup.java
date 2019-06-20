@@ -48,14 +48,16 @@ public class OverduePickup  extends Fragment {
                 List<Booking> bookingList = new ArrayList<>();
                 bookingList = response.body();
                // bookingList= DateSorter.getBookings("Overdue",bookingList);
-                bookingList=DateSorter.getBookings("Overdue",bookingList);
-                if(bookingList.size()>0) {
-                    BookingAdapter adapter = new BookingAdapter(DateSorter.getBookings("Overdue", bookingList), getContext());
-                    recyclerView.setAdapter(adapter);
-                    Toast.makeText(getContext(), "Size " + bookingList.size(), Toast.LENGTH_LONG).show();
-                    msg.setVisibility(View.GONE);
+                try {
+                    bookingList = DateSorter.getBookings("Overdue", bookingList);
+                    if (bookingList.size() > 0) {
+                        BookingAdapter adapter = new BookingAdapter(DateSorter.getBookings("Overdue", bookingList), getContext());
+                        recyclerView.setAdapter(adapter);
+                        Toast.makeText(getContext(), "Size " + bookingList.size(), Toast.LENGTH_LONG).show();
+                        msg.setVisibility(View.GONE);
 
-                }else{
+                    }
+                }catch (Exception e){
                     msg.setVisibility(View.VISIBLE);
 
                 }

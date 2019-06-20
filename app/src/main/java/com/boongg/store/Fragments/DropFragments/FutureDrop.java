@@ -42,7 +42,7 @@ public class FutureDrop extends Fragment {
             @Override
             public void onResponse(Call<List<Booking>> call, Response<List<Booking>> response) {
                 List<Booking> bookingList = new ArrayList<>();
-                bookingList = response.body();
+                bookingList = DateSorter.getBookings("Future",response.body());
                 //bookingList=;
                 if(bookingList.size()>0) {
                     DropAdapter adapter = new DropAdapter(bookingList, getContext());

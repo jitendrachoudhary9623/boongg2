@@ -4,4 +4,16 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="rs">&#x20B9;</string>
+
+    <string-array name="payment_methods">
+        <item>CASH</item>
+        <item>DEBIT / CREDIT CARD</item>
+        <item>ONLINE / UPI PAYMENTS</item>
+        <item>PAYTYM</item>
+        <item>PhonePe</item>
+        <item>GOOGLE PAY</item>
+        <item>MOBIKWIK</item>
+        <item>CHEQUE</item>
+
+    </string-array>
 </resources>

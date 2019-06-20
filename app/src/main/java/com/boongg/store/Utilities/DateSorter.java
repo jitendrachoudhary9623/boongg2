@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.boongg.store.Models.Booking;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -92,5 +94,17 @@ public class DateSorter {
             }
         }
         return cBookings;
+    }
+    public static String convertStringToTimestamp(String str_date) {
+        try {
+            DateFormat formatter;
+            formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+            // you can change format of date
+            Date date = formatter.parse(str_date);
+            return String.valueOf(date.getTime());
+        } catch (ParseException e) {
+            System.out.println("Exception :" + e);
+            return null;
+        }
     }
 }

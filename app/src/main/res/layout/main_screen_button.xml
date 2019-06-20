@@ -23,7 +23,6 @@
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
             android:id="@+id/main_screen_button_icon"
-            android:src="@drawable/logo"
            />
         <TextView
             android:id="@+id/main_screen_button_name"

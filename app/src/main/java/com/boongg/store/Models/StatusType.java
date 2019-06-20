@@ -11,7 +11,7 @@ public class StatusType implements Parcelable {
 	@SerializedName("type")
 	private String type;
 
-	protected StatusType(Parcel in) {
+	public StatusType(Parcel in) {
 		type = in.readString();
 	}
 
