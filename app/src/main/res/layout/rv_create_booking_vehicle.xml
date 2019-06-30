@@ -19,7 +19,16 @@
             android:layout_height="wrap_content"
             android:id="@+id/create_info"
             android:layout_gravity="top|right"
+            android:visibility="gone"
             android:src="@drawable/ic_info_outline_black_24dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/create_qty"
+            android:layout_gravity="top|right"
+            android:text="Qty : 1"
+            android:textStyle="bold"
             />
         <ImageView
             android:layout_margin="5dp"
@@ -73,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_margin="3dp"
                 android:layout_height="wrap_content"
-                android:text="Pay"
+                android:text="Book Now"
                 android:textColor="@color/white"
                 android:background="@color/green_pay"
                 android:textStyle="bold"

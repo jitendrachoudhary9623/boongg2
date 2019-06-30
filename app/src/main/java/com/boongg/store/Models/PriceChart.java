@@ -11,52 +11,52 @@ public class PriceChart implements Parcelable
 
     @SerializedName("weekdays")
     @Expose
-    private Integer weekdays;
+    private Double weekdays;
     @SerializedName("weekend")
     @Expose
-    private Integer weekend;
+    private Double weekend;
     @SerializedName("hourlyRate")
     @Expose
-    private Integer hourlyRate;
+    private Double hourlyRate;
     @SerializedName("kmsLimit")
     @Expose
-    private Integer kmsLimit;
+    private Double kmsLimit;
     @SerializedName("extraKMS")
     @Expose
-    private Integer extraKMS;
+    private Double extraKMS;
     @SerializedName("extraHRS")
     @Expose
-    private Integer extraHRS;
+    private Double extraHRS;
     @SerializedName("monthly")
     @Expose
-    private Integer monthly;
+    private Double monthly;
     @SerializedName("fifteenDays")
     @Expose
-    private Integer fifteenDays;
+    private Double fifteenDays;
     @SerializedName("twoDayRate")
     @Expose
-    private Integer twoDayRate;
+    private Double twoDayRate;
     @SerializedName("threeDayRate")
     @Expose
-    private Integer threeDayRate;
+    private Double threeDayRate;
     @SerializedName("fourDayRate")
     @Expose
-    private Integer fourDayRate;
+    private Double fourDayRate;
     @SerializedName("fiveDayRate")
     @Expose
-    private Integer fiveDayRate;
+    private Double fiveDayRate;
     @SerializedName("sixDayRate")
     @Expose
-    private Integer sixDayRate;
+    private Double sixDayRate;
     @SerializedName("sevenDayRate")
     @Expose
-    private Integer sevenDayRate;
+    private Double sevenDayRate;
     @SerializedName("tenDayRate")
     @Expose
-    private Integer tenDayRate;
+    private Double tenDayRate;
     @SerializedName("twentyDayRate")
     @Expose
-    private Integer twentyDayRate;
+    private Double twentyDayRate;
     @SerializedName("isAdminRentApplied")
     @Expose
     private Boolean isAdminRentApplied;
@@ -78,22 +78,22 @@ public class PriceChart implements Parcelable
     ;
 
     protected PriceChart(Parcel in) {
-        this.weekdays = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.weekend = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.hourlyRate = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.kmsLimit = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.extraKMS = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.extraHRS = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.monthly = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.fifteenDays = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.twoDayRate = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.threeDayRate = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.fourDayRate = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.fiveDayRate = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.sixDayRate = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.sevenDayRate = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.tenDayRate = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.twentyDayRate = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.weekdays = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.weekend = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.hourlyRate = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.kmsLimit = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.extraKMS = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.extraHRS = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.monthly = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.fifteenDays = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.twoDayRate = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.threeDayRate = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.fourDayRate = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.fiveDayRate = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.sixDayRate = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.sevenDayRate = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.tenDayRate = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.twentyDayRate = ((Double) in.readValue((Double.class.getClassLoader())));
         this.isAdminRentApplied = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
     }
 
@@ -124,7 +124,7 @@ public class PriceChart implements Parcelable
      * @param fiveDayRate
      * @param isAdminRentApplied
      */
-    public PriceChart(Integer weekdays, Integer weekend, Integer hourlyRate, Integer kmsLimit, Integer extraKMS, Integer extraHRS, Integer monthly, Integer fifteenDays, Integer twoDayRate, Integer threeDayRate, Integer fourDayRate, Integer fiveDayRate, Integer sixDayRate, Integer sevenDayRate, Integer tenDayRate, Integer twentyDayRate, Boolean isAdminRentApplied) {
+    public PriceChart(Double weekdays, Double weekend, Double hourlyRate, Double kmsLimit, Double extraKMS, Double extraHRS, Double monthly, Double fifteenDays, Double twoDayRate, Double threeDayRate, Double fourDayRate, Double fiveDayRate, Double sixDayRate, Double sevenDayRate, Double tenDayRate, Double twentyDayRate, Boolean isAdminRentApplied) {
         super();
         this.weekdays = weekdays;
         this.weekend = weekend;
@@ -145,131 +145,131 @@ public class PriceChart implements Parcelable
         this.isAdminRentApplied = isAdminRentApplied;
     }
 
-    public Integer getWeekdays() {
+    public Double getWeekdays() {
         return weekdays;
     }
 
-    public void setWeekdays(Integer weekdays) {
+    public void setWeekdays(Double weekdays) {
         this.weekdays = weekdays;
     }
 
-    public Integer getWeekend() {
+    public Double getWeekend() {
         return weekend;
     }
 
-    public void setWeekend(Integer weekend) {
+    public void setWeekend(Double weekend) {
         this.weekend = weekend;
     }
 
-    public Integer getHourlyRate() {
+    public Double getHourlyRate() {
         return hourlyRate;
     }
 
-    public void setHourlyRate(Integer hourlyRate) {
+    public void setHourlyRate(Double hourlyRate) {
         this.hourlyRate = hourlyRate;
     }
 
-    public Integer getKmsLimit() {
+    public Double getKmsLimit() {
         return kmsLimit;
     }
 
-    public void setKmsLimit(Integer kmsLimit) {
+    public void setKmsLimit(Double kmsLimit) {
         this.kmsLimit = kmsLimit;
     }
 
-    public Integer getExtraKMS() {
+    public Double getExtraKMS() {
         return extraKMS;
     }
 
-    public void setExtraKMS(Integer extraKMS) {
+    public void setExtraKMS(Double extraKMS) {
         this.extraKMS = extraKMS;
     }
 
-    public Integer getExtraHRS() {
+    public Double getExtraHRS() {
         return extraHRS;
     }
 
-    public void setExtraHRS(Integer extraHRS) {
+    public void setExtraHRS(Double extraHRS) {
         this.extraHRS = extraHRS;
     }
 
-    public Integer getMonthly() {
+    public Double getMonthly() {
         return monthly;
     }
 
-    public void setMonthly(Integer monthly) {
+    public void setMonthly(Double monthly) {
         this.monthly = monthly;
     }
 
-    public Integer getFifteenDays() {
+    public Double getFifteenDays() {
         return fifteenDays;
     }
 
-    public void setFifteenDays(Integer fifteenDays) {
+    public void setFifteenDays(Double fifteenDays) {
         this.fifteenDays = fifteenDays;
     }
 
-    public Integer getTwoDayRate() {
+    public Double getTwoDayRate() {
         return twoDayRate;
     }
 
-    public void setTwoDayRate(Integer twoDayRate) {
+    public void setTwoDayRate(Double twoDayRate) {
         this.twoDayRate = twoDayRate;
     }
 
-    public Integer getThreeDayRate() {
+    public Double getThreeDayRate() {
         return threeDayRate;
     }
 
-    public void setThreeDayRate(Integer threeDayRate) {
+    public void setThreeDayRate(Double threeDayRate) {
         this.threeDayRate = threeDayRate;
     }
 
-    public Integer getFourDayRate() {
+    public Double getFourDayRate() {
         return fourDayRate;
     }
 
-    public void setFourDayRate(Integer fourDayRate) {
+    public void setFourDayRate(Double fourDayRate) {
         this.fourDayRate = fourDayRate;
     }
 
-    public Integer getFiveDayRate() {
+    public Double getFiveDayRate() {
         return fiveDayRate;
     }
 
-    public void setFiveDayRate(Integer fiveDayRate) {
+    public void setFiveDayRate(Double fiveDayRate) {
         this.fiveDayRate = fiveDayRate;
     }
 
-    public Integer getSixDayRate() {
+    public Double getSixDayRate() {
         return sixDayRate;
     }
 
-    public void setSixDayRate(Integer sixDayRate) {
+    public void setSixDayRate(Double sixDayRate) {
         this.sixDayRate = sixDayRate;
     }
 
-    public Integer getSevenDayRate() {
+    public Double getSevenDayRate() {
         return sevenDayRate;
     }
 
-    public void setSevenDayRate(Integer sevenDayRate) {
+    public void setSevenDayRate(Double sevenDayRate) {
         this.sevenDayRate = sevenDayRate;
     }
 
-    public Integer getTenDayRate() {
+    public Double getTenDayRate() {
         return tenDayRate;
     }
 
-    public void setTenDayRate(Integer tenDayRate) {
+    public void setTenDayRate(Double tenDayRate) {
         this.tenDayRate = tenDayRate;
     }
 
-    public Integer getTwentyDayRate() {
+    public Double getTwentyDayRate() {
         return twentyDayRate;
     }
 
-    public void setTwentyDayRate(Integer twentyDayRate) {
+    public void setTwentyDayRate(Double twentyDayRate) {
         this.twentyDayRate = twentyDayRate;
     }
 

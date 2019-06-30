@@ -1,12 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_margin="30dp">
+    android:background="@drawable/rounded_cards"
+    >
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Check In"
+       android:theme="@style/dialog_header"
+       />
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="15dp"
+        android:orientation="horizontal">
+        <CheckBox
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:id="@+id/modify_bike_checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Modify Bike"
+            />
+        <Spinner
+            android:layout_weight="1"
+            android:id="@+id/select_bike_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
     <EditText
         android:id="@+id/startKm"
+        android:layout_weight="1"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,12 +56,45 @@
 
     <CheckBox
         android:layout_margin="10dp"
-
+        android:layout_weight="1"
         android:id="@+id/helmet_provided"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:text="Helmet Provided"
         />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        >
+        <EditText
+            android:id="@+id/emergency_address"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:inputType="textMultiLine"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Emergency Address"
+            />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded"
+            android:paddingTop="1dp"
+            android:visibility="gone"
+            android:layout_weight="1"
+            android:layout_marginBottom="8dp">
+        <EditText
+            android:id="@+id/totalRent"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Total rent"
+            />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
 
 </LinearLayout>

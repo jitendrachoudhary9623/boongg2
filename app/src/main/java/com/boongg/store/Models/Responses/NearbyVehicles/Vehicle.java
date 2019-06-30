@@ -16,7 +16,7 @@ public class Vehicle implements Parcelable
     private List<Result> results = null;
     @SerializedName("totalQuantity")
     @Expose
-    private Integer totalQuantity;
+    private Double totalQuantity;
     @SerializedName("isRentPage")
     @Expose
     private Boolean isRentPage;
@@ -48,7 +48,7 @@ public class Vehicle implements Parcelable
 
     protected Vehicle(Parcel in) {
         in.readList(this.results, (com.boongg.store.Models.Responses.NearbyVehicles.Result.class.getClassLoader()));
-        this.totalQuantity = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.totalQuantity = ((Double) in.readValue((Double.class.getClassLoader())));
         this.isRentPage = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
         in.readList(this.brands, (com.boongg.store.Models.Responses.NearbyVehicles.Brand.class.getClassLoader()));
         in.readList(this.locality, (com.boongg.store.Models.Responses.NearbyVehicles.Locality.class.getClassLoader()));
@@ -66,11 +66,11 @@ public class Vehicle implements Parcelable
         this.results = results;
     }
 
-    public Integer getTotalQuantity() {
+    public Double getTotalQuantity() {
         return totalQuantity;
     }
 
-    public void setTotalQuantity(Integer totalQuantity) {
+    public void setTotalQuantity(Double totalQuantity) {
         this.totalQuantity = totalQuantity;
     }
 

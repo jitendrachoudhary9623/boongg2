@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -39,11 +39,10 @@
                 android:id="@+id/create_search_user_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
+                android:layout_weight="5"
                 android:background="@color/colorPrimary"
                 android:text="&#x2315;"
                 android:textSize="25sp"
-                android:textFontWeight="30dp"
                 android:textColor="@color/white" />
         </LinearLayout>
     <View
@@ -74,72 +73,127 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:orientation="vertical"
+            android:visibility="gone"
             android:id="@+id/create_search_user_found">
 
-            <LinearLayout
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_margin="10dp"
+                android:elevation="10dp"
+                app:cardCornerRadius="8dp"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded"
+                    android:paddingTop="1dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="5dp">
 
+                    <EditText android:id="@+id/create_search_email"
+                        android:background="@android:color/transparent"
+                        android:padding="6dp"
+                        android:editable="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:layout_marginBottom="2dp"
+                        android:hint="Email Adress" />
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded"
+                    android:paddingTop="1dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="5dp">
+                    <EditText android:id="@+id/create_search_user_name"
+                        android:background="@android:color/transparent"
+                        android:padding="6dp"
+                        android:editable="false"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:layout_marginBottom="2dp"
+                        android:hint="Username" />
+                </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:elevation="10dp"
+                app:cardCornerRadius="5dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
             <TextView
                 android:id="@+id/create_search_user_start_date"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="DD/MM/YYYY"
-                android:textColor="@color/white"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:background="@color/colorAccent"
-                android:padding="6dp"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_height="match_parent"
+                android:text="START DATE"
+                android:theme="@style/timepicker_textview"
                 android:datePickerMode="calendar"
-                android:layout_margin="8dp"
+                android:drawableLeft="@drawable/textview_calendar"
+
 
                 />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/grayShade1"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    />
             <TextView
-                android:layout_margin="8dp"
-                android:textColor="@color/white"
-
-                android:text="DD/MM/YYYY"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:background="@color/colorAccent"
-                android:padding="6dp"
-                android:layout_gravity="center_horizontal|center_vertical"
+                android:text="END DATE"
+               android:theme="@style/timepicker_textview"
                 android:id="@+id/create_search_user_end_date"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:datePickerMode="calendar"
+                android:drawableLeft="@drawable/textview_calendar_end_date"
+
                 />
+
+                <TextView
+                    android:id="@+id/create_search_user_search_bike"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textAlignment="center"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:layout_margin="6dp"
+                    android:textStyle="bold"
+                    android:text="Search Bikes"
+                    android:padding="6dp"/>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/create_search_user_search_bike"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textAlignment="center"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_margin="6dp"
-                android:textStyle="bold"
-                android:text="Search Bikes"
-                android:padding="6dp"/>
+            </android.support.v7.widget.CardView>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dp"
+            android:visibility="gone"
             android:id="@+id/create_search_user_create_new"
             android:orientation="vertical"
-            android:visibility="gone"
             android:layout_weight="1"
             android:layout_margin="8dp">
 
@@ -157,6 +211,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
                     android:layout_marginBottom="2dp"
+                    android:backgroundTint="@color/grayShade1"
                     android:hint="Enter First Name" />
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout

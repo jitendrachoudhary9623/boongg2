@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/search"
-        android:orderInCategory="1"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_search"/>
+        android:title="Search Booking"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="always"/>
+
     <item android:id="@+id/refresh"
         android:orderInCategory="1"
         app:showAsAction="always"

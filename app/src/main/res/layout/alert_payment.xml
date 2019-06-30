@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:layout_margin="15dp"
-    android:padding="10dp">
-
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent" android:layout_height="match_parent"
-        android:layout_margin="20dp"
-        android:padding="10dp">
+    android:background="@drawable/rounded_cards"
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-   <LinearLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Payment"
+                android:theme="@style/dialog_header"
+                />
+        </LinearLayout>
+
+        <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
+            android:layout_margin="10dp"
        android:orientation="horizontal">
        <android.support.design.widget.TextInputLayout
            android:layout_width="match_parent"
@@ -23,7 +32,7 @@
            android:background="@drawable/rounded"
            android:paddingTop="1dp"
            android:layout_weight="1"
-           android:layout_marginBottom="8dp">
+           android:layout_marginBottom="2dp">
            <EditText android:id="@+id/pay_total_rent"
                android:padding="6dp"
                android:layout_width="match_parent"
@@ -52,15 +61,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+
         android:orientation="horizontal">
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="2dp"
             android:background="@drawable/rounded"
             android:paddingTop="1dp"
             android:layout_weight="1"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="2dp">
             <EditText android:id="@+id/pay_sgst"
                 android:padding="6dp"
                 android:layout_width="match_parent"
@@ -73,11 +84,11 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="2dp"
             android:background="@drawable/rounded"
             android:paddingTop="1dp"
             android:layout_weight="1"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="2dp">
             <EditText android:id="@+id/pay_cgst"
                 android:padding="6dp"
                 android:layout_width="match_parent"
@@ -90,10 +101,43 @@
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded"
+                android:paddingTop="1dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="2dp">
+                <EditText android:id="@+id/total_calculated_rent"
+                    android:padding="6dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="18"
+                    android:layout_marginBottom="2dp"
+                    android:hint="Total Calculated Rent" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"
+            android:background="@color/grayShade1"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="vertical">
         <CheckBox
             android:id="@+id/pay_at_store"
@@ -102,16 +146,23 @@
             android:layout_weight="1"
             android:text="Pay At Store"
            />
-
-        <Spinner
-            android:layout_margin="5dp"
-
-            android:id="@+id/payment_method_spinner"
+        <CheckBox
+            android:id="@+id/immediate_checkout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:text="Immediate Checkout"
             />
+
+        <org.angmarch.views.NiceSpinner
+            android:layout_weight="1"
+            android:id="@+id/payment_method_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/grayShade1"
+            android:layout_margin="5dp"/>
     </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -122,5 +173,4 @@
         android:id="@+id/payment_pay_now"
         android:textAlignment="center"/>
     </LinearLayout>
-    </android.support.v7.widget.CardView>
 </android.support.v7.widget.CardView>

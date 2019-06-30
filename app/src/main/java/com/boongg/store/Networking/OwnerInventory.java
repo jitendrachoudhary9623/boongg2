@@ -1,11 +1,13 @@
 package com.boongg.store.Networking;
 
 import com.boongg.store.Models.BrandList;
+import com.boongg.store.Models.Requests.BikeMaintaince;
 import com.boongg.store.Models.Requests.CreateBike;
 import com.boongg.store.Models.Requests.ModifyRequest;
+import com.boongg.store.Models.Requests.UpdateBikePrice;
 import com.boongg.store.Models.Responses.AvailableVehicles.VehicleInventoryResponse;
-import com.boongg.store.Models.Responses.CreateBooking.BikeList;
 import com.boongg.store.Models.Responses.NearbyVehicles.Vehicle;
+import com.boongg.store.Models.Responses.Owners.BikePriceChart;
 import com.boongg.store.Models.Responses.Owners.Owner;
 import com.boongg.store.Models.Responses.RentBikeResponse;
 import com.boongg.store.Models.Responses.VehicleList.VehicleList;
@@ -45,4 +47,14 @@ public interface OwnerInventory {
 
     @POST("rent-pool/add")
     Call<Void> creakeBike(@Body CreateBike bike);
+
+    @GET("rentbikes/{bikeId}")
+    Call<List<BikePriceChart>> getBikePriceChart(@Path("bikeId") String bikeId);
+
+    @POST("rentbikes/update/price")
+    Call<Void> updateBikePrice(@Body UpdateBikePrice ubp);
+
+    @POST("rentbooking/block")
+    Call<Void> maintainance(@Body BikeMaintaince bike);
 }
+

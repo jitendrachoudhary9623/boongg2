@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.boongg.store.Models.Token;
 import com.boongg.store.Networking.APIClient;
 import com.boongg.store.Networking.LoginRequest;
+import com.boongg.store.Utilities.AlertBoxUtils;
 import com.boongg.store.Utilities.JWTUtils;
 import com.boongg.store.Utilities.LoginToken;
 
@@ -96,25 +97,38 @@ public class LoginActivity extends AppCompatActivity {
         call1.enqueue(new Callback<Token>() {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
-                Token token=response.body();
-                progressDialog.dismiss();
-                String id="";
-                try {
-                     id=JWTUtils.decoded(token.getToken());
-                    Log.e("JWT ID",id);
-                    Toast.makeText(getApplicationContext(),"This is id "+ id,Toast.LENGTH_LONG).show();
-                    LoginToken.id=id;
-                    LoginToken.tokenId=token.getToken();
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
+                if(response.isSuccessful()) {
+                    Token token = response.body();
+                    if(token!=null) {
+                        progressDialog.dismiss();
+                        String id = "";
+                        try {
+                            id = JWTUtils.decoded(token.getToken());
+                            Log.e("JWT ID", id);
+                            Toast.makeText(getApplicationContext(), "This is id " + id, Toast.LENGTH_LONG).show();
+                            LoginToken.id = id;
+                            LoginToken.tokenId = token.getToken();
+                            SharedPreferences sp = getSharedPreferences(LoginToken.PREFS, Context.MODE_PRIVATE);
+                            sp.edit().putString(LoginToken.TOKEN, token.getToken()).commit();
+                            sp.edit().putString(LoginToken.TOKEN_ID, id).commit();
+                            onLoginSuccess();
+                        } catch (Exception e) {
+                            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }else{
+                        //AlertBoxUtils.showAlert(getApplicationContext(),"error","Login Failed","You have entered wrong password or email");
+                        progressDialog.dismiss();
+
+                        Toast.makeText(getApplicationContext(),"Wrong password or email",Toast.LENGTH_LONG).show();
+
+                    }
+
                 }
-
-                SharedPreferences sp = getSharedPreferences(LoginToken.PREFS , Context.MODE_PRIVATE);
-                sp.edit().putString(LoginToken.TOKEN,token.getToken()).commit();
-                sp.edit().putString(LoginToken.TOKEN_ID,id).commit();
-
-                onLoginSuccess();
+                else{
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(),"Wrong password or email",Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -156,6 +170,7 @@ public class LoginActivity extends AppCompatActivity {
       //  _loginButton.setEnabled(true);
        // finish();
         Intent i = new Intent(getApplicationContext(),MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
     }
 
@@ -178,8 +193,8 @@ public class LoginActivity extends AppCompatActivity {
             _emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+        if (password.isEmpty() || password.length() < 1 || password.length() > 10) {
+            _passwordText.setError("Enter Valid password");
             valid = false;
         } else {
             _passwordText.setError(null);

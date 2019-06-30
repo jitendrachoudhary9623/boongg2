@@ -57,12 +57,17 @@ public class VehicleRentAdapter  extends RecyclerView.Adapter<VehicleRentAdapter
         ImageView vehicleImage;
         TextView vehicleName;
         LinearLayout vll;
+        TextView hr,m_f,s_s,m,total_rent;
         public VehicleViewHolder(@NonNull View itemView) {
             super(itemView);
             vehicleImage=(ImageView)itemView.findViewById(R.id.create_booking_select_vehicle);
             vehicleName=(TextView)itemView.findViewById(R.id.create_booking_select_vehicle_name);
             vll=(LinearLayout)itemView.findViewById(R.id.rent_booking_vehicle_select_ll);
-
+            total_rent=(TextView)itemView.findViewById(R.id.rent_total);
+            hr=(TextView)itemView.findViewById(R.id.rent_hour);
+            m_f=(TextView)itemView.findViewById(R.id.rent_mon_fri_day);
+            s_s=(TextView)itemView.findViewById(R.id.rent_sat_sun_day);
+            m=(TextView)itemView.findViewById(R.id.rent_month);
         }
         public void bindData(final int position) {
             final Result v=vehicleList.get(position);
@@ -79,7 +84,13 @@ public class VehicleRentAdapter  extends RecyclerView.Adapter<VehicleRentAdapter
 
                 }
             });
+            total_rent.setText("Total Rent\n"+mContext.getResources().getString(R.string.rs)+" "+v.getRentCalculated());
 
+            hr.setText(mContext.getResources().getString(R.string.rs)+" "+v.getWeekDayPrice()+" / hr");
+
+            m_f.setText(mContext.getResources().getString(R.string.rs)+" "+v.getWeekDayPrice()+" / day");
+            s_s.setText(mContext.getResources().getString(R.string.rs)+" "+v.getWeekEndPrice()+" / day");
+            m.setText(mContext.getResources().getString(R.string.rs)+" "+(v.getRentCalculated()*30)+" / month");
 
         }
     }

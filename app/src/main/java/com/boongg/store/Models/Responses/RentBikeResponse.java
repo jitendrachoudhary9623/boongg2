@@ -2,7 +2,7 @@ package com.boongg.store.Models.Responses;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -29,10 +29,10 @@ public class RentBikeResponse implements Parcelable
     private String brand;
     @SerializedName("quantity")
     @Expose
-    private Integer quantity;
+    private Double quantity;
     @SerializedName("engineCapacity")
     @Expose
-    private Integer engineCapacity;
+    private Double engineCapacity;
     @SerializedName("status")
     @Expose
     private String status;
@@ -41,7 +41,7 @@ public class RentBikeResponse implements Parcelable
     private com.boongg.store.Models.Responses._storeKey _storeKey;
     @SerializedName("__v")
     @Expose
-    private Integer __v;
+    private Double __v;
     @SerializedName("location")
     @Expose
     private List<Location> location = null;
@@ -71,12 +71,12 @@ public class RentBikeResponse implements Parcelable
         this.createdAt = ((String) in.readValue((String.class.getClassLoader())));
         this.model = ((String) in.readValue((String.class.getClassLoader())));
         this.brand = ((String) in.readValue((String.class.getClassLoader())));
-        this.quantity = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.engineCapacity = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.quantity = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.engineCapacity = ((Double) in.readValue((Double.class.getClassLoader())));
         this.status = ((String) in.readValue((String.class.getClassLoader())));
         this._storeKey = ((com.boongg.store.Models.Responses._storeKey) in.readValue((_storeKey.class.getClassLoader())));
-        this.__v = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        in.readList(this.location, (com.boongg.store.Models.Responses.Location.class.getClassLoader()));
+        this.__v = ((Double) in.readValue((Double.class.getClassLoader())));
+        in.readList(this.location, (Location.class.getClassLoader()));
         in.readList(this.pictures, (java.lang.Object.class.getClassLoader()));
     }
 
@@ -123,19 +123,19 @@ public class RentBikeResponse implements Parcelable
         this.brand = brand;
     }
 
-    public Integer getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 
-    public Integer getEngineCapacity() {
+    public Double getEngineCapacity() {
         return engineCapacity;
     }
 
-    public void setEngineCapacity(Integer engineCapacity) {
+    public void setEngineCapacity(Double engineCapacity) {
         this.engineCapacity = engineCapacity;
     }
 
@@ -155,11 +155,11 @@ public class RentBikeResponse implements Parcelable
         this._storeKey = _storeKey;
     }
 
-    public Integer get__v() {
+    public Double get__v() {
         return __v;
     }
 
-    public void set__v(Integer __v) {
+    public void set__v(Double __v) {
         this.__v = __v;
     }
 
@@ -200,130 +200,58 @@ public class RentBikeResponse implements Parcelable
 
 }
 
-class Location implements Parcelable
-{
 
-    @SerializedName("name")
-    @Expose
-    private String name;
-    @SerializedName("_id")
-    @Expose
-    private String _id;
-    @SerializedName("priceChart")
-    @Expose
-    private PriceChart priceChart;
-    public final static Parcelable.Creator<Location> CREATOR = new Creator<Location>() {
-
-
-        @SuppressWarnings({
-                "unchecked"
-        })
-        public Location createFromParcel(Parcel in) {
-            return new Location(in);
-        }
-
-        public Location[] newArray(int size) {
-            return (new Location[size]);
-        }
-
-    }
-            ;
-
-    protected Location(Parcel in) {
-        this.name = ((String) in.readValue((String.class.getClassLoader())));
-        this._id = ((String) in.readValue((String.class.getClassLoader())));
-        this.priceChart = ((PriceChart) in.readValue((PriceChart.class.getClassLoader())));
-    }
-
-    public Location() {
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String get_id() {
-        return _id;
-    }
-
-    public void set_id(String _id) {
-        this._id = _id;
-    }
-
-    public PriceChart getPriceChart() {
-        return priceChart;
-    }
-
-    public void setPriceChart(PriceChart priceChart) {
-        this.priceChart = priceChart;
-    }
-
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(name);
-        dest.writeValue(_id);
-        dest.writeValue(priceChart);
-    }
-
-    public int describeContents() {
-        return 0;
-    }
-
-}
 class PriceChart implements Parcelable
 {
 
     @SerializedName("weekdays")
     @Expose
-    private Integer weekdays;
+    private Double weekdays;
     @SerializedName("weekend")
     @Expose
-    private Integer weekend;
+    private Double weekend;
     @SerializedName("hourlyRate")
     @Expose
-    private Integer hourlyRate;
+    private Double hourlyRate;
     @SerializedName("kmsLimit")
     @Expose
-    private Integer kmsLimit;
+    private Double kmsLimit;
     @SerializedName("extraKMS")
     @Expose
-    private Integer extraKMS;
+    private Double extraKMS;
     @SerializedName("extraHRS")
     @Expose
-    private Integer extraHRS;
+    private Double extraHRS;
     @SerializedName("monthly")
     @Expose
-    private Integer monthly;
+    private Double monthly;
     @SerializedName("fifteenDays")
     @Expose
-    private Integer fifteenDays;
+    private Double fifteenDays;
     @SerializedName("twoDayRate")
     @Expose
-    private Integer twoDayRate;
+    private Double twoDayRate;
     @SerializedName("threeDayRate")
     @Expose
-    private Integer threeDayRate;
+    private Double threeDayRate;
     @SerializedName("fourDayRate")
     @Expose
-    private Integer fourDayRate;
+    private Double fourDayRate;
     @SerializedName("fiveDayRate")
     @Expose
-    private Integer fiveDayRate;
+    private Double fiveDayRate;
     @SerializedName("sixDayRate")
     @Expose
-    private Integer sixDayRate;
+    private Double sixDayRate;
     @SerializedName("sevenDayRate")
     @Expose
-    private Integer sevenDayRate;
+    private Double sevenDayRate;
     @SerializedName("tenDayRate")
     @Expose
-    private Integer tenDayRate;
+    private Double tenDayRate;
     @SerializedName("twentyDayRate")
     @Expose
-    private Integer twentyDayRate;
+    private Double twentyDayRate;
     @SerializedName("isAdminRentApplied")
     @Expose
     private Boolean isAdminRentApplied;
@@ -345,153 +273,153 @@ class PriceChart implements Parcelable
             ;
 
     protected PriceChart(Parcel in) {
-        this.weekdays = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.weekend = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.hourlyRate = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.kmsLimit = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.extraKMS = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.extraHRS = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.monthly = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.fifteenDays = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.twoDayRate = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.threeDayRate = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.fourDayRate = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.fiveDayRate = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.sixDayRate = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.sevenDayRate = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.tenDayRate = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.twentyDayRate = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.weekdays = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.weekend = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.hourlyRate = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.kmsLimit = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.extraKMS = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.extraHRS = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.monthly = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.fifteenDays = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.twoDayRate = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.threeDayRate = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.fourDayRate = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.fiveDayRate = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.sixDayRate = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.sevenDayRate = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.tenDayRate = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.twentyDayRate = ((Double) in.readValue((Double.class.getClassLoader())));
         this.isAdminRentApplied = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
     }
 
     public PriceChart() {
     }
 
-    public Integer getWeekdays() {
+    public Double getWeekdays() {
         return weekdays;
     }
 
-    public void setWeekdays(Integer weekdays) {
+    public void setWeekdays(Double weekdays) {
         this.weekdays = weekdays;
     }
 
-    public Integer getWeekend() {
+    public Double getWeekend() {
         return weekend;
     }
 
-    public void setWeekend(Integer weekend) {
+    public void setWeekend(Double weekend) {
         this.weekend = weekend;
     }
 
-    public Integer getHourlyRate() {
+    public Double getHourlyRate() {
         return hourlyRate;
     }
 
-    public void setHourlyRate(Integer hourlyRate) {
+    public void setHourlyRate(Double hourlyRate) {
         this.hourlyRate = hourlyRate;
     }
 
-    public Integer getKmsLimit() {
+    public Double getKmsLimit() {
         return kmsLimit;
     }
 
-    public void setKmsLimit(Integer kmsLimit) {
+    public void setKmsLimit(Double kmsLimit) {
         this.kmsLimit = kmsLimit;
     }
 
-    public Integer getExtraKMS() {
+    public Double getExtraKMS() {
         return extraKMS;
     }
 
-    public void setExtraKMS(Integer extraKMS) {
+    public void setExtraKMS(Double extraKMS) {
         this.extraKMS = extraKMS;
     }
 
-    public Integer getExtraHRS() {
+    public Double getExtraHRS() {
         return extraHRS;
     }
 
-    public void setExtraHRS(Integer extraHRS) {
+    public void setExtraHRS(Double extraHRS) {
         this.extraHRS = extraHRS;
     }
 
-    public Integer getMonthly() {
+    public Double getMonthly() {
         return monthly;
     }
 
-    public void setMonthly(Integer monthly) {
+    public void setMonthly(Double monthly) {
         this.monthly = monthly;
     }
 
-    public Integer getFifteenDays() {
+    public Double getFifteenDays() {
         return fifteenDays;
     }
 
-    public void setFifteenDays(Integer fifteenDays) {
+    public void setFifteenDays(Double fifteenDays) {
         this.fifteenDays = fifteenDays;
     }
 
-    public Integer getTwoDayRate() {
+    public Double getTwoDayRate() {
         return twoDayRate;
     }
 
-    public void setTwoDayRate(Integer twoDayRate) {
+    public void setTwoDayRate(Double twoDayRate) {
         this.twoDayRate = twoDayRate;
     }
 
-    public Integer getThreeDayRate() {
+    public Double getThreeDayRate() {
         return threeDayRate;
     }
 
-    public void setThreeDayRate(Integer threeDayRate) {
+    public void setThreeDayRate(Double threeDayRate) {
         this.threeDayRate = threeDayRate;
     }
 
-    public Integer getFourDayRate() {
+    public Double getFourDayRate() {
         return fourDayRate;
     }
 
-    public void setFourDayRate(Integer fourDayRate) {
+    public void setFourDayRate(Double fourDayRate) {
         this.fourDayRate = fourDayRate;
     }
 
-    public Integer getFiveDayRate() {
+    public Double getFiveDayRate() {
         return fiveDayRate;
     }
 
-    public void setFiveDayRate(Integer fiveDayRate) {
+    public void setFiveDayRate(Double fiveDayRate) {
         this.fiveDayRate = fiveDayRate;
     }
 
-    public Integer getSixDayRate() {
+    public Double getSixDayRate() {
         return sixDayRate;
     }
 
-    public void setSixDayRate(Integer sixDayRate) {
+    public void setSixDayRate(Double sixDayRate) {
         this.sixDayRate = sixDayRate;
     }
 
-    public Integer getSevenDayRate() {
+    public Double getSevenDayRate() {
         return sevenDayRate;
     }
 
-    public void setSevenDayRate(Integer sevenDayRate) {
+    public void setSevenDayRate(Double sevenDayRate) {
         this.sevenDayRate = sevenDayRate;
     }
 
-    public Integer getTenDayRate() {
+    public Double getTenDayRate() {
         return tenDayRate;
     }
 
-    public void setTenDayRate(Integer tenDayRate) {
+    public void setTenDayRate(Double tenDayRate) {
         this.tenDayRate = tenDayRate;
     }
 
-    public Integer getTwentyDayRate() {
+    public Double getTwentyDayRate() {
         return twentyDayRate;
     }
 
-    public void setTwentyDayRate(Integer twentyDayRate) {
+    public void setTwentyDayRate(Double twentyDayRate) {
         this.twentyDayRate = twentyDayRate;
     }
 
@@ -543,7 +471,7 @@ class _storeKey implements Parcelable
     private String address;
     @SerializedName("loc")
     @Expose
-    private List<Integer> loc = null;
+    private List<Double> loc = null;
     @SerializedName("_city")
     @Expose
     private String _city;
@@ -555,7 +483,7 @@ class _storeKey implements Parcelable
     private Boolean isActive;
     @SerializedName("__v")
     @Expose
-    private Integer __v;
+    private Double __v;
     @SerializedName("latitude")
     @Expose
     private String latitude;
@@ -589,11 +517,11 @@ class _storeKey implements Parcelable
         this._id = ((String) in.readValue((String.class.getClassLoader())));
         this.name = ((String) in.readValue((String.class.getClassLoader())));
         this.address = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.loc, (java.lang.Integer.class.getClassLoader()));
+        in.readList(this.loc, (java.lang.Double.class.getClassLoader()));
         this._city = ((String) in.readValue((String.class.getClassLoader())));
         this.startDate = ((String) in.readValue((String.class.getClassLoader())));
         this.isActive = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-        this.__v = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.__v = ((Double) in.readValue((Double.class.getClassLoader())));
         this.latitude = ((String) in.readValue((String.class.getClassLoader())));
         this.longitude = ((String) in.readValue((String.class.getClassLoader())));
         in.readList(this.locality, (java.lang.String.class.getClassLoader()));
@@ -627,11 +555,11 @@ class _storeKey implements Parcelable
         this.address = address;
     }
 
-    public List<Integer> getLoc() {
+    public List<Double> getLoc() {
         return loc;
     }
 
-    public void setLoc(List<Integer> loc) {
+    public void setLoc(List<Double> loc) {
         this.loc = loc;
     }
 
@@ -659,11 +587,11 @@ class _storeKey implements Parcelable
         this.isActive = isActive;
     }
 
-    public Integer get__v() {
+    public Double get__v() {
         return __v;
     }
 
-    public void set__v(Integer __v) {
+    public void set__v(Double __v) {
         this.__v = __v;
     }
 

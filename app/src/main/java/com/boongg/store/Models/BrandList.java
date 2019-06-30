@@ -17,7 +17,7 @@ public class BrandList implements Parcelable
     private String brandName;
     @SerializedName("__v")
     @Expose
-    private Integer __v;
+    private Double __v;
     @SerializedName("models")
     @Expose
     private List<String> models = null;
@@ -40,7 +40,7 @@ public class BrandList implements Parcelable
     protected BrandList(Parcel in) {
         this._id = ((String) in.readValue((String.class.getClassLoader())));
         this.brandName = ((String) in.readValue((String.class.getClassLoader())));
-        this.__v = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.__v = ((Double) in.readValue((Double.class.getClassLoader())));
         in.readList(this.models, (java.lang.String.class.getClassLoader()));
     }
     public BrandList() {
@@ -62,11 +62,11 @@ public class BrandList implements Parcelable
         this.brandName = brandName;
     }
 
-    public Integer get__v() {
+    public Double get__v() {
         return __v;
     }
 
-    public void set__v(Integer __v) {
+    public void set__v(Double __v) {
         this.__v = __v;
     }
 

@@ -42,7 +42,7 @@ public class Owner implements Parcelable
     private String address;
     @SerializedName("loc")
     @Expose
-    private List<Integer> loc = null;
+    private List<Double> loc = null;
     @SerializedName("_city")
     @Expose
     private City city;
@@ -60,7 +60,7 @@ public class Owner implements Parcelable
     private Boolean isActive;
     @SerializedName("__v")
     @Expose
-    private Integer v;
+    private Double v;
     @SerializedName("latitude")
     @Expose
     private String latitude;
@@ -94,13 +94,13 @@ public class Owner implements Parcelable
         this.id = ((String) in.readValue((String.class.getClassLoader())));
         this.name = ((String) in.readValue((String.class.getClassLoader())));
         this.address = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.loc, (java.lang.Integer.class.getClassLoader()));
+        in.readList(this.loc, (java.lang.Double.class.getClassLoader()));
         this.city = ((City) in.readValue((City.class.getClassLoader())));
         this.gstNumber = ((String) in.readValue((String.class.getClassLoader())));
         this.pancardNumer = ((String) in.readValue((String.class.getClassLoader())));
         this.startDate = ((String) in.readValue((String.class.getClassLoader())));
         this.isActive = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-        this.v = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.v = ((Double) in.readValue((Double.class.getClassLoader())));
         this.latitude = ((String) in.readValue((String.class.getClassLoader())));
         this.longitude = ((String) in.readValue((String.class.getClassLoader())));
         in.readList(this.locality, (java.lang.String.class.getClassLoader()));
@@ -134,11 +134,11 @@ public class Owner implements Parcelable
         this.address = address;
     }
 
-    public List<Integer> getLoc() {
+    public List<Double> getLoc() {
         return loc;
     }
 
-    public void setLoc(List<Integer> loc) {
+    public void setLoc(List<Double> loc) {
         this.loc = loc;
     }
 
@@ -182,11 +182,11 @@ public class Owner implements Parcelable
         this.isActive = isActive;
     }
 
-    public Integer getV() {
+    public Double getV() {
         return v;
     }
 
-    public void setV(Integer v) {
+    public void setV(Double v) {
         this.v = v;
     }
 

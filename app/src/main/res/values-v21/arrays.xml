@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="stepLabels">
+        <item>Create Name</item>
+        <item>Create Id</item>
+    </array>
+</resources>

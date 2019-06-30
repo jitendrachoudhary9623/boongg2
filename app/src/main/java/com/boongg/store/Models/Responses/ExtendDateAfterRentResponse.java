@@ -20,7 +20,7 @@ public class ExtendDateAfterRentResponse implements Parcelable
     private String createdAt;
     @SerializedName("__v")
     @Expose
-    private Integer __v;
+    private Double __v;
     @SerializedName("_webuserId")
     @Expose
     private String _webuserId;
@@ -32,16 +32,16 @@ public class ExtendDateAfterRentResponse implements Parcelable
     private String _storeKey;
     @SerializedName("totalAmountRecived")
     @Expose
-    private Integer totalAmountRecived;
+    private Double totalAmountRecived;
     @SerializedName("sGst")
     @Expose
-    private Integer sGst;
+    private Double sGst;
     @SerializedName("cGst")
     @Expose
-    private Integer cGst;
+    private Double cGst;
     @SerializedName("rentWithDiscount")
     @Expose
-    private Integer rentWithDiscount;
+    private Double rentWithDiscount;
     @SerializedName("coupenApplied")
     @Expose
     private String coupenApplied;
@@ -59,7 +59,7 @@ public class ExtendDateAfterRentResponse implements Parcelable
     private String boonggBookingId;
     @SerializedName("quantity")
     @Expose
-    private Integer quantity;
+    private Double quantity;
     @SerializedName("location")
     @Expose
     private String location;
@@ -83,7 +83,7 @@ public class ExtendDateAfterRentResponse implements Parcelable
     private Boolean isHelmateProvided;
     @SerializedName("startKm")
     @Expose
-    private Integer startKm;
+    private Double startKm;
     @SerializedName("isBlockBike")
     @Expose
     private Boolean isBlockBike;
@@ -108,20 +108,20 @@ public class ExtendDateAfterRentResponse implements Parcelable
         this._id = ((String) in.readValue((String.class.getClassLoader())));
         this.updatedAt = ((String) in.readValue((String.class.getClassLoader())));
         this.createdAt = ((String) in.readValue((String.class.getClassLoader())));
-        this.__v = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.__v = ((Double) in.readValue((Double.class.getClassLoader())));
         this._webuserId = ((String) in.readValue((String.class.getClassLoader())));
         this._rentBikeKey = ((String) in.readValue((String.class.getClassLoader())));
         this._storeKey = ((String) in.readValue((String.class.getClassLoader())));
-        this.totalAmountRecived = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.sGst = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.cGst = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.rentWithDiscount = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.totalAmountRecived = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.sGst = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.cGst = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.rentWithDiscount = ((Double) in.readValue((Double.class.getClassLoader())));
         this.coupenApplied = ((String) in.readValue((String.class.getClassLoader())));
         this.status = ((String) in.readValue((String.class.getClassLoader())));
         this._paymentType = ((String) in.readValue((String.class.getClassLoader())));
         this.bookingType = ((String) in.readValue((String.class.getClassLoader())));
         this.boonggBookingId = ((String) in.readValue((String.class.getClassLoader())));
-        this.quantity = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.quantity = ((Double) in.readValue((Double.class.getClassLoader())));
         this.location = ((String) in.readValue((String.class.getClassLoader())));
         this.model = ((String) in.readValue((String.class.getClassLoader())));
         this.brand = ((String) in.readValue((String.class.getClassLoader())));
@@ -129,7 +129,7 @@ public class ExtendDateAfterRentResponse implements Parcelable
         this.startDate = ((String) in.readValue((String.class.getClassLoader())));
         this._rentPoolKey = ((String) in.readValue((String.class.getClassLoader())));
         this.isHelmateProvided = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-        this.startKm = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.startKm = ((Double) in.readValue((Double.class.getClassLoader())));
         this.isBlockBike = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
     }
 
@@ -160,11 +160,11 @@ public class ExtendDateAfterRentResponse implements Parcelable
         this.createdAt = createdAt;
     }
 
-    public Integer get__v() {
+    public Double get__v() {
         return __v;
     }
 
-    public void set__v(Integer __v) {
+    public void set__v(Double __v) {
         this.__v = __v;
     }
 
@@ -192,35 +192,35 @@ public class ExtendDateAfterRentResponse implements Parcelable
         this._storeKey = _storeKey;
     }
 
-    public Integer getTotalAmountRecived() {
+    public Double getTotalAmountRecived() {
         return totalAmountRecived;
     }
 
-    public void setTotalAmountRecived(Integer totalAmountRecived) {
+    public void setTotalAmountRecived(Double totalAmountRecived) {
         this.totalAmountRecived = totalAmountRecived;
     }
 
-    public Integer getSGst() {
+    public Double getSGst() {
         return sGst;
     }
 
-    public void setSGst(Integer sGst) {
+    public void setSGst(Double sGst) {
         this.sGst = sGst;
     }
 
-    public Integer getCGst() {
+    public Double getCGst() {
         return cGst;
     }
 
-    public void setCGst(Integer cGst) {
+    public void setCGst(Double cGst) {
         this.cGst = cGst;
     }
 
-    public Integer getRentWithDiscount() {
+    public Double getRentWithDiscount() {
         return rentWithDiscount;
     }
 
-    public void setRentWithDiscount(Integer rentWithDiscount) {
+    public void setRentWithDiscount(Double rentWithDiscount) {
         this.rentWithDiscount = rentWithDiscount;
     }
 
@@ -264,11 +264,11 @@ public class ExtendDateAfterRentResponse implements Parcelable
         this.boonggBookingId = boonggBookingId;
     }
 
-    public Integer getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 
@@ -328,11 +328,11 @@ public class ExtendDateAfterRentResponse implements Parcelable
         this.isHelmateProvided = isHelmateProvided;
     }
 
-    public Integer getStartKm() {
+    public Double getStartKm() {
         return startKm;
     }
 
-    public void setStartKm(Integer startKm) {
+    public void setStartKm(Double startKm) {
         this.startKm = startKm;
     }
 

@@ -20,7 +20,7 @@ public class Cancel implements Parcelable
     private String createdAt;
     @SerializedName("__v")
     @Expose
-    private Integer v;
+    private Double v;
     @SerializedName("_webuserId")
     @Expose
     private String webuserId;
@@ -32,22 +32,22 @@ public class Cancel implements Parcelable
     private String storeKey;
     @SerializedName("totalAmountRecived")
     @Expose
-    private Integer totalAmountRecived;
+    private Double totalAmountRecived;
     @SerializedName("sGst")
     @Expose
-    private Integer sGst;
+    private Double sGst;
     @SerializedName("cGst")
     @Expose
-    private Integer cGst;
+    private Double cGst;
     @SerializedName("rentWithDiscount")
     @Expose
-    private Integer rentWithDiscount;
+    private Double rentWithDiscount;
     @SerializedName("rentTotal")
     @Expose
-    private Integer rentTotal;
+    private Double rentTotal;
     @SerializedName("discountGiven")
     @Expose
-    private Integer discountGiven;
+    private Double discountGiven;
     @SerializedName("coupenApplied")
     @Expose
     private String coupenApplied;
@@ -65,7 +65,7 @@ public class Cancel implements Parcelable
     private String boonggBookingId;
     @SerializedName("quantity")
     @Expose
-    private Integer quantity;
+    private Double quantity;
     @SerializedName("location")
     @Expose
     private String location;
@@ -105,22 +105,22 @@ public class Cancel implements Parcelable
         this.id = ((String) in.readValue((String.class.getClassLoader())));
         this.updatedAt = ((String) in.readValue((String.class.getClassLoader())));
         this.createdAt = ((String) in.readValue((String.class.getClassLoader())));
-        this.v = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.v = ((Double) in.readValue((Double.class.getClassLoader())));
         this.webuserId = ((String) in.readValue((String.class.getClassLoader())));
         this.rentBikeKey = ((String) in.readValue((String.class.getClassLoader())));
         this.storeKey = ((String) in.readValue((String.class.getClassLoader())));
-        this.totalAmountRecived = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.sGst = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.cGst = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.rentWithDiscount = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.rentTotal = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.discountGiven = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.totalAmountRecived = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.sGst = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.cGst = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.rentWithDiscount = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.rentTotal = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.discountGiven = ((Double) in.readValue((Double.class.getClassLoader())));
         this.coupenApplied = ((String) in.readValue((String.class.getClassLoader())));
         this.status = ((String) in.readValue((String.class.getClassLoader())));
         this.paymentType = ((String) in.readValue((String.class.getClassLoader())));
         this.bookingType = ((String) in.readValue((String.class.getClassLoader())));
         this.boonggBookingId = ((String) in.readValue((String.class.getClassLoader())));
-        this.quantity = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.quantity = ((Double) in.readValue((Double.class.getClassLoader())));
         this.location = ((String) in.readValue((String.class.getClassLoader())));
         this.model = ((String) in.readValue((String.class.getClassLoader())));
         this.brand = ((String) in.readValue((String.class.getClassLoader())));
@@ -156,11 +156,11 @@ public class Cancel implements Parcelable
         this.createdAt = createdAt;
     }
 
-    public Integer getV() {
+    public Double getV() {
         return v;
     }
 
-    public void setV(Integer v) {
+    public void setV(Double v) {
         this.v = v;
     }
 
@@ -188,51 +188,51 @@ public class Cancel implements Parcelable
         this.storeKey = storeKey;
     }
 
-    public Integer getTotalAmountRecived() {
+    public Double getTotalAmountRecived() {
         return totalAmountRecived;
     }
 
-    public void setTotalAmountRecived(Integer totalAmountRecived) {
+    public void setTotalAmountRecived(Double totalAmountRecived) {
         this.totalAmountRecived = totalAmountRecived;
     }
 
-    public Integer getSGst() {
+    public Double getSGst() {
         return sGst;
     }
 
-    public void setSGst(Integer sGst) {
+    public void setSGst(Double sGst) {
         this.sGst = sGst;
     }
 
-    public Integer getCGst() {
+    public Double getCGst() {
         return cGst;
     }
 
-    public void setCGst(Integer cGst) {
+    public void setCGst(Double cGst) {
         this.cGst = cGst;
     }
 
-    public Integer getRentWithDiscount() {
+    public Double getRentWithDiscount() {
         return rentWithDiscount;
     }
 
-    public void setRentWithDiscount(Integer rentWithDiscount) {
+    public void setRentWithDiscount(Double rentWithDiscount) {
         this.rentWithDiscount = rentWithDiscount;
     }
 
-    public Integer getRentTotal() {
+    public Double getRentTotal() {
         return rentTotal;
     }
 
-    public void setRentTotal(Integer rentTotal) {
+    public void setRentTotal(Double rentTotal) {
         this.rentTotal = rentTotal;
     }
 
-    public Integer getDiscountGiven() {
+    public Double getDiscountGiven() {
         return discountGiven;
     }
 
-    public void setDiscountGiven(Integer discountGiven) {
+    public void setDiscountGiven(Double discountGiven) {
         this.discountGiven = discountGiven;
     }
 
@@ -276,11 +276,11 @@ public class Cancel implements Parcelable
         this.boonggBookingId = boonggBookingId;
     }
 
-    public Integer getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 

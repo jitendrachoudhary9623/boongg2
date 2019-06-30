@@ -5,9 +5,13 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +25,13 @@ import android.widget.Toast;
 
 import com.boongg.store.Models.Booking;
 import com.boongg.store.Models.Requests.CheckIn;
+import com.boongg.store.Models.Requests.DropVehicleRequest;
 import com.boongg.store.Models.Requests.ExtendBookingDateRequest;
 import com.boongg.store.Models.Requests.ExtendDateAfterRentRequest;
+import com.boongg.store.Models.Responses.DropVehicleResponse;
 import com.boongg.store.Models.Responses.ExtendDateAfterRentResponse;
 import com.boongg.store.Models.Responses.ExtendDateResponse;
+import com.boongg.store.Models.Responses.PreDropBookings.PreDropBooking;
 import com.boongg.store.Models.UpdateResponse;
 import com.boongg.store.Networking.APIClient;
 import com.boongg.store.Networking.BookingRequest;
@@ -32,6 +39,7 @@ import com.boongg.store.Networking.CheckInRequest;
 import com.boongg.store.Networking.OAPIClient;
 import com.boongg.store.Networking.RentCalculationAPI;
 import com.boongg.store.R;
+import com.boongg.store.Utilities.AlertBoxUtils;
 import com.boongg.store.Utilities.DateSorter;
 import com.boongg.store.Utilities.ModifyAlertBox;
 import com.boongg.store.Utilities.ProgressbarUtil;
@@ -40,6 +48,7 @@ import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -82,7 +91,7 @@ public class DropAdapter extends RecyclerView.Adapter<DropAdapter.DropViewHolder
     public class DropViewHolder extends RecyclerView.ViewHolder {
         TextView options;
         LinearLayout showOptions,dropLayout,extendLayout,sendLayout,modifyLayout;
-        TextView startDate,endDate,bookingId,name,phone,amount,mode,vehicle;
+        TextView startDate,endDate,bookingId,name,phone,amount,mode,vehicle,reg;
         public DropViewHolder(@NonNull View itemView) {
             super(itemView);
             options=(TextView) itemView.findViewById(R.id.drop_options);
@@ -98,6 +107,7 @@ public class DropAdapter extends RecyclerView.Adapter<DropAdapter.DropViewHolder
             extendLayout=(LinearLayout)itemView.findViewById(R.id.drop_option_extend);
             sendLayout=(LinearLayout)itemView.findViewById(R.id.send_invoice);
             modifyLayout=(LinearLayout)itemView.findViewById(R.id.drop_modify_vehicle);
+            reg=(TextView)itemView.findViewById(R.id.rv_drop_vehicle_reg);
         }
 
         public void bindData(final int position) {
@@ -109,15 +119,39 @@ public class DropAdapter extends RecyclerView.Adapter<DropAdapter.DropViewHolder
             }catch (Exception e){
 
             }
+            reg.setText("Reg No :&#10;"+booking.getBoonggBookingId());
+
             bookingId.setText(""+booking.getBoonggBookingId());
             name.setText(""+booking.getWebuserId().getProfile().getName());
             phone.setText(""+booking.getWebuserId().getProfile().getMobileNumber());
            amount.setText(mContext.getResources().getString(R.string.rs)+" "+String.format("%.2f",booking.getTotalAmountRecived()));
            vehicle.setText(booking.getBrand()+" - "+booking.getModel());
+           phone.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   //Toast.makeText(mContext,"Clicked",Toast.LENGTH_LONG).show();
+                   Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + booking.getWebuserId().getProfile().getMobileNumber()));
+                   mContext.startActivity(intent);
+               }
+           });
           dropLayout.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View v) {
-                dropLayoutClick(booking);
+                  BookingRequest request=OAPIClient.getClient().create(BookingRequest.class);
+                  Call<List<PreDropBooking>> call3=request.getPreDropBookings();
+                  call3.enqueue(new Callback<List<PreDropBooking>>() {
+                      @Override
+                      public void onResponse(Call<List<PreDropBooking>> call, Response<List<PreDropBooking>> response) {
+
+                          dropLayoutClick(booking,response.body(),position);
+
+                      }
+
+                      @Override
+                      public void onFailure(Call<List<PreDropBooking>> call, Throwable t) {
+AlertBoxUtils.showAlert(mContext,"error","",t.toString());
+                      }
+                  });
               }
           });
           extendLayout.setOnClickListener(new View.OnClickListener() {
@@ -137,15 +171,13 @@ public class DropAdapter extends RecyclerView.Adapter<DropAdapter.DropViewHolder
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             ProgressbarUtil.hideProgressBar();
-                            Toast.makeText(mContext,"Invoice Sent",Toast.LENGTH_LONG).show();
+                            AlertBoxUtils.showAlert(mContext,"success","Invoice","Invoice sent successfully");
                         }
 
                         @Override
                         public void onFailure(Call<Void> call, Throwable t) {
                             ProgressbarUtil.hideProgressBar();
-
-                            Toast.makeText(mContext,"Invoice Failed to sent",Toast.LENGTH_LONG).show();
-
+                            AlertBoxUtils.showAlert(mContext,"error","Invoice","Invoice Failed to sent");
                         }
                     });
                 }
@@ -170,13 +202,20 @@ public class DropAdapter extends RecyclerView.Adapter<DropAdapter.DropViewHolder
         final TextView calculateRent=(TextView)promptsView.findViewById(R.id.alert_drop_extend_calculate_rent);
         final TextView calculatedRent=(TextView)promptsView.findViewById(R.id.alert_drop_extend_date_rent_calculate);
         final TextView extendDate = (TextView)promptsView.findViewById(R.id.alert_drop_extend_date_api_call);
-
-
+        extendDate.setVisibility(View.GONE);
 
         setDateUsingDatePicker(dateSelector,mContext);
         alertDialogBuilder.setView(promptsView);
         alertDialogBuilder
                 .setCancelable(false)
+                .setPositiveButton("Extend Date", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        extend(booking,calculatedRent.getText().toString().split(":")[1],dateSelector);
+                        dialog.cancel();
+
+                    }
+                })
                 .setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
@@ -215,43 +254,15 @@ public class DropAdapter extends RecyclerView.Adapter<DropAdapter.DropViewHolder
         call1.enqueue(new Callback<ExtendDateResponse>() {
             @Override
             public void onResponse(Call<ExtendDateResponse> call, Response<ExtendDateResponse> response) {
-                final int apiCalc=response.body().getCalculatedRent();
+                final Double apiCalc=response.body().getCalculatedRent();
                 try {
                 }catch(Exception e){
                     calculatedRent.setText("Calculated Rent : 0 ");
 
                 }
-                calculatedRent.setText("Calculated Rent : " +apiCalc );
+                calculatedRent.setText("Calculated Rent :" +apiCalc );
 
-                extendDate.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ExtendDateAfterRentRequest request=new ExtendDateAfterRentRequest();
-                        request.setBookingId(booking.getId());
-                        request.setIsGstApplicable(true);
-                        request.setRentPoolKey(booking.getRentBikeKey().getId());
-                        request.setSuggestedExtendedRent(apiCalc);
-                        request.setTotalExtendedBikeRent(apiCalc);
-                        request.setScheduleTime(dateSelector.getText().toString());
-                        request.setStartDate(booking.getStartDate());
-                        Call<ExtendDateAfterRentResponse> call2 = rentCal.getExtendedDateAfterResponse(request);
-                        call2.enqueue(new Callback<ExtendDateAfterRentResponse>() {
-                            @Override
-                            public void onResponse(Call<ExtendDateAfterRentResponse> call, Response<ExtendDateAfterRentResponse> response) {
-                                Toast.makeText(mContext,"Success",Toast.LENGTH_LONG).show();
-                                alertDialog.dismiss();
 
-                            }
-
-                            @Override
-                            public void onFailure(Call<ExtendDateAfterRentResponse> call, Throwable t) {
-                                Toast.makeText(mContext,"Fail "+t.toString(),Toast.LENGTH_LONG).show();
-
-                            }
-                        });
-
-                    }
-                });
             }
 
             @Override
@@ -261,8 +272,45 @@ public class DropAdapter extends RecyclerView.Adapter<DropAdapter.DropViewHolder
         });
     }
 
+    private void extend(Booking booking, String s, TextView dateSelector) {
+        final RentCalculationAPI rentCal= APIClient.getClient().create(RentCalculationAPI.class);
+        Double apiCalc=Double.parseDouble(s);
+        ExtendDateAfterRentRequest request=new ExtendDateAfterRentRequest();
+        request.setBookingId(booking.getId());
+        request.setIsGstApplicable(true);
+        request.setRentPoolKey(booking.getRentBikeKey().getId());
+        request.setSuggestedExtendedRent((int)Math.round(apiCalc));
+        request.setTotalExtendedBikeRent((int)Math.round(apiCalc));
+        request.setScheduleTime(dateSelector.getText().toString());
+        request.setStartDate(booking.getStartDate());
+        Call<ExtendDateAfterRentResponse> call2 = rentCal.getExtendedDateAfterResponse(request);
+        call2.enqueue(new Callback<ExtendDateAfterRentResponse>() {
+            @Override
+            public void onResponse(Call<ExtendDateAfterRentResponse> call, Response<ExtendDateAfterRentResponse> response) {
+               // Toast.makeText(mContext,"Success",Toast.LENGTH_LONG).show();
+                AlertBoxUtils.showAlert(mContext,"success","Date Extenstion","As you requested to extend date, yur request is fulfilled");
+            }
+
+            @Override
+            public void onFailure(Call<ExtendDateAfterRentResponse> call, Throwable t) {
+                AlertBoxUtils.showAlert(mContext,"error","Date Extenstion","Something went wrong "+t.toString());
+
+            }
+        });
+    }
+
+    //extend
+
     //drop button click
-    private void dropLayoutClick(Booking booking) {
+    private void dropLayoutClick(final Booking booking, List<PreDropBooking> preDrop, final int positionBooking) {
+         final List<PreDropBooking> rentObject = new LinkedList<>();
+        for(PreDropBooking preDropBooking:preDrop){
+            if(booking.getRentBikeKey().getId().equals(preDropBooking.get_rentBikeKey().get_id())){
+                rentObject.add(preDropBooking);
+                break;
+            }
+        }
+
         LayoutInflater li = LayoutInflater.from(mContext);
         View promptsView = li.inflate(R.layout.alert_drop_drop_layout, null);
         final EditText startKm,totalKm,rtochallan,bike,fine_accident;
@@ -271,6 +319,42 @@ public class DropAdapter extends RecyclerView.Adapter<DropAdapter.DropViewHolder
         rtochallan=(EditText)promptsView.findViewById(R.id.alert_drop_rto);
         bike=(EditText)promptsView.findViewById(R.id.alert_drop_bike_handover);
         fine_accident=(EditText)promptsView.findViewById(R.id.alert_drop_fine);
+        TextView helmetMsg=(TextView)promptsView.findViewById(R.id.helment_msg);
+        startKm.setText(""+rentObject.get(0).getStartKm());
+
+        startKm.setEnabled(false);
+        totalKm.setEnabled(false);
+        bike.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    if(s.toString().equals("")){
+                        totalKm.setText("");
+
+                    }
+                    double diff = Double.parseDouble(s.toString()) - Double.parseDouble(startKm.getText().toString());
+                    totalKm.setText(""+diff);
+                }catch (Exception e){
+                    Toast.makeText(mContext,""+e.toString(),Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        if(rentObject.get(0).getIsHelmateProvided()) {
+            helmetMsg.setText("Note : Please collect helmet from user");
+        }
+        else{
+            helmetMsg.setText("Note : No Helmet Provided");
+        }
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 mContext);
 
@@ -280,12 +364,14 @@ public class DropAdapter extends RecyclerView.Adapter<DropAdapter.DropViewHolder
                 .setPositiveButton("Drop Vehicle",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
+                                String bikeBookingId=rentObject.get(0).get_id();
                                 String startKm_=startKm.getText().toString();
                                 String totalKm_=totalKm.getText().toString();
                                 String rto=rtochallan.getText().toString();
                                 String bike_=bike.getText().toString();
                                 String fine=fine_accident.getText().toString();
-                                dropVehicle(startKm_,totalKm_,rto,bike_,fine);
+                                String rentPoolKey=rentObject.get(0).get_rentPoolKey().get_id();
+                                dropVehicle(booking,positionBooking,bikeBookingId,startKm_,totalKm_,rto,bike_,fine,rentPoolKey);
                             }
                         })
                 .setNegativeButton("Cancel",
@@ -299,7 +385,30 @@ public class DropAdapter extends RecyclerView.Adapter<DropAdapter.DropViewHolder
         alertDialog.show();
     }
 
-    private void dropVehicle(String startKm_, String totalKm_, String rto, String bike_, String fine) {
+    private void dropVehicle(final Booking booking, final int positionBooking, String bikeBookingId, String startKm_, String totalKm_, String rto, String bike_, String fine, String rentPoolKey) {
+        DropVehicleRequest drop=new DropVehicleRequest();
+        drop.set_rentPoolKey(rentPoolKey);
+        drop.setBikeBookedId(bikeBookingId);
+        drop.setEndKm(Integer.parseInt(totalKm_));
+        drop.setFineAccidentalCost(fine);
+        drop.setRtoChallen(rto);
+        drop.setTotalKmRun(Integer.parseInt(totalKm_));
+        BookingRequest request=APIClient.getClient().create(BookingRequest.class);
+        Call<Void> call4=request.dropVehicle(drop);
+        call4.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                AlertBoxUtils.showAlert(mContext,"success","Drop","Booking drop successfull");
+                bookings.remove(booking);
+                notifyItemRemoved(positionBooking);
+                notifyItemRangeChanged(positionBooking, bookings.size());
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                AlertBoxUtils.showAlert(mContext,"error","Drop","Error "+t.toString());
+            }
+        });
     }
 
     public void setDateUsingDatePicker(final TextView vt, final Context context){

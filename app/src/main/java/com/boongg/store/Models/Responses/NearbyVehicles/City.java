@@ -18,16 +18,16 @@ public class City implements Parcelable
     private String name;
     @SerializedName("latitude")
     @Expose
-    private Integer latitude;
+    private Double latitude;
     @SerializedName("longitude")
     @Expose
-    private Integer longitude;
+    private Double longitude;
     @SerializedName("isActive")
     @Expose
     private Boolean isActive;
     @SerializedName("__v")
     @Expose
-    private Integer v;
+    private Double v;
     public final static Parcelable.Creator<City> CREATOR = new Creator<City>() {
 
 
@@ -48,10 +48,10 @@ public class City implements Parcelable
     protected City(Parcel in) {
         this.id = ((String) in.readValue((String.class.getClassLoader())));
         this.name = ((String) in.readValue((String.class.getClassLoader())));
-        this.latitude = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.longitude = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.latitude = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.longitude = ((Double) in.readValue((Double.class.getClassLoader())));
         this.isActive = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-        this.v = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.v = ((Double) in.readValue((Double.class.getClassLoader())));
     }
 
     public City() {
@@ -73,19 +73,19 @@ public class City implements Parcelable
         this.name = name;
     }
 
-    public Integer getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Integer latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public Integer getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Integer longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
@@ -97,11 +97,11 @@ public class City implements Parcelable
         this.isActive = isActive;
     }
 
-    public Integer getV() {
+    public Double getV() {
         return v;
     }
 
-    public void setV(Integer v) {
+    public void setV(Double v) {
         this.v = v;
     }
 

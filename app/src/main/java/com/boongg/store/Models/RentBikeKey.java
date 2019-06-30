@@ -29,10 +29,10 @@ public class RentBikeKey implements Parcelable
     private String brand;
     @SerializedName("quantity")
     @Expose
-    private Integer quantity;
+    private Double quantity;
     @SerializedName("engineCapacity")
     @Expose
-    private Integer engineCapacity;
+    private Double engineCapacity;
     @SerializedName("status")
     @Expose
     private String status;
@@ -41,7 +41,7 @@ public class RentBikeKey implements Parcelable
     private String storeKey;
     @SerializedName("__v")
     @Expose
-    private Integer v;
+    private Double v;
     @SerializedName("location")
     @Expose
     private List<Location> location = null;
@@ -71,11 +71,11 @@ public class RentBikeKey implements Parcelable
         this.createdAt = ((String) in.readValue((String.class.getClassLoader())));
         this.model = ((String) in.readValue((String.class.getClassLoader())));
         this.brand = ((String) in.readValue((String.class.getClassLoader())));
-        this.quantity = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.engineCapacity = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.quantity = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.engineCapacity = ((Double) in.readValue((Double.class.getClassLoader())));
         this.status = ((String) in.readValue((String.class.getClassLoader())));
         this.storeKey = ((String) in.readValue((String.class.getClassLoader())));
-        this.v = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.v = ((Double) in.readValue((Double.class.getClassLoader())));
         in.readList(this.location, (Location.class.getClassLoader()));
         in.readList(this.pictures, (java.lang.Object.class.getClassLoader()));
     }
@@ -102,7 +102,7 @@ public class RentBikeKey implements Parcelable
      * @param quantity
      * @param engineCapacity
      */
-    public RentBikeKey(String id, String updatedAt, String createdAt, String model, String brand, Integer quantity, Integer engineCapacity, String status, String storeKey, Integer v, List<Location> location, List<Object> pictures) {
+    public RentBikeKey(String id, String updatedAt, String createdAt, String model, String brand, Double quantity, Double engineCapacity, String status, String storeKey, Double v, List<Location> location, List<Object> pictures) {
         super();
         this.id = id;
         this.updatedAt = updatedAt;
@@ -158,19 +158,19 @@ public class RentBikeKey implements Parcelable
         this.brand = brand;
     }
 
-    public Integer getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 
-    public Integer getEngineCapacity() {
+    public Double getEngineCapacity() {
         return engineCapacity;
     }
 
-    public void setEngineCapacity(Integer engineCapacity) {
+    public void setEngineCapacity(Double engineCapacity) {
         this.engineCapacity = engineCapacity;
     }
 
@@ -190,11 +190,11 @@ public class RentBikeKey implements Parcelable
         this.storeKey = storeKey;
     }
 
-    public Integer getV() {
+    public Double getV() {
         return v;
     }
 
-    public void setV(Integer v) {
+    public void setV(Double v) {
         this.v = v;
     }
 

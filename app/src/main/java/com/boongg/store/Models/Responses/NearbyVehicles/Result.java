@@ -22,10 +22,10 @@ public class Result implements Parcelable
     private String modelName;
     @SerializedName("weekDayPrice")
     @Expose
-    private Integer weekDayPrice;
+    private Double weekDayPrice;
     @SerializedName("weekEndPrice")
     @Expose
-    private Integer weekEndPrice;
+    private Double weekEndPrice;
     @SerializedName("mapAddr")
     @Expose
     private MapAddr mapAddr;
@@ -34,10 +34,10 @@ public class Result implements Parcelable
     private List<Address> address = null;
     @SerializedName("quantity")
     @Expose
-    private Integer quantity;
+    private Double quantity;
     @SerializedName("rentCalculated")
     @Expose
-    private Integer rentCalculated;
+    private Double rentCalculated;
     @SerializedName("thumbUrl")
     @Expose
     private String thumbUrl;
@@ -62,12 +62,12 @@ public class Result implements Parcelable
         this.key = ((String) in.readValue((String.class.getClassLoader())));
         this.brand = ((String) in.readValue((String.class.getClassLoader())));
         this.modelName = ((String) in.readValue((String.class.getClassLoader())));
-        this.weekDayPrice = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.weekEndPrice = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.weekDayPrice = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.weekEndPrice = ((Double) in.readValue((Double.class.getClassLoader())));
         this.mapAddr = ((MapAddr) in.readValue((MapAddr.class.getClassLoader())));
         in.readList(this.address, (com.boongg.store.Models.Responses.NearbyVehicles.Address.class.getClassLoader()));
-        this.quantity = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.rentCalculated = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.quantity = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.rentCalculated = ((Double) in.readValue((Double.class.getClassLoader())));
         this.thumbUrl = ((String) in.readValue((String.class.getClassLoader())));
     }
 
@@ -99,19 +99,19 @@ public class Result implements Parcelable
         this.modelName = modelName;
     }
 
-    public Integer getWeekDayPrice() {
+    public Double getWeekDayPrice() {
         return weekDayPrice;
     }
 
-    public void setWeekDayPrice(Integer weekDayPrice) {
+    public void setWeekDayPrice(Double weekDayPrice) {
         this.weekDayPrice = weekDayPrice;
     }
 
-    public Integer getWeekEndPrice() {
+    public Double getWeekEndPrice() {
         return weekEndPrice;
     }
 
-    public void setWeekEndPrice(Integer weekEndPrice) {
+    public void setWeekEndPrice(Double weekEndPrice) {
         this.weekEndPrice = weekEndPrice;
     }
 
@@ -131,19 +131,19 @@ public class Result implements Parcelable
         this.address = address;
     }
 
-    public Integer getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 
-    public Integer getRentCalculated() {
+    public Double getRentCalculated() {
         return rentCalculated;
     }
 
-    public void setRentCalculated(Integer rentCalculated) {
+    public void setRentCalculated(Double rentCalculated) {
         this.rentCalculated = rentCalculated;
     }
 

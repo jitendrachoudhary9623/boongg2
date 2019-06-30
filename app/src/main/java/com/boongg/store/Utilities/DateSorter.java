@@ -47,11 +47,9 @@ public class DateSorter {
         calendar2.setTime(date2);
        return calendar1.after(calendar2);
     }
-    public static List<Booking> getBookings(String category,List<Booking> response){
+    public static List<Booking> getDropBooking(String category,List<Booking> response) {
         List<Booking> cBookings=new ArrayList<>();
-        Log.e("JWT",category);
         for(Booking b:response){
-        new Date();
             try {
                 String pattern = "yyyy-MM-dd";
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
@@ -60,11 +58,6 @@ public class DateSorter {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 Date date1 =new SimpleDateFormat("yyyy-MM-dd").parse(date);
                 Date date2 = sdf.parse(b.getEndDate());
-
-
-                Log.e("JWT","Date 1 "+ date1);
-                Log.e("JWT","Date 2 "+date2);
-                Log.e("JWT",""+isSameDay(date1,date2)+" "+isFuture(date1,date2));
 
                 switch(category){
                     case "Today":
@@ -78,12 +71,54 @@ public class DateSorter {
                         }
                         break;
                     case "Overdue":
-                        Log.e("JWT","Overdue 2");
-
                         if(isPast(date1,date2)){
                             cBookings.add(b);
-                            Log.e("JWT","Overdue 3");
+                        }
+                        break;
+                }
 
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("JWT",e.toString());
+            }
+        }
+        return cBookings;
+
+    }
+
+    public static List<Booking> getBookings(String category,List<Booking> response,boolean chooseStart){
+        List<Booking> cBookings=new ArrayList<>();
+        Log.e("JWT",category);
+        for(Booking b:response){
+        new Date();
+            try {
+                String pattern = "yyyy-MM-dd";
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+                String date = simpleDateFormat.format(new Date());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date date1 =new SimpleDateFormat("yyyy-MM-dd").parse(date);
+                Date date2;
+                if(chooseStart)
+                     date2 = sdf.parse(b.getStartDate());
+                else{
+                    date2 = sdf.parse(b.getEndDate());
+                }
+
+                switch(category){
+                    case "Today":
+                        if(isSameDay(date1,date2)){
+                            cBookings.add(b);
+                        }
+                        break;
+                    case "Future":
+                        if(isFuture(date1,date2)){
+                            cBookings.add(b);
+                        }
+                        break;
+                    case "Overdue":
+                        if(isPast(date1,date2)){
+                            cBookings.add(b);
                         }
                         break;
                 }

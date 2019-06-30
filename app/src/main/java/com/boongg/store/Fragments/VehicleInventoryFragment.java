@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,15 +17,23 @@ import com.boongg.store.Fragments.DropFragments.ExtendedDrop;
 import com.boongg.store.Fragments.DropFragments.FutureDrop;
 import com.boongg.store.Fragments.DropFragments.TodayDrop;
 import com.boongg.store.Fragments.VehicleInventoryFragments.AddBike;
+import com.boongg.store.Fragments.VehicleInventoryFragments.AddBikeMain;
 import com.boongg.store.Fragments.VehicleInventoryFragments.AllBikesFragment;
 import com.boongg.store.Fragments.VehicleInventoryFragments.RentCollectionFragment;
 import com.boongg.store.R;
 
 public class VehicleInventoryFragment extends Fragment {
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+setHasOptionsMenu(true);
 
         final View rootView = inflater.inflate(R.layout.fragment_vehicle_inventory, container, false);
         TabLayout tabLayout = (TabLayout)rootView.findViewById(R.id.tablayout_inventory);
@@ -81,6 +91,7 @@ public class VehicleInventoryFragment extends Fragment {
                     break;
                 case 2:
                     fragment = new AddBike();
+                   //fragment=new AddBikeMain();
                     break;
             }
             return fragment;

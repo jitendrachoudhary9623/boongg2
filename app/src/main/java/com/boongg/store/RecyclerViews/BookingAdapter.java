@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -13,19 +15,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.boongg.store.CustomViews.NothingSelectedSpinnerAdapter;
 import com.boongg.store.Fragments.CurrentBooking;
 import com.boongg.store.MainActivity;
 import com.boongg.store.Models.Booking;
 import com.boongg.store.Models.Buttons;
 import com.boongg.store.Models.Cancel;
 import com.boongg.store.Models.Requests.CheckIn;
+import com.boongg.store.Models.Responses.AvailableVehicles.VehicleInventoryResponse;
 import com.boongg.store.Models.Token;
 import com.boongg.store.Models.UpdateResponse;
 import com.boongg.store.Networking.APIClient;
@@ -35,22 +44,32 @@ import com.boongg.store.Networking.CancelRequest;
 import com.boongg.store.Networking.CheckInRequest;
 import com.boongg.store.Networking.LoginRequest;
 import com.boongg.store.Networking.OAPIClient;
+import com.boongg.store.Networking.OwnerInventory;
 import com.boongg.store.R;
+import com.boongg.store.Utilities.AlertBoxUtils;
 import com.boongg.store.Utilities.DateSorter;
 import com.boongg.store.Utilities.JWTUtils;
 import com.boongg.store.Utilities.LoginToken;
+import com.boongg.store.Utilities.ProgressbarUtil;
+
+import org.angmarch.views.NiceSpinner;
+import org.angmarch.views.OnSpinnerItemSelectedListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Path;
 
 public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingViewHolder> {
 
@@ -104,11 +123,19 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             checkIn=(TextView) itemView.findViewById(R.id.rv_check_in_button);
         }
 
+        List<String> ds = new ArrayList<>();
+        final List<VehicleInventoryResponse> vehicleList = new ArrayList<>();
+        AlertDialog dialog2;
+
+        private List<String> updateVehicleList(final boolean modify, final Booking booking) {
+            Toast.makeText(mContext,"Called on "+modify,Toast.LENGTH_LONG).show();
+
+            return ds;
+        }
 
         public void bindData(final int position) {
             final Booking booking=bookings.get(position);
             bookingId.setText(""+booking.getBoonggBookingId());
-
             try {
                 startDate.setText(DateSorter.getFormattedDate(booking.getStartDate()));
                 endDate.setText(" - "+DateSorter.getFormattedDate(booking.getEndDate()));
@@ -120,43 +147,177 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             amount.setText(mContext.getResources().getString(R.string.rs)+" "+String.format("%.2f",booking.getTotalAmountRecived()));
 
             mode.setText(booking.getBookingType());
-           /* if(booking.getStatus().equals("BOOKED")){
-                status.setBackgroundColor(mContext.getResources().getColor(R.color.sgreen));
-            }*/
             vehicleName.setText(booking.getBrand()+" - "+booking.getModel());
+
+
             checkIn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     LayoutInflater li = LayoutInflater.from(mContext);
+
                     View promptsView = li.inflate(R.layout.alert_checkin, null);
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                            mContext);
+                            mContext,R.style.CustomAlertDialog);
+                    final EditText totalRent=(EditText)promptsView.findViewById(R.id.totalRent);
                     final EditText start=(EditText)promptsView.findViewById(R.id.startKm);
+                    final EditText address=(EditText)promptsView.findViewById(R.id.emergency_address);
+                    final CheckBox modifyBikeCheckBox,helmentProvidedCheckBox;
+                    modifyBikeCheckBox=(CheckBox)promptsView.findViewById(R.id.modify_bike_checkbox);
+                    totalRent.setText(""+booking.getRentWithDiscount());
+                    final Spinner niceSpinner = (Spinner) promptsView.findViewById(R.id.select_bike_spinner);
+                  /*  ArrayAdapter<String> adapter = new ArrayAdapter<String >(
+                            mContext,
+                            android.R.layout.simple_spinner_item,
+                            ds
+                    );
+
+                    niceSpinner.setAdapter(new NothingSelectedSpinnerAdapter(
+                            adapter,
+                            R.layout.spinner_row_nothing_selected,
+                            mContext));*/
+                    OwnerInventory inventory=APIClient.getClient().create(OwnerInventory.class);
+                    Call<List<VehicleInventoryResponse>> call2= inventory.getAvailableVehicles(LoginToken.id);
+                    call2.enqueue(new Callback<List<VehicleInventoryResponse>>() {
+                        @Override
+                        public void onResponse(Call<List<VehicleInventoryResponse>> call, Response<List<VehicleInventoryResponse>> response) {
+                            ds=null;
+                            ds=new ArrayList<>();
+                            for(VehicleInventoryResponse vir:response.body()){
+
+                                    if(booking.getModel().equals(vir.getVehicleModel())) {
+                                        Log.e("JWT", booking.getBrand() + " " + booking.getModel() + " ---- " + vir.getBrand() + " ----- " + vir.getVehicleModel());
+                                        vehicleList.add(vir);
+                                        ds.add("(" + vir.getRegistrationNumber() + ") " + vir.getBrand() + " " + vir.getVehicleModel());
+                                    }
+                            }
+                            for(String s : ds){
+                                Log.e("JWT",s);
+                            }
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String >(
+                                    mContext,
+                                    R.layout.spinner_vehicle_select,
+                                    ds
+                            );
+
+
+                            niceSpinner.setAdapter(new NothingSelectedSpinnerAdapter(
+                                    adapter,
+                                    R.layout.spinner_row_nothing_selected,
+                                    mContext));
+
+                        }
+                        @Override
+                        public void onFailure(Call<List<VehicleInventoryResponse>> call, Throwable t) {
+                            AlertBoxUtils.showAlert(mContext,"error","",""+t.toString());
+
+                        }
+                    });
+                    modifyBikeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
+                            if(dialog2.isShowing()){
+                                dialog2.dismiss();
+                            }
+                            AlertBoxUtils.showLoadingAlert(mContext);
+                            OwnerInventory inventory=APIClient.getClient().create(OwnerInventory.class);
+                            Call<List<VehicleInventoryResponse>> call2= inventory.getAvailableVehicles(LoginToken.id);
+                            call2.enqueue(new Callback<List<VehicleInventoryResponse>>() {
+                                @Override
+                                public void onResponse(Call<List<VehicleInventoryResponse>> call, Response<List<VehicleInventoryResponse>> response) {
+                                    ds=null;
+                                    ds=new ArrayList<>();
+
+                                    for(VehicleInventoryResponse vir:response.body()){
+                                        if(isChecked) {
+                                            vehicleList.add(vir);
+                                            ds.add("(" + vir.getRegistrationNumber() + ") " + vir.getBrand() + " " + vir.getVehicleModel());
+                                        }else{
+                                            if(booking.getModel().equals(vir.getVehicleModel())){
+                                                Log.e("JWT",booking.getBrand()+" "+booking.getModel()+" ---- "+vir.getBrand()+" ----- "+vir.getVehicleModel());
+                                                vehicleList.add(vir);
+                                                ds.add("(" + vir.getRegistrationNumber() + ") " + vir.getBrand() + " " + vir.getVehicleModel());
+                                            }
+                                        }
+                                    }
+                                    ArrayAdapter<String> adapter = new ArrayAdapter<String >(
+                                            mContext,
+                                            R.layout.spinner_vehicle_select,
+                                            ds
+                                    );
+
+                                    niceSpinner.setAdapter(new NothingSelectedSpinnerAdapter(
+                                            adapter,
+                                            R.layout.spinner_row_nothing_selected,
+                                            mContext));
+                                }
+
+                                @Override
+                                public void onFailure(Call<List<VehicleInventoryResponse>> call, Throwable t) {
+                                    AlertBoxUtils.showAlert(mContext,"error","",""+t.toString());
+
+                                }
+                            });
+                            AlertBoxUtils.hideLoadingAlert();
+                            if(!dialog2.isShowing()){
+                                dialog2.show();
+                            }
+                        }
+                    });
+
+
+                    final String[] bId = {""};
+                    final String selectedBike[]={""};
+                    niceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            try {
+                                VehicleInventoryResponse v2 = vehicleList.get(position);
+                                if(!ds.get(position).equals("Select Vehicle")||!ds.get(position).equals("Select Vehicle for modification")||!ds.get(position).equals("")) {
+                                    bId[0] = v2.getId();
+                                }
+                            }catch (Exception e){
+                                AlertBoxUtils.showAlert(mContext,"error","",""+e.toString());
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                    helmentProvidedCheckBox=(CheckBox)promptsView.findViewById(R.id.helmet_provided);
+
+
                     alertDialogBuilder.setView(promptsView);
                     alertDialogBuilder
                             .setCancelable(false)
                             .setPositiveButton("Check In",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog,int id) {
-
-                                            boolean isHelmetProvide=true;
+                                            boolean isHelmetProvide=false;
+                                            if(helmentProvidedCheckBox.isChecked()) {
+                                                isHelmetProvide=true;
+                                            }
                                             String startKm=start.getText().toString();
-                                            CheckIn check=new CheckIn(booking.getRentBikeKey().getId(),isHelmetProvide,booking.getId(),startKm);
-
+                                            Log.e("JWT",booking.toString());
+                                            CheckIn check=new CheckIn(bId[0],isHelmetProvide,booking.getId(),startKm);
+                                            Log.e("JWT",booking.getRentBikeKey().getId());
                                             CheckInRequest checkInRequest= APIClient.getClient().create(CheckInRequest.class);
-                                            Call<UpdateResponse> call1 = checkInRequest.checkIn(check);
-                                            call1.enqueue(new Callback<UpdateResponse>() {
+                                            Call<Void> call1 = checkInRequest.checkIn(check);
+                                            call1.enqueue(new Callback<Void>() {
                                                 @Override
-                                                public void onResponse(Call<UpdateResponse> call, Response<UpdateResponse> response) {
+                                                public void onResponse(Call<Void> call, Response<Void> response) {
                                                     bookings.remove(position);
                                                     notifyItemRemoved(position);
                                                     notifyItemRangeChanged(position, bookings.size());
+                                                    AlertBoxUtils.showAlert(mContext,"success","Check In","Check in successfull");
                                                 }
 
                                                 @Override
-                                                public void onFailure(Call<UpdateResponse> call, Throwable t) {
-                                                    Toast.makeText(mContext,"Something went wrong"+t.toString(),Toast.LENGTH_LONG).show();
-                                                Log.e("JWT",t.toString());
+                                                public void onFailure(Call<Void> call, Throwable t) {
+                                                    //Toast.makeText(mContext,"Something went wrong"+t.toString(),Toast.LENGTH_LONG).show();
+                                                    AlertBoxUtils.showAlert(mContext,"error","Something wet wrong ",""+t.toString());
+                                                    Log.e("JWT",t.toString());
                                                 }
                                             });
                                         }
@@ -168,8 +329,10 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
 
                                         }
                                     });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
+                    dialog2 = alertDialogBuilder.create();
+                    //dialog2.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                    dialog2.show();
                 }
             });
             cancel.setOnClickListener(new View.OnClickListener() {
@@ -178,25 +341,48 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
                     LayoutInflater li = LayoutInflater.from(mContext);
                     View promptsView = li.inflate(R.layout.alert_cancel_booking, null);
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                            mContext);
+                            mContext,R.style.CustomAlertDialog);
                     alertDialogBuilder.setView(promptsView);
-                    final EditText userInput = (EditText) promptsView
-                            .findViewById(R.id.editTextDialogUserInput);
+                    final Spinner userInput = (Spinner) promptsView
+                            .findViewById(R.id.nice_spinner_cancel_reason);
+
+                    List<String> dataset = new ArrayList<>(Arrays.asList("Customer Didn't Showup"
+                            , "Vehicle Issue", "Other"));
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String >(
+                            mContext,
+                            R.layout.spinner_vehicle_select,
+                            dataset
+                    );
+                    userInput.setAdapter(adapter);
+                    final String[] cancelReason = new String[1];
+                    userInput.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            cancelReason[0] = parent.getItemAtPosition(position).toString();
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+
                     alertDialogBuilder
                             .setCancelable(false)
                             .setPositiveButton("Don't Cancel it",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog,int id) {
                                             dialog.cancel();
-                                         }
+                                        }
                                     })
                             .setNegativeButton("Cancel the booking",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog,int id) {
-                                            Log.d("Cancel Id",booking.getId());
-                                            Toast.makeText(mContext,""+userInput.getText()+" "+booking.getId(),Toast.LENGTH_LONG).show();
+                                            //Log.d("Cancel Id",booking.getId());
+                                            //  Toast.makeText(mContext,""+userInput.getText()+" "+booking.getId(),Toast.LENGTH_LONG).show();
                                             CancelRequest cancelRequest= CancelClient.getClient().create(CancelRequest.class);
-                                            Call<Cancel> call1 = cancelRequest.cancelBooking(booking.getId(),userInput.getText().toString());
+                                            Call<Cancel> call1 = cancelRequest.cancelBooking(booking.getId(),cancelReason[0]);
                                             call1.enqueue(new Callback<Cancel>() {
                                                 @Override
                                                 public void onResponse(Call<Cancel> call, Response<Cancel> response) {
@@ -212,17 +398,22 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
                                             });
                                         }
                                     });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
+                    dialog2 = alertDialogBuilder.create();
+                    //dialog2.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                    dialog2.show();
                 }
             });
             call.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + booking.getWebuserId().getProfile().getMobileNumber()));
+
+                    //Toast.makeText(mContext,"Clicked",Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + booking.getWebuserId().getProfile().getMobileNumber()));
                     mContext.startActivity(intent);
                 }
             });
         }
     }
+
 }

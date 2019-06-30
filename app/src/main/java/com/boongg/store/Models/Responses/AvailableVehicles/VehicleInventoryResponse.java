@@ -22,13 +22,13 @@ public class VehicleInventoryResponse implements Parcelable
     private String vehicleModel;
     @SerializedName("engineCapacity")
     @Expose
-    private Integer engineCapacity;
+    private Double engineCapacity;
     @SerializedName("year")
     @Expose
-    private Integer year;
+    private Double year;
     @SerializedName("kmTravel")
     @Expose
-    private Integer kmTravel;
+    private Double kmTravel;
     @SerializedName("color")
     @Expose
     private String color;
@@ -43,10 +43,10 @@ public class VehicleInventoryResponse implements Parcelable
     private String registrationNumber;
     @SerializedName("purchaseCost")
     @Expose
-    private Integer purchaseCost;
+    private Double purchaseCost;
     @SerializedName("sellCost")
     @Expose
-    private Integer sellCost;
+    private Double sellCost;
     @SerializedName("statusType")
     @Expose
     private StatusType statusType;
@@ -55,7 +55,7 @@ public class VehicleInventoryResponse implements Parcelable
     private String _storeKey;
     @SerializedName("__v")
     @Expose
-    private Integer __v;
+    private Double __v;
     @SerializedName("owner")
     @Expose
     private List<Owner> owner = null;
@@ -92,18 +92,18 @@ public class VehicleInventoryResponse implements Parcelable
         this._id = ((String) in.readValue((String.class.getClassLoader())));
         this.brand = ((String) in.readValue((String.class.getClassLoader())));
         this.vehicleModel = ((String) in.readValue((String.class.getClassLoader())));
-        this.engineCapacity = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.year = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.kmTravel = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.engineCapacity = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.year = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.kmTravel = ((Double) in.readValue((Double.class.getClassLoader())));
         this.color = ((String) in.readValue((String.class.getClassLoader())));
         this.chassisNumber = ((String) in.readValue((String.class.getClassLoader())));
         this.engineNumber = ((String) in.readValue((String.class.getClassLoader())));
         this.registrationNumber = ((String) in.readValue((String.class.getClassLoader())));
-        this.purchaseCost = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.sellCost = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.purchaseCost = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.sellCost = ((Double) in.readValue((Double.class.getClassLoader())));
         this.statusType = ((StatusType) in.readValue((StatusType.class.getClassLoader())));
         this._storeKey = ((String) in.readValue((String.class.getClassLoader())));
-        this.__v = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.__v = ((Double) in.readValue((Double.class.getClassLoader())));
         in.readList(this.owner, (com.boongg.store.Models.Responses.AvailableVehicles.Owner.class.getClassLoader()));
         in.readList(this.licenceFiles, (Object.class.getClassLoader()));
         in.readList(this.pucFiles, (Object.class.getClassLoader()));
@@ -138,27 +138,27 @@ public class VehicleInventoryResponse implements Parcelable
         this.vehicleModel = vehicleModel;
     }
 
-    public Integer getEngineCapacity() {
+    public Double getEngineCapacity() {
         return engineCapacity;
     }
 
-    public void setEngineCapacity(Integer engineCapacity) {
+    public void setEngineCapacity(Double engineCapacity) {
         this.engineCapacity = engineCapacity;
     }
 
-    public Integer getYear() {
+    public Double getYear() {
         return year;
     }
 
-    public void setYear(Integer year) {
+    public void setYear(Double year) {
         this.year = year;
     }
 
-    public Integer getKmTravel() {
+    public Double getKmTravel() {
         return kmTravel;
     }
 
-    public void setKmTravel(Integer kmTravel) {
+    public void setKmTravel(Double kmTravel) {
         this.kmTravel = kmTravel;
     }
 
@@ -194,19 +194,19 @@ public class VehicleInventoryResponse implements Parcelable
         this.registrationNumber = registrationNumber;
     }
 
-    public Integer getPurchaseCost() {
+    public Double getPurchaseCost() {
         return purchaseCost;
     }
 
-    public void setPurchaseCost(Integer purchaseCost) {
+    public void setPurchaseCost(Double purchaseCost) {
         this.purchaseCost = purchaseCost;
     }
 
-    public Integer getSellCost() {
+    public Double getSellCost() {
         return sellCost;
     }
 
-    public void setSellCost(Integer sellCost) {
+    public void setSellCost(Double sellCost) {
         this.sellCost = sellCost;
     }
 
@@ -226,11 +226,11 @@ public class VehicleInventoryResponse implements Parcelable
         this._storeKey = _storeKey;
     }
 
-    public Integer get__v() {
+    public Double get__v() {
         return __v;
     }
 
-    public void set__v(Integer __v) {
+    public void set__v(Double __v) {
         this.__v = __v;
     }
 

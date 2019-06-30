@@ -12,6 +12,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -49,23 +51,29 @@ import retrofit2.Response;
 public class RentFragment extends Fragment {
     View rootView;
     private RecyclerView recyclerView;
-    TextView startDate,endDate;
+    TextView startDate,endDate,show;
     Button search;
     ProgressDialog progressDialog;
     DatePickerDialog picker;
     private Owner o;
 
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
 
+    }
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+setHasOptionsMenu(true);
          rootView = inflater.inflate(R.layout.fragment_rent_calculation, container, false);
          recyclerView=(RecyclerView)rootView.findViewById(R.id.rent_bike_select);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayout.HORIZONTAL,false));
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayout.VERTICAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
        search=(Button)rootView.findViewById(R.id.rent_search_user_button);
         startDate=(TextView) rootView.findViewById(R.id.rent_start_date);
         endDate=(TextView) rootView.findViewById(R.id.rent_end_date);
          progressDialog = new ProgressDialog(getContext());
-
+        show=(TextView) rootView.findViewById(R.id.show_msg);
         searchVehicle();
         setDateUsingDatePicker(startDate);
         setDateUsingDatePicker(endDate);
@@ -83,6 +91,7 @@ public class RentFragment extends Fragment {
                     @Override
                     public void onResponse(Call<Owner> call, Response<Owner> response) {
                         o = response.body();
+
                         String sd = DateSorter.convertStringToTimestamp((startDate.getText().toString()));
                         String ed = DateSorter.convertStringToTimestamp((endDate.getText().toString()));
                         Call<Vehicle> call2 = owner.getVehicleNearby(o.getCity().getName(), o.getLocality().get(0).toString(), sd, ed, "Asia/Calcutta");
@@ -91,10 +100,13 @@ public class RentFragment extends Fragment {
                             public void onResponse(Call<Vehicle> call, Response<Vehicle> response) {
                                 progressDialog.hide();
                                 List<Result> vehicle = response.body().getResults();
+                                if(vehicle.size()>0){
+                                    show.setVisibility(View.VISIBLE);
+                                }
                                 VehicleRentAdapter adapter = new VehicleRentAdapter(vehicle, getContext(), new OnImageClickListener() {
                                     @Override
                                     public void onImageClick(Result vehichle) {
-                                        CardView card=(CardView)rootView.findViewById(R.id.rent_card);
+                                        LinearLayout card=(LinearLayout) rootView.findViewById(R.id.rent_card);
                                         card.setVisibility(View.VISIBLE);
 
                                         TextView hr,m_f,s_s,m,total_rent;
@@ -160,7 +172,8 @@ public class RentFragment extends Fragment {
                         mCalendar.set(Calendar.MONTH, monthOfYear);
 
                         mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        new TimePickerDialog(getContext(), mTimeDataSet, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), true).show();
+                      TimePickerDialog tpd=  new TimePickerDialog(getContext(),android.R.style.Theme_Holo_Light_Dialog, mTimeDataSet, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), false);
+                        tpd.show();
                     }
                 };
 

@@ -24,7 +24,6 @@ public class CurrentBooking extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_current_booking, container, false);
         bottomNav = rootView.findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
-        setHasOptionsMenu(true);
 
         if (savedInstanceState == null) {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_2,
@@ -33,11 +32,7 @@ public class CurrentBooking extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.current_booking, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override

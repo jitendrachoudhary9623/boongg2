@@ -47,16 +47,16 @@ public class CreateBookingSuccessResponse implements Parcelable
     private List<BikeList> bikeList = null;
     @SerializedName("rentTotal")
     @Expose
-    private Integer rentTotal;
+    private Double rentTotal;
     @SerializedName("suggestedRent")
     @Expose
-    private Integer suggestedRent;
+    private Double suggestedRent;
     @SerializedName("recivableAmountWithTax")
     @Expose
     private Double recivableAmountWithTax;
     @SerializedName("discountAmount")
     @Expose
-    private Integer discountAmount;
+    private Double discountAmount;
     @SerializedName("location")
     @Expose
     private String location;
@@ -95,10 +95,10 @@ public class CreateBookingSuccessResponse implements Parcelable
         this.paymentType = ((String) in.readValue((String.class.getClassLoader())));
         this.paymentTypeMode = ((String) in.readValue((String.class.getClassLoader())));
         in.readList(this.bikeList, (com.boongg.store.Models.Responses.CreateBooking.BikeList.class.getClassLoader()));
-        this.rentTotal = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.suggestedRent = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.rentTotal = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.suggestedRent = ((Double) in.readValue((Double.class.getClassLoader())));
         this.recivableAmountWithTax = ((Double) in.readValue((Double.class.getClassLoader())));
-        this.discountAmount = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.discountAmount = ((Double) in.readValue((Double.class.getClassLoader())));
         this.location = ((String) in.readValue((String.class.getClassLoader())));
         this.storeKey = ((String) in.readValue((String.class.getClassLoader())));
         this.webUserId = ((String) in.readValue((String.class.getClassLoader())));
@@ -149,19 +149,19 @@ public class CreateBookingSuccessResponse implements Parcelable
         this.bikeList = bikeList;
     }
 
-    public Integer getRentTotal() {
+    public Double getRentTotal() {
         return rentTotal;
     }
 
-    public void setRentTotal(Integer rentTotal) {
+    public void setRentTotal(Double rentTotal) {
         this.rentTotal = rentTotal;
     }
 
-    public Integer getSuggestedRent() {
+    public Double getSuggestedRent() {
         return suggestedRent;
     }
 
-    public void setSuggestedRent(Integer suggestedRent) {
+    public void setSuggestedRent(Double suggestedRent) {
         this.suggestedRent = suggestedRent;
     }
 
@@ -173,11 +173,11 @@ public class CreateBookingSuccessResponse implements Parcelable
         this.recivableAmountWithTax = recivableAmountWithTax;
     }
 
-    public Integer getDiscountAmount() {
+    public Double getDiscountAmount() {
         return discountAmount;
     }
 
-    public void setDiscountAmount(Integer discountAmount) {
+    public void setDiscountAmount(Double discountAmount) {
         this.discountAmount = discountAmount;
     }
 

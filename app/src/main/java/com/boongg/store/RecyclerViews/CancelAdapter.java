@@ -91,7 +91,7 @@ public class CancelAdapter extends RecyclerView.Adapter<CancelAdapter.CancelView
 
             try {
                 startDate.setText(DateSorter.getFormattedDate(booking.getStartDate()));
-                endDate.setText(" - "+DateSorter.getFormattedDate(booking.getEndDate()));
+                endDate.setText(""+DateSorter.getFormattedDate(booking.getEndDate()));
                 cancelledOn.setText("Cancelled on "+DateSorter.getFormattedDate(booking.getUpdatedAt()));
 
             }catch (Exception e){

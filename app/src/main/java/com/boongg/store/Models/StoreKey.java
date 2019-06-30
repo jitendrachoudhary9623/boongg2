@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 public class StoreKey implements Parcelable {
 
 	@SerializedName("loc")
-	private List<Integer> loc;
+	private List<Double> loc;
 
 	@SerializedName("pancardNumer")
 	private String pancardNumer;
@@ -77,11 +77,11 @@ public class StoreKey implements Parcelable {
 		}
 	};
 
-	public void setLoc(List<Integer> loc){
+	public void setLoc(List<Double> loc){
 		this.loc = loc;
 	}
 
-	public List<Integer> getLoc(){
+	public List<Double> getLoc(){
 		return loc;
 	}
 

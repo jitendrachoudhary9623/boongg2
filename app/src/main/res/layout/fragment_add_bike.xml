@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grayShade1"
-    >
+    android:background="@color/grayShade1">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:orientation="vertical">
 
+        <ProgressBar
+            android:id="@+id/pb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progressTint="@color/colorPrimary"
+android:background="@color/white"
+            android:padding="5dp"
+            style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
+            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="250dp"
@@ -28,26 +41,26 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:orientation="vertical">
 
                     <Spinner
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-
+                        android:padding="5dp"
                         android:id="@+id/add_bike_model"/>
                     <Spinner
                         android:layout_width="match_parent"
                         android:layout_margin="5dp"
                         android:layout_height="wrap_content"
+                        android:padding="5dp"
                         android:id="@+id/add_bike_brand"/>
 
                     <Spinner
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-
+                        android:padding="5dp"
                         android:id="@+id/add_bike_model_year"/>
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -183,8 +196,8 @@ android:layout_marginRight="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-android:layout_marginLeft="5dp"
-android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
                         android:layout_marginBottom="3dp"
                         android:layout_weight="1"
                         android:background="@drawable/rounded"
@@ -356,18 +369,21 @@ android:layout_marginRight="5dp"
                 android:textStyle="bold"
                 android:layout_weight="1"/>
         </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_margin="20dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/blue"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:id="@+id/add_bike_button_2"
-            android:visibility="visible"
-            android:text="Add Bike" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_margin="20dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:id="@+id/add_bike_button_2"
+                android:visibility="visible"
+                android:text="Add Bike" />
+
+
 
     </LinearLayout>
 

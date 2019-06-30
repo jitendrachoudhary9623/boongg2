@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#000000</color>
+    <color name="pale_violet">#d9c3fa</color>
+    <color name="deep_pink">#d3005a</color>
+    <color name="colorPrimary">#5f14d0</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#FF0000</color>
+    <color name="colorAccent">@color/colorPrimary</color>
     <color name="red">#FF0000</color>
-    <color name="white">#FFFFFF</color>
-    <color name="sgreen">#228B22</color>
+    <color name="sgreen">#008500</color>
     <color name="grayShade1">#c8c8c8</color>
     <color name="blue">@android:color/holo_orange_dark</color>
-    <color name="green_pay">#008B00</color>
+    <color name="green_pay">#008500</color>
+    <color name="white">#ffffff</color>
+    <color name="label_color">#627364</color>
+    <color name="value_color">#020304</color>
+
 </resources>

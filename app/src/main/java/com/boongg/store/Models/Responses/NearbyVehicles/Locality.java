@@ -18,10 +18,10 @@ public class Locality implements Parcelable
     private String name;
     @SerializedName("latitude")
     @Expose
-    private Integer latitude;
+    private Double latitude;
     @SerializedName("longitude")
     @Expose
-    private Integer longitude;
+    private Double longitude;
     @SerializedName("_city")
     @Expose
     private City city;
@@ -30,7 +30,7 @@ public class Locality implements Parcelable
     private Boolean isActive;
     @SerializedName("__v")
     @Expose
-    private Integer v;
+    private Double v;
     public final static Parcelable.Creator<Locality> CREATOR = new Creator<Locality>() {
 
 
@@ -51,11 +51,11 @@ public class Locality implements Parcelable
     protected Locality(Parcel in) {
         this.id = ((String) in.readValue((String.class.getClassLoader())));
         this.name = ((String) in.readValue((String.class.getClassLoader())));
-        this.latitude = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.longitude = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.latitude = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.longitude = ((Double) in.readValue((Double.class.getClassLoader())));
         this.city = ((City) in.readValue((City.class.getClassLoader())));
         this.isActive = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-        this.v = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.v = ((Double) in.readValue((Double.class.getClassLoader())));
     }
 
     public Locality() {
@@ -77,19 +77,19 @@ public class Locality implements Parcelable
         this.name = name;
     }
 
-    public Integer getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Integer latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public Integer getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Integer longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
@@ -109,11 +109,11 @@ public class Locality implements Parcelable
         this.isActive = isActive;
     }
 
-    public Integer getV() {
+    public Double getV() {
         return v;
     }
 
-    public void setV(Integer v) {
+    public void setV(Double v) {
         this.v = v;
     }
 

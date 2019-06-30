@@ -11,7 +11,7 @@ public class ExtendDateResponse implements Parcelable
 
     @SerializedName("calculatedRent")
     @Expose
-    private Integer calculatedRent;
+    private Double calculatedRent;
     public final static Parcelable.Creator<ExtendDateResponse> CREATOR = new Creator<ExtendDateResponse>() {
 
 
@@ -30,17 +30,17 @@ public class ExtendDateResponse implements Parcelable
             ;
 
     protected ExtendDateResponse(Parcel in) {
-        this.calculatedRent = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.calculatedRent = ((Double) in.readValue((Double.class.getClassLoader())));
     }
 
     public ExtendDateResponse() {
     }
 
-    public Integer getCalculatedRent() {
+    public Double getCalculatedRent() {
         return calculatedRent;
     }
 
-    public void setCalculatedRent(Integer calculatedRent) {
+    public void setCalculatedRent(Double calculatedRent) {
         this.calculatedRent = calculatedRent;
     }
 

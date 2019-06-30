@@ -13,7 +13,11 @@ import android.widget.Toast;
 import com.boongg.store.Interfaces.OnImageClickListener;
 import com.boongg.store.Models.Responses.CancelledData.Cancel;
 import com.boongg.store.Models.Responses.NearbyVehicles.Result;
+import com.boongg.store.Networking.RestApiURL;
 import com.boongg.store.R;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -55,27 +59,31 @@ public class VehicleSelectAdapter  extends RecyclerView.Adapter<VehicleSelectAda
     public class VehicleViewHolder extends RecyclerView.ViewHolder{
 
         ImageView vehicleImage;
-        TextView vehicleName,availability,weekday,weekend,bikeRent,bookingPay;
+        TextView vehicleName,availability,weekday,weekend,bikeRent,bookingPay,qty;
         public VehicleViewHolder(@NonNull View itemView) {
             super(itemView);
             vehicleImage=(ImageView)itemView.findViewById(R.id.create_booking_select_vehicle);
             vehicleName=(TextView)itemView.findViewById(R.id.create_booking_select_vehicle_name);
             bikeRent=(TextView)itemView.findViewById(R.id.bike_rent);
             bookingPay=(TextView)itemView.findViewById(R.id.booking_pay);
-
+            qty=(TextView)itemView.findViewById(R.id.create_qty);
         }
         public void bindData(final int position) {
             final Result v=vehicleList.get(position);
-            Toast.makeText(mContext,v.getThumbUrl(),Toast.LENGTH_LONG).show();
-            Picasso.with(mContext).load(v.getThumbUrl()).into(vehicleImage);
+            qty.setText("Qty : "+Math.round(v.getQuantity()));
+            Glide.with(mContext)
+                    .load(v.getThumbUrl()) // or URI/path
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.IMMEDIATE)
+                    .error(R.drawable.motorcycle)
+                    .skipMemoryCache(false)
+                    .into(vehicleImage);
             vehicleName.setText(v.getBrand()+" "+v.getModelName());
             bikeRent.setText(mContext.getResources().getString(R.string.rs)+" "+v.getRentCalculated());
             bookingPay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v1) {
-
                     onImageClickListener.onImageClick(v);
-
                 }
             });
 

@@ -25,10 +25,10 @@ public class BikeList implements Parcelable
     private String modelName;
     @SerializedName("weekDayPrice")
     @Expose
-    private Integer weekDayPrice;
+    private Double weekDayPrice;
     @SerializedName("weekEndPrice")
     @Expose
-    private Integer weekEndPrice;
+    private Double weekEndPrice;
     @SerializedName("mapAddr")
     @Expose
     private MapAddr mapAddr;
@@ -37,10 +37,10 @@ public class BikeList implements Parcelable
     private List<Address> address = null;
     @SerializedName("quantity")
     @Expose
-    private Integer quantity;
+    private Double quantity;
     @SerializedName("rentCalculated")
     @Expose
-    private Integer rentCalculated;
+    private Double rentCalculated;
     @SerializedName("thumbUrl")
     @Expose
     private String thumbUrl;
@@ -55,13 +55,13 @@ public class BikeList implements Parcelable
     private Long endDate;
     @SerializedName("cartRent")
     @Expose
-    private Integer cartRent;
+    private Double cartRent;
     @SerializedName("cartQuantity")
     @Expose
-    private Integer cartQuantity;
+    private Double cartQuantity;
     @SerializedName("quantityList")
     @Expose
-    private List<Integer> quantityList = null;
+    private List<Double> quantityList = null;
     public final static Parcelable.Creator<BikeList> CREATOR = new Creator<BikeList>() {
 
 
@@ -83,19 +83,19 @@ public class BikeList implements Parcelable
         this.key = ((String) in.readValue((String.class.getClassLoader())));
         this.brand = ((String) in.readValue((String.class.getClassLoader())));
         this.modelName = ((String) in.readValue((String.class.getClassLoader())));
-        this.weekDayPrice = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.weekEndPrice = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.weekDayPrice = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.weekEndPrice = ((Double) in.readValue((Double.class.getClassLoader())));
         this.mapAddr = ((MapAddr) in.readValue((MapAddr.class.getClassLoader())));
         in.readList(this.address, (com.boongg.store.Models.Responses.NearbyVehicles.Address.class.getClassLoader()));
-        this.quantity = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.rentCalculated = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.quantity = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.rentCalculated = ((Double) in.readValue((Double.class.getClassLoader())));
         this.thumbUrl = ((String) in.readValue((String.class.getClassLoader())));
         this.isAddtoCart = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
         this.startDate = ((Long) in.readValue((Long.class.getClassLoader())));
         this.endDate = ((Long) in.readValue((Long.class.getClassLoader())));
-        this.cartRent = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.cartQuantity = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        in.readList(this.quantityList, (java.lang.Integer.class.getClassLoader()));
+        this.cartRent = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.cartQuantity = ((Double) in.readValue((Double.class.getClassLoader())));
+        in.readList(this.quantityList, (java.lang.Double.class.getClassLoader()));
     }
 
     public BikeList() {
@@ -125,19 +125,19 @@ public class BikeList implements Parcelable
         this.modelName = modelName;
     }
 
-    public Integer getWeekDayPrice() {
+    public Double getWeekDayPrice() {
         return weekDayPrice;
     }
 
-    public void setWeekDayPrice(Integer weekDayPrice) {
+    public void setWeekDayPrice(Double weekDayPrice) {
         this.weekDayPrice = weekDayPrice;
     }
 
-    public Integer getWeekEndPrice() {
+    public Double getWeekEndPrice() {
         return weekEndPrice;
     }
 
-    public void setWeekEndPrice(Integer weekEndPrice) {
+    public void setWeekEndPrice(Double weekEndPrice) {
         this.weekEndPrice = weekEndPrice;
     }
 
@@ -157,19 +157,19 @@ public class BikeList implements Parcelable
         this.address = address;
     }
 
-    public Integer getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 
-    public Integer getRentCalculated() {
+    public Double getRentCalculated() {
         return rentCalculated;
     }
 
-    public void setRentCalculated(Integer rentCalculated) {
+    public void setRentCalculated(Double rentCalculated) {
         this.rentCalculated = rentCalculated;
     }
 
@@ -227,27 +227,27 @@ public class BikeList implements Parcelable
         this.endDate = endDate;
     }
 
-    public Integer getCartRent() {
+    public Double getCartRent() {
         return cartRent;
     }
 
-    public void setCartRent(Integer cartRent) {
+    public void setCartRent(Double cartRent) {
         this.cartRent = cartRent;
     }
 
-    public Integer getCartQuantity() {
+    public Double getCartQuantity() {
         return cartQuantity;
     }
 
-    public void setCartQuantity(Integer cartQuantity) {
+    public void setCartQuantity(Double cartQuantity) {
         this.cartQuantity = cartQuantity;
     }
 
-    public List<Integer> getQuantityList() {
+    public List<Double> getQuantityList() {
         return quantityList;
     }
 
-    public void setQuantityList(List<Integer> quantityList) {
+    public void setQuantityList(List<Double> quantityList) {
         this.quantityList = quantityList;
     }
 

@@ -1,6 +1,8 @@
 package com.boongg.store.RecyclerViews;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
@@ -12,17 +14,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.boongg.store.Fragments.AccountFragment;
 import com.boongg.store.Fragments.CancelledBookingFragment;
 import com.boongg.store.Fragments.CreateBookingFragment;
 import com.boongg.store.Fragments.CurrentBooking;
+import com.boongg.store.Fragments.MainFragment;
+import com.boongg.store.Fragments.Offers;
 import com.boongg.store.Fragments.RentFragment;
 import com.boongg.store.Fragments.VehicleInventoryFragment;
+import com.boongg.store.LoginActivity;
 import com.boongg.store.MainActivity;
 import com.boongg.store.Models.Buttons;
 import com.boongg.store.R;
+import com.boongg.store.Utilities.LoginToken;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainButtons extends RecyclerView.Adapter<MainButtons.ButtonViewHolder> {
 
@@ -72,8 +81,15 @@ CardView button;
 
         public void switchFragment(Fragment myFragment,View v){
 
+            String s=null;
+            try{
+                s=myFragment.getClass().getSimpleName().toString();
+            }catch(Exception e)
+            {
+
+            }
             MainActivity activity = (MainActivity) v.getContext();
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, myFragment).addToBackStack(null).commit();
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, myFragment).addToBackStack(s).commit();
 
         }
         public void bindData(final int position) {
@@ -102,6 +118,30 @@ CardView button;
                         case "Vehicle Inventory":
                             myFragment=new VehicleInventoryFragment();
                             break;
+                        case "Account":
+                            myFragment=new AccountFragment();
+                            break;
+                        case "Logout":
+                            SharedPreferences preferences = mContext.getSharedPreferences(LoginToken.PREFS, 0);
+                            preferences.edit().remove(LoginToken.TOKEN_ID).commit();
+                            preferences.edit().remove(LoginToken.TOKEN).commit();
+                            Intent i=new Intent(mContext, LoginActivity.class);
+                            try {
+                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            }catch (Exception e){
+
+                            }
+                            mContext.startActivity(i);
+                            break;
+                        case "Offers":
+                            myFragment=new Offers();
+                            break;
+                        default:
+                            new SweetAlertDialog(mContext, SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("Under Construction")
+                                    .setContentText("THis section is under construction")
+                                    .show();
+                            myFragment=new MainFragment();
                     }
                     switchFragment(myFragment,v);
 

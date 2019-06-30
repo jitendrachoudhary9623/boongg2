@@ -10,5 +10,5 @@ import retrofit2.http.POST;
 public interface CheckInRequest {
 
     @POST("rentbooking/update")
-    Call<UpdateResponse> checkIn(@Body CheckIn check);
+    Call<Void> checkIn(@Body CheckIn check);
 }
