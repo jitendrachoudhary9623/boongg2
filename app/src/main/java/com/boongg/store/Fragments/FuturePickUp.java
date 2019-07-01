@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -103,6 +104,11 @@ public class FuturePickUp extends Fragment {
         inflater.inflate(R.menu.current_booking,menu);
         final MenuItem searchItem = menu.findItem(R.id.search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
+        EditText searchEditText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+
+        searchEditText.setTextColor(getResources().getColor(R.color.value_color));
+        searchEditText.setHintTextColor(getResources().getColor(R.color.value_color));
+        searchEditText.setBackgroundColor(getResources().getColor(R.color.white));
         MenuItem refresh=menu.findItem(R.id.refresh);
         refresh.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override

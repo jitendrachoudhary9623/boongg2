@@ -38,11 +38,14 @@ import android.widget.Toast;
 import com.boongg.store.Interfaces.OnImageClickListener;
 import com.boongg.store.LoginActivity;
 import com.boongg.store.MainActivity;
+import com.boongg.store.Models.Booking;
 import com.boongg.store.Models.Requests.CheckIn;
 import com.boongg.store.Models.Requests.CreateBookingRequest;
 import com.boongg.store.Models.Requests.CreateUser;
 import com.boongg.store.Models.Requests.SendOtpRequest;
+import com.boongg.store.Models.Requests.StoreInfo.StoreDetail;
 import com.boongg.store.Models.Requests.VerifyOtpRequest;
+import com.boongg.store.Models.Requests.ViewOffer;
 import com.boongg.store.Models.Responses.AvailableVehicles.VehicleInventoryResponse;
 import com.boongg.store.Models.Responses.CancelledData.Cancel;
 import com.boongg.store.Models.Responses.CreateBooking.BikeList;
@@ -63,17 +66,20 @@ import com.boongg.store.Networking.BookingRequest;
 import com.boongg.store.Networking.CancelledData;
 import com.boongg.store.Networking.CheckInRequest;
 import com.boongg.store.Networking.CreateUserI;
+import com.boongg.store.Networking.OfferRequest;
 import com.boongg.store.Networking.OwnerInventory;
 import com.boongg.store.Networking.Payment;
 import com.boongg.store.Networking.SearchUser;
 import com.boongg.store.R;
 import com.boongg.store.RecyclerViews.CancelAdapter;
+import com.boongg.store.RecyclerViews.DropAdapter;
 import com.boongg.store.RecyclerViews.VehicleSelectAdapter;
 import com.boongg.store.Utilities.AlertBoxUtils;
 import com.boongg.store.Utilities.DateSorter;
 import com.boongg.store.Utilities.FragmentUtils;
 import com.boongg.store.Utilities.LoginToken;
 import com.boongg.store.Utilities.ProgressbarUtil;
+import com.boongg.store.Utilities.SharedPrefUtils;
 
 import org.angmarch.views.NiceSpinner;
 import org.angmarch.views.OnSpinnerItemSelectedListener;
@@ -88,6 +94,10 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -265,23 +275,117 @@ public class CreateBookingFragment extends Fragment {
         });
     }
 
+    CompositeDisposable compositeDisposable=new CompositeDisposable();
+
+    @Override
+    public void onStop() {
+        compositeDisposable.clear();
+        super.onStop();
+    }
+    double discountPercent=0;
+    double maxDiscount=0.0;
+    double gst=0.06;
     private void payment(final Result vehichle) {
 
         LayoutInflater li = LayoutInflater.from(getContext());
         View promptsView = li.inflate(R.layout.alert_payment, null);
-        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext(),R.style.CustomAlertDialog);
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialog);
         alertDialogBuilder.setView(promptsView);
-        final EditText trent, srent,totalCalculatedRent;
+        final EditText trent, srent, totalCalculatedRent;
         TextView payNow;
         trent = (EditText) promptsView.findViewById(R.id.pay_total_rent);
         srent = (EditText) promptsView.findViewById(R.id.pay_selected_rent);
-        totalCalculatedRent=(EditText)promptsView.findViewById(R.id.total_calculated_rent);
+        totalCalculatedRent = (EditText) promptsView.findViewById(R.id.total_calculated_rent);
+        StoreDetail sd = new StoreDetail();
+        sd = SharedPrefUtils.returnObject(LoginToken.OWNER_INFO, sd, getContext());
+        try {
+            if (!sd.getGstNumber().equals("") && sd.getGstNumber() != null) {
+                gst = 0.00;
+            } else {
+                gst = 0.06;
+            }
+        } catch (Exception e) {
+            //Toast.makeText(getContext(),e.toString(),Toast.LENGTH_LONG).show();
+            gst = 0.06;
+        }
         //spinner = (Spinner)promptsView.findViewById(R.id.payment_method_spinner);
         final NiceSpinner spinner = (NiceSpinner) promptsView.findViewById(R.id.payment_method_spinner);
         final CheckBox immediate_checkout = (CheckBox) promptsView.findViewById(R.id.immediate_checkout);
         final boolean immediate_checkout_boolean = false;
-        final EditText cgst=(EditText) promptsView.findViewById(R.id.pay_cgst);
-        final EditText sgst=(EditText) promptsView.findViewById(R.id.pay_sgst);
+        final EditText cgst = (EditText) promptsView.findViewById(R.id.pay_cgst);
+        final EditText sgst = (EditText) promptsView.findViewById(R.id.pay_sgst);
+        final CheckBox applyDiscount = (CheckBox) promptsView.findViewById(R.id.applyDiscount_checkbox);
+        final Spinner discountOffer = (Spinner) promptsView.findViewById(R.id.applyDiscount_spinner);
+        final TextView discountText = (TextView) promptsView.findViewById(R.id.discount_msg);
+        final List<String> discount = new ArrayList<>();
+        final List<ViewOffer> viewOffersq = new ArrayList<>();
+        OfferRequest offerRequest = APIClient.getClient().create(OfferRequest.class);
+        compositeDisposable.add(offerRequest.getDiscountOffers().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<ViewOffer>>() {
+            @Override
+            public void accept(final List<ViewOffer> viewOffers) throws Exception {
+                discount.add("No Offer 0% OFF");
+                viewOffersq.addAll(viewOffers);
+                for (ViewOffer offer : viewOffers) {
+                    discount.add(offer.getCoupenCode() + " " + offer.getDiscountInPrecentOrFlat() + " % OFF");
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                        getContext(),
+                        R.layout.spinner_vehicle_select,
+                        discount
+                );
+                discountOffer.setAdapter(adapter);
+            }
+        }));
+
+        discountOffer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        discountPercent = 0;
+                        maxDiscount=0;
+                        if (applyDiscount.isChecked()) {
+                            discountText.setText("Minimum of "+discountPercent + "% on total amount or "+maxDiscount+" Rs discount is applied");
+                            trent.setText("" + Double.parseDouble(srent.getText().toString()));
+
+                        }
+                        break;
+
+                    default:
+                        try {
+                            discountPercent = viewOffersq.get(position - 1).getDiscountInPrecentOrFlat();
+                            maxDiscount=viewOffersq.get(position-1).getMaxDiscount();
+                            if (applyDiscount.isChecked()) {
+                                discountText.setText("Minimum of "+discountPercent + "% on total amount or "+maxDiscount+" Rs discount is applied");
+                                double rent2 = Double.parseDouble(srent.getText().toString());
+                                double rent1=rent2;
+                                rent1=rent1-maxDiscount;
+                                rent2 = rent2 - (rent2 * (discountPercent / 100));
+                                trent.setText("" + Math.min(rent1,rent2));
+                            }
+                            break;
+                        } catch (Exception e) {
+                            Toast.makeText(getContext(), "size " + viewOffersq.size(), Toast.LENGTH_LONG).show();
+                        }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        applyDiscount.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                trent.setText("" + Double.parseDouble(trent.getText().toString()));
+                discountText.setText("Minimum of "+discountPercent + "% on total amount or "+maxDiscount+" Rs discount is applied");
+                if (isChecked) {
+                } else {
+                    discountText.setText("Minimum of "+0 + "% on total amount or "+0+" Rs discount is applied");
+                }
+            }
+        });
 
         payNow = (TextView) promptsView.findViewById(R.id.payment_pay_now);
         final List<String> paymentMethods = new ArrayList<>();
@@ -317,10 +421,10 @@ public class CreateBookingFragment extends Fragment {
             }
         });
 
+        trent.setText(formatString("" + (vehichle.getRentCalculated())));
+        srent.setText(formatString("" + (vehichle.getRentCalculated())));
 
-        trent.setText(formatString("" + (vehichle.getRentCalculated()+(vehichle.getRentCalculated()*0.06)*2)));
-        srent.setText(formatString("" + (vehichle.getRentCalculated()+(vehichle.getRentCalculated()*0.06)*2)));
-        srent.addTextChangedListener(new TextWatcher() {
+        trent.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -334,26 +438,24 @@ public class CreateBookingFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 try {
-                    Double gst = Double.parseDouble(srent.getText().toString()) * 0.06;
-                    sgst.setText(formatString(gst.toString()));
-                    cgst.setText(formatString(gst.toString()));
-                    totalCalculatedRent.setText(formatString(""+(Double.parseDouble(sgst.getText().toString())*2+Double.parseDouble(srent.getText().toString()))));
+                    totalCalculatedRent.setText(formatString("" + (Double.parseDouble(sgst.getText().toString()) * 2 + Double.parseDouble(trent.getText().toString()))));
 
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
         });
-        sgst.setText(""+formatString(""+(vehichle.getRentCalculated()*0.06)));
-        cgst.setText(formatString(""+(vehichle.getRentCalculated()*0.06)));
-        totalCalculatedRent.setText(formatString(""+(Double.parseDouble(sgst.getText().toString())*2+Double.parseDouble(srent.getText().toString()))));
+        sgst.setText("" + formatString("" + (vehichle.getRentCalculated() * gst)));
+        cgst.setText(formatString("" + (vehichle.getRentCalculated() * gst)));
+        totalCalculatedRent.setText(formatString("" + (Double.parseDouble(sgst.getText().toString()) * 2 + Double.parseDouble(trent.getText().toString()))));
         final AlertDialog alertDialog = alertDialogBuilder.create();
 
         payNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CreateBookingRequest booking = new CreateBookingRequest();
-                booking.setUsername(su.getProfile().getName());
+                try{
+                    booking.setUsername(su.getProfile().getName());
                 booking.setEmailid(su.getEmail());
                 booking.setIsGstApplicable(true);
                 booking.setMobileNo(su.getProfile().getMobileNumber());
@@ -363,7 +465,7 @@ public class CreateBookingFragment extends Fragment {
                 booking.setPaymentTypeMode(payObject[0].get_id()); //paymenttype getlist
                 booking.setRecivableAmountWithTax(Double.parseDouble(trent.getText().toString()));
                 booking.setRentTotal(Double.parseDouble(trent.getText().toString()));
-                booking.setSuggestedRent(Double.parseDouble(srent.getText().toString()));
+                booking.setSuggestedRent(Double.parseDouble(trent.getText().toString()));  //change here
                 booking.setStoreKey(LoginToken.id);
 
                 booking.setWebUserId(su.getId());
@@ -387,10 +489,13 @@ public class CreateBookingFragment extends Fragment {
                 bikes.add(bike);
 
                 booking.setBikeList(bikes);
+        }catch(Exception e){}
+
                 Log.e("JWT", booking.toString());
                 BookingRequest bookingRequest = APIClient.getClient().create(BookingRequest.class);
                 Call<List<CreateBookingResponse>> call3 = bookingRequest.createBooking(booking);
                 alertDialog.dismiss();
+
 
                 showProgressBar();
                 call3.enqueue(new Callback<List<CreateBookingResponse>>() {
@@ -418,10 +523,14 @@ public class CreateBookingFragment extends Fragment {
                                 .show();
 
                     }
+
                 });
+
             }
+
         });
         alertDialog.show();
+
     }
 
     AlertDialog dialog2;
@@ -529,12 +638,18 @@ public class CreateBookingFragment extends Fragment {
         niceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    VehicleInventoryResponse v2 = vehicleList.get(position);
-                    bId[0] = v2.getId();
-                } catch (Exception e) {
-                    AlertBoxUtils.showAlert(getContext(), "error", "Something went wrong", "Please reselect the bike");
+                switch (position){
+                    case 0:
+                        break;
+                    default:
+                        try {
+                            VehicleInventoryResponse v2 = vehicleList.get(position-1);
+                            bId[0] = v2.getId();
+                        } catch (Exception e) {
+                            AlertBoxUtils.showAlert(getContext(), "error", "Something went wrong", "Please reselect the bike");
+                        }
                 }
+
             }
 
             @Override

@@ -149,7 +149,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             mode.setText(booking.getBookingType());
             vehicleName.setText(booking.getBrand()+" - "+booking.getModel());
 
-
+booking.getWebuserId().getProfile().getLocation();
             checkIn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -162,6 +162,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
                     final EditText start=(EditText)promptsView.findViewById(R.id.startKm);
                     final EditText address=(EditText)promptsView.findViewById(R.id.emergency_address);
                     final CheckBox modifyBikeCheckBox,helmentProvidedCheckBox;
+                    address.setText(booking.getWebuserId().getProfile().getLocation().toString());
                     modifyBikeCheckBox=(CheckBox)promptsView.findViewById(R.id.modify_bike_checkbox);
                     totalRent.setText(""+booking.getRentWithDiscount());
                     final Spinner niceSpinner = (Spinner) promptsView.findViewById(R.id.select_bike_spinner);
@@ -265,16 +266,23 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
                     });
 
 
+
                     final String[] bId = {""};
                     final String selectedBike[]={""};
                     niceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             try {
-                                VehicleInventoryResponse v2 = vehicleList.get(position);
-                                if(!ds.get(position).equals("Select Vehicle")||!ds.get(position).equals("Select Vehicle for modification")||!ds.get(position).equals("")) {
-                                    bId[0] = v2.getId();
+                                switch (position){
+                                    case 0:
+                                        break;
+                                    default:
+                                        VehicleInventoryResponse v2 = vehicleList.get(position-1);
+                                        bId[0] = v2.get_id();
+
+                                        break;
                                 }
+
                             }catch (Exception e){
                                 AlertBoxUtils.showAlert(mContext,"error","",""+e.toString());
                             }
@@ -304,18 +312,22 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
                                             Log.e("JWT",booking.getRentBikeKey().getId());
                                             CheckInRequest checkInRequest= APIClient.getClient().create(CheckInRequest.class);
                                             Call<Void> call1 = checkInRequest.checkIn(check);
+                                            ProgressbarUtil.showProgressbar(mContext);
                                             call1.enqueue(new Callback<Void>() {
                                                 @Override
                                                 public void onResponse(Call<Void> call, Response<Void> response) {
                                                     bookings.remove(position);
                                                     notifyItemRemoved(position);
                                                     notifyItemRangeChanged(position, bookings.size());
+                                                    ProgressbarUtil.hideProgressBar();
                                                     AlertBoxUtils.showAlert(mContext,"success","Check In","Check in successfull");
                                                 }
 
                                                 @Override
                                                 public void onFailure(Call<Void> call, Throwable t) {
                                                     //Toast.makeText(mContext,"Something went wrong"+t.toString(),Toast.LENGTH_LONG).show();
+                                                    ProgressbarUtil.hideProgressBar();
+
                                                     AlertBoxUtils.showAlert(mContext,"error","Something wet wrong ",""+t.toString());
                                                     Log.e("JWT",t.toString());
                                                 }

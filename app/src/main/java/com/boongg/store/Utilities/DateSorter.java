@@ -4,6 +4,7 @@ package com.boongg.store.Utilities;
 import android.util.Log;
 
 import com.boongg.store.Models.Booking;
+import com.boongg.store.Models.Responses.Drop.DropBooking;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -47,9 +48,12 @@ public class DateSorter {
         calendar2.setTime(date2);
        return calendar1.after(calendar2);
     }
-    public static List<Booking> getDropBooking(String category,List<Booking> response) {
-        List<Booking> cBookings=new ArrayList<>();
-        for(Booking b:response){
+
+    public static List<DropBooking> getDropBookings(String category, List<DropBooking> response, boolean chooseStart){
+        List<DropBooking> cBookings=new ArrayList<>();
+        Log.e("JWT",category);
+        for(DropBooking b:response){
+            new Date();
             try {
                 String pattern = "yyyy-MM-dd";
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
@@ -57,7 +61,12 @@ public class DateSorter {
                 String date = simpleDateFormat.format(new Date());
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 Date date1 =new SimpleDateFormat("yyyy-MM-dd").parse(date);
-                Date date2 = sdf.parse(b.getEndDate());
+                Date date2;
+                if(chooseStart)
+                    date2 = sdf.parse(b.getStartDate());
+                else{
+                    date2 = sdf.parse(b.getEndDate());
+                }
 
                 switch(category){
                     case "Today":
@@ -83,7 +92,6 @@ public class DateSorter {
             }
         }
         return cBookings;
-
     }
 
     public static List<Booking> getBookings(String category,List<Booking> response,boolean chooseStart){

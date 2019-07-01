@@ -16,6 +16,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -28,6 +30,7 @@ import com.boongg.store.Models.Requests.CheckIn;
 import com.boongg.store.Models.Requests.DropVehicleRequest;
 import com.boongg.store.Models.Requests.ExtendBookingDateRequest;
 import com.boongg.store.Models.Requests.ExtendDateAfterRentRequest;
+import com.boongg.store.Models.Responses.Drop.DropBooking;
 import com.boongg.store.Models.Responses.DropVehicleResponse;
 import com.boongg.store.Models.Responses.ExtendDateAfterRentResponse;
 import com.boongg.store.Models.Responses.ExtendDateResponse;
@@ -58,13 +61,13 @@ import retrofit2.Response;
 
 public class DropAdapter extends RecyclerView.Adapter<DropAdapter.DropViewHolder>{
 
-    List<Booking> bookings;
+    List<DropBooking> bookings;
     Context mContext;
     public DropAdapter(){
 
     }
     boolean show=false;
-    public DropAdapter(List<Booking> bookings, Context context) {
+    public DropAdapter(List<DropBooking> bookings, Context context) {
         this.bookings = bookings;
         mContext = context;
     }
@@ -111,7 +114,7 @@ public class DropAdapter extends RecyclerView.Adapter<DropAdapter.DropViewHolder
         }
 
         public void bindData(final int position) {
-            final Booking booking=bookings.get(position);
+            final DropBooking booking=bookings.get(position);
             try {
                 startDate.setText(DateSorter.getFormattedDate(booking.getStartDate()));
                 endDate.setText(DateSorter.getFormattedDate(booking.getEndDate()));
@@ -119,18 +122,18 @@ public class DropAdapter extends RecyclerView.Adapter<DropAdapter.DropViewHolder
             }catch (Exception e){
 
             }
-            reg.setText("Reg No :&#10;"+booking.getBoonggBookingId());
+            reg.setText("Reg No\n"+booking.get_rentPoolKey().getRegistrationNumber());
 
             bookingId.setText(""+booking.getBoonggBookingId());
-            name.setText(""+booking.getWebuserId().getProfile().getName());
-            phone.setText(""+booking.getWebuserId().getProfile().getMobileNumber());
+            name.setText(""+booking.get_webuserId().getProfile().getName());
+            phone.setText(""+booking.get_webuserId().getProfile().getMobileNumber());
            amount.setText(mContext.getResources().getString(R.string.rs)+" "+String.format("%.2f",booking.getTotalAmountRecived()));
            vehicle.setText(booking.getBrand()+" - "+booking.getModel());
            phone.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
                    //Toast.makeText(mContext,"Clicked",Toast.LENGTH_LONG).show();
-                   Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + booking.getWebuserId().getProfile().getMobileNumber()));
+                   Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + booking.get_webuserId().getProfile().getMobileNumber()));
                    mContext.startActivity(intent);
                }
            });
@@ -166,7 +169,7 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
                 public void onClick(View v) {
                     ProgressbarUtil.showProgressbar(mContext);
                     final RentCalculationAPI apiEndPoint= APIClient.getClient().create(RentCalculationAPI.class);
-                    Call<Void> call1 = apiEndPoint.sendInvoice(booking.getId());
+                    Call<Void> call1 = apiEndPoint.sendInvoice(booking.get_id());
                     call1.enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
@@ -193,7 +196,7 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
     }
 
     //extend booking click
-    private void extendBooking(final Booking booking) {
+    private void extendBooking(final DropBooking booking) {
         LayoutInflater li = LayoutInflater.from(mContext);
         View promptsView = li.inflate(R.layout.alert_drop_extend_date, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -234,13 +237,13 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
     }
 
     //calculates rent and extends booking
-    private void calRent(final AlertDialog alertDialog, final Booking booking, final TextView dateSelector, final TextView calculatedRent, TextView calculateRent, final TextView extendDate) {
+    private void calRent(final AlertDialog alertDialog, final DropBooking booking, final TextView dateSelector, final TextView calculatedRent, TextView calculateRent, final TextView extendDate) {
         final ExtendBookingDateRequest ex=new ExtendBookingDateRequest();
         ex.setModel(booking.getModel());
         ex.setEndDate(booking.getEndDate());
         ex.setSuggestedExtendedRent(booking.getRentWithDiscount());
         ex.setBrand(booking.getBrand());
-        ex.setBookingId(booking.getId());
+        ex.setBookingId(booking.get_id());
         //ex.setStartDate(booking.getStartDate());
         try {
             ex.setStartDate(booking.getStartDate());
@@ -272,13 +275,13 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
         });
     }
 
-    private void extend(Booking booking, String s, TextView dateSelector) {
+    private void extend(DropBooking booking, String s, TextView dateSelector) {
         final RentCalculationAPI rentCal= APIClient.getClient().create(RentCalculationAPI.class);
         Double apiCalc=Double.parseDouble(s);
         ExtendDateAfterRentRequest request=new ExtendDateAfterRentRequest();
-        request.setBookingId(booking.getId());
+        request.setBookingId(booking.get_id());
         request.setIsGstApplicable(true);
-        request.setRentPoolKey(booking.getRentBikeKey().getId());
+        request.setRentPoolKey(booking.get_rentBikeKey().get_id());
         request.setSuggestedExtendedRent((int)Math.round(apiCalc));
         request.setTotalExtendedBikeRent((int)Math.round(apiCalc));
         request.setScheduleTime(dateSelector.getText().toString());
@@ -302,10 +305,10 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
     //extend
 
     //drop button click
-    private void dropLayoutClick(final Booking booking, List<PreDropBooking> preDrop, final int positionBooking) {
+    private void dropLayoutClick(final DropBooking booking, List<PreDropBooking> preDrop, final int positionBooking) {
          final List<PreDropBooking> rentObject = new LinkedList<>();
         for(PreDropBooking preDropBooking:preDrop){
-            if(booking.getRentBikeKey().getId().equals(preDropBooking.get_rentBikeKey().get_id())){
+            if(booking.get_rentBikeKey().get_id().equals(preDropBooking.get_rentBikeKey().get_id())){
                 rentObject.add(preDropBooking);
                 break;
             }
@@ -314,6 +317,7 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
         LayoutInflater li = LayoutInflater.from(mContext);
         View promptsView = li.inflate(R.layout.alert_drop_drop_layout, null);
         final EditText startKm,totalKm,rtochallan,bike,fine_accident;
+        CheckBox helemtCollected=(CheckBox)promptsView.findViewById(R.id.helmet_collected);
         startKm=(EditText)promptsView.findViewById(R.id.alert_drop_start_km);
         totalKm=(EditText)promptsView.findViewById(R.id.alert_total_km_run);
         rtochallan=(EditText)promptsView.findViewById(R.id.alert_drop_rto);
@@ -322,6 +326,21 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
         TextView helmetMsg=(TextView)promptsView.findViewById(R.id.helment_msg);
         startKm.setText(""+rentObject.get(0).getStartKm());
 
+        helemtCollected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    if(rentObject.get(0).getIsHelmateProvided()){
+                        fine_accident.setText("");
+                    }
+                }
+                else{
+                    if(rentObject.get(0).getIsHelmateProvided()){
+                        fine_accident.setText(""+1000);
+                    }
+                }
+            }
+        });
         startKm.setEnabled(false);
         totalKm.setEnabled(false);
         bike.addTextChangedListener(new TextWatcher() {
@@ -351,9 +370,13 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
         });
         if(rentObject.get(0).getIsHelmateProvided()) {
             helmetMsg.setText("Note : Please collect helmet from user");
+            fine_accident.setText("1000");
+
         }
         else{
             helmetMsg.setText("Note : No Helmet Provided");
+            fine_accident.setText("");
+
         }
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 mContext);
@@ -370,7 +393,13 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
                                 String rto=rtochallan.getText().toString();
                                 String bike_=bike.getText().toString();
                                 String fine=fine_accident.getText().toString();
-                                String rentPoolKey=rentObject.get(0).get_rentPoolKey().get_id();
+
+                                String rentPoolKey="";
+                                try {
+                                    rentPoolKey = rentObject.get(0).get_rentPoolKey().get_id();
+                                }catch (Exception e){
+
+                                }
                                 dropVehicle(booking,positionBooking,bikeBookingId,startKm_,totalKm_,rto,bike_,fine,rentPoolKey);
                             }
                         })
@@ -385,14 +414,14 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
         alertDialog.show();
     }
 
-    private void dropVehicle(final Booking booking, final int positionBooking, String bikeBookingId, String startKm_, String totalKm_, String rto, String bike_, String fine, String rentPoolKey) {
+    private void dropVehicle(final DropBooking booking, final int positionBooking, String bikeBookingId, String startKm_, String totalKm_, String rto, String bike_, String fine, String rentPoolKey) {
         DropVehicleRequest drop=new DropVehicleRequest();
         drop.set_rentPoolKey(rentPoolKey);
         drop.setBikeBookedId(bikeBookingId);
-        drop.setEndKm(Integer.parseInt(totalKm_));
+        drop.setEndKm((int)Math.round(Double.parseDouble(bike_)));
         drop.setFineAccidentalCost(fine);
         drop.setRtoChallen(rto);
-        drop.setTotalKmRun(Integer.parseInt(totalKm_));
+        drop.setTotalKmRun((int)Math.round(Double.parseDouble(totalKm_)));
         BookingRequest request=APIClient.getClient().create(BookingRequest.class);
         Call<Void> call4=request.dropVehicle(drop);
         call4.enqueue(new Callback<Void>() {

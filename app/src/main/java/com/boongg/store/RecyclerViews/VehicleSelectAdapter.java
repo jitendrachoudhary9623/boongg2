@@ -79,7 +79,7 @@ public class VehicleSelectAdapter  extends RecyclerView.Adapter<VehicleSelectAda
                     .skipMemoryCache(false)
                     .into(vehicleImage);
             vehicleName.setText(v.getBrand()+" "+v.getModelName());
-            bikeRent.setText(mContext.getResources().getString(R.string.rs)+" "+v.getRentCalculated());
+            bikeRent.setText(mContext.getResources().getString(R.string.rs)+" "+Math.round(v.getRentCalculated()));
             bookingPay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v1) {

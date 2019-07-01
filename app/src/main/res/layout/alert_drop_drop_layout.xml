@@ -94,9 +94,13 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:layout_marginBottom="2dp"
-            android:hint="Fine Accidental Cost" />
+            android:hint="Fine" />
     </android.support.design.widget.TextInputLayout>
-
+<CheckBox
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Helmet Collected"
+    android:id="@+id/helmet_collected"/>
 </LinearLayout>
     <TextView
         android:layout_width="match_parent"

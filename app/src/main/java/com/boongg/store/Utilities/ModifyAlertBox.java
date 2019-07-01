@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.boongg.store.Models.Booking;
 import com.boongg.store.Models.Requests.ModifyRequest;
+import com.boongg.store.Models.Responses.Drop.DropBooking;
 import com.boongg.store.Models.Responses.Owners.Owner;
 import com.boongg.store.Models.Responses.VehicleList.VehicleList;
 import com.boongg.store.Networking.APIClient;
@@ -30,7 +31,7 @@ import retrofit2.http.Path;
 
 public class ModifyAlertBox {
 
-    public static void modifyVehicle(final Context context, final Booking booking){
+    public static void modifyVehicle(final Context context, final DropBooking booking){
         LayoutInflater li = LayoutInflater.from(context);
         View promptsView = li.inflate(R.layout.alert_modify_vehicle, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
@@ -81,10 +82,10 @@ public class ModifyAlertBox {
                     public void onClick(View v) {
                         int p=selectedPosition[0];
                         ModifyRequest request=new ModifyRequest();
-                        request.setBookingId(booking.getId());
+                        request.setBookingId(booking.get_id());
                         request.setBrand(vehicleLists.get(p).getBrand());
                         request.setModel(vehicleLists.get(p).getVehicleModel());
-                        request.setPreviousBikePoolKey(booking.getId());
+                        request.setPreviousBikePoolKey(booking.get_id());
                         request.setNewBikePoolKey(vehicleLists.get(p).get_id());
                         Call<Void> call3=inventory.modifyVehicle(request);
                         call3.enqueue(new Callback<Void>() {

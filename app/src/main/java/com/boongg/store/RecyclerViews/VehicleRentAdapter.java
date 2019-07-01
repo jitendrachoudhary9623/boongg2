@@ -14,6 +14,9 @@ import android.widget.Toast;
 import com.boongg.store.Interfaces.OnImageClickListener;
 import com.boongg.store.Models.Responses.NearbyVehicles.Result;
 import com.boongg.store.R;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -71,8 +74,16 @@ public class VehicleRentAdapter  extends RecyclerView.Adapter<VehicleRentAdapter
         }
         public void bindData(final int position) {
             final Result v=vehicleList.get(position);
+
             Toast.makeText(mContext,v.getThumbUrl(),Toast.LENGTH_LONG).show();
-            Picasso.with(mContext).load(v.getThumbUrl()).into(vehicleImage);
+           // Picasso.with(mContext).load(v.getThumbUrl()).into(vehicleImage);
+            Glide.with(mContext)
+                    .load(v.getThumbUrl()) // or URI/path
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.IMMEDIATE)
+                    .error(R.drawable.motorcycle)
+                    .skipMemoryCache(false)
+                    .into(vehicleImage);
             vehicleName.setText(v.getBrand()+" "+v.getModelName());
             vll.setOnClickListener(new View.OnClickListener() {
                 @Override

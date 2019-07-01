@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.boongg.store.Models.Requests.StoreInfo.StoreDetail;
 import com.boongg.store.R;
 import com.boongg.store.Utilities.JWTUtils;
 import com.boongg.store.Utilities.LoginToken;
+import com.boongg.store.Utilities.SharedPrefUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,7 +46,9 @@ public class AccountFragment extends Fragment {
             mobile.setText("Mobile : "+object.getString("mobileNumber"));
             email.setText("Email Id : "+object.getString("email"));
             created_at.setText("Created On : "+date.toString());
-          //  location.setText(""+object.getString("location").split("@")[0]);
+
+            StoreDetail sd=new StoreDetail();
+            sd=SharedPrefUtils.returnObject(LoginToken.OWNER_INFO,sd,getContext());
         } catch (Exception e) {
 
             e.printStackTrace();

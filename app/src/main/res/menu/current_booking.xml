@@ -11,4 +11,8 @@
         android:orderInCategory="1"
         app:showAsAction="always"
         android:icon="@drawable/ic_refresh"/>
+    <item android:id="@+id/sort"
+        android:orderInCategory="1"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_sort"/>
 </menu>

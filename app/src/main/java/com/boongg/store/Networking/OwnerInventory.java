@@ -4,6 +4,7 @@ import com.boongg.store.Models.BrandList;
 import com.boongg.store.Models.Requests.BikeMaintaince;
 import com.boongg.store.Models.Requests.CreateBike;
 import com.boongg.store.Models.Requests.ModifyRequest;
+import com.boongg.store.Models.Requests.StoreInfo.StoreDetail;
 import com.boongg.store.Models.Requests.UpdateBikePrice;
 import com.boongg.store.Models.Responses.AvailableVehicles.VehicleInventoryResponse;
 import com.boongg.store.Models.Responses.NearbyVehicles.Vehicle;
@@ -14,6 +15,7 @@ import com.boongg.store.Models.Responses.VehicleList.VehicleList;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -26,11 +28,13 @@ public interface OwnerInventory {
     @GET("storeforid/{token}")
     Call<Owner> getOwnerInfo(@Path("token") String token);
 
+    @GET("storeforid/{token}")
+    Observable<StoreDetail> getROwnerInfo(@Path("token") String token);
     @GET("rent/search/{owner_city_name}/any/any/{owner_city_locality}/")
     Call<Vehicle> getVehicleNearby(@Path("owner_city_name") String city, @Path("owner_city_locality") String locality,
                                          @Query(value="start_date",encoded =true) String start_date, @Query(value="end_date",encoded =true) String end_date, @Query(value = "timezone",encoded =true) String timezone);
 
-    @GET("rent-pool/all-list-store/{token}")
+    @GET("rent-pool/list/{token}")  //all-list-store
     Call<List<VehicleInventoryResponse>> getAvailableVehicles(@Path("token") String token);
 
     @GET("rent-pool/list/{token}/")

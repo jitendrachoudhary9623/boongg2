@@ -13,13 +13,27 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.boongg.store.Models.Booking;
+import com.boongg.store.Models.Requests.StoreInfo.StoreDetail;
 import com.boongg.store.Models.Token;
 import com.boongg.store.Networking.APIClient;
 import com.boongg.store.Networking.LoginRequest;
+import com.boongg.store.Networking.OwnerInventory;
+import com.boongg.store.RecyclerViews.DropAdapter;
 import com.boongg.store.Utilities.AlertBoxUtils;
+import com.boongg.store.Utilities.DateSorter;
 import com.boongg.store.Utilities.JWTUtils;
 import com.boongg.store.Utilities.LoginToken;
+import com.boongg.store.Utilities.ProgressbarUtil;
+import com.boongg.store.Utilities.SharedPrefUtils;
+import com.google.gson.Gson;
 
+import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -72,6 +86,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+CompositeDisposable compositeDisposable=new CompositeDisposable();
+
+    @Override
+    protected void onStop() {
+        compositeDisposable.clear();
+        super.onStop();
+    }
 
     public void login() {
         Log.d(TAG, "Login");
@@ -105,25 +126,25 @@ public class LoginActivity extends AppCompatActivity {
                         try {
                             id = JWTUtils.decoded(token.getToken());
                             Log.e("JWT ID", id);
-                            Toast.makeText(getApplicationContext(), "This is id " + id, Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getApplicationContext(), "This is id " + id, Toast.LENGTH_LONG).show();
                             LoginToken.id = id;
                             LoginToken.tokenId = token.getToken();
+
                             SharedPreferences sp = getSharedPreferences(LoginToken.PREFS, Context.MODE_PRIVATE);
                             sp.edit().putString(LoginToken.TOKEN, token.getToken()).commit();
                             sp.edit().putString(LoginToken.TOKEN_ID, id).commit();
+
+                           getOwnerData();
                             onLoginSuccess();
                         } catch (Exception e) {
-                            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Error"+e.toString(), Toast.LENGTH_LONG).show();
                             e.printStackTrace();
                         }
                     }else{
                         //AlertBoxUtils.showAlert(getApplicationContext(),"error","Login Failed","You have entered wrong password or email");
                         progressDialog.dismiss();
-
                         Toast.makeText(getApplicationContext(),"Wrong password or email",Toast.LENGTH_LONG).show();
-
                     }
-
                 }
                 else{
                     progressDialog.dismiss();
@@ -145,6 +166,27 @@ public class LoginActivity extends AppCompatActivity {
                         // onLoginFailed();
                     }
                 }, 3000);
+    }
+
+    private void getOwnerData() {
+        ProgressbarUtil.showProgressbarWithMsg(LoginActivity.this,"Authentication Successfull!!.. Please wait we are setting up application for you!!");
+
+        OwnerInventory owner=APIClient.getClient().create(OwnerInventory.class);
+
+        compositeDisposable.add(owner.getROwnerInfo(LoginToken.id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                new Consumer<StoreDetail>() {
+                    @Override
+                    public void accept(StoreDetail storeDetail) throws Exception {
+                        try {
+                            SharedPrefUtils.saveObjectToSharedPred(getApplicationContext(), storeDetail, LoginToken.OWNER_INFO);
+                            ProgressbarUtil.hideProgressBar();
+                        }catch (Exception e){
+                            Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                }
+        ));
     }
 
 

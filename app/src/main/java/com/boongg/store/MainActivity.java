@@ -29,6 +29,7 @@ import com.boongg.store.Utilities.LoginToken;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,ConnectivityReceiver.ConnectivityReceiverListener {
 
+
     private DrawerLayout drawer;
     private static MainActivity mInstance;
 

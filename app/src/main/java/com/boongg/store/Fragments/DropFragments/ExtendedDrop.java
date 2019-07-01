@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.boongg.store.Models.Booking;
+import com.boongg.store.Models.Responses.Drop.DropBooking;
 import com.boongg.store.Networking.BookingRequest;
 import com.boongg.store.Networking.OAPIClient;
 import com.boongg.store.R;
@@ -36,7 +37,7 @@ import retrofit2.Response;
 
 public class ExtendedDrop extends Fragment {
     RecyclerView recyclerView;
-    List<Booking> bookingList = new ArrayList<>();
+    List<DropBooking> bookingList = new ArrayList<>();
     TextView msg;
     boolean datafetched;
     @Nullable
@@ -56,18 +57,18 @@ public class ExtendedDrop extends Fragment {
 
     private void fetchData(final boolean isrefresh) {
         BookingRequest bookingRequest= OAPIClient.getClient().create(BookingRequest.class);
-        Call<List<Booking>> call1 = bookingRequest.getDropBookings();
+        Call<List<DropBooking>> call1 = bookingRequest.getDropBookings();
         if(isrefresh){
             ProgressbarUtil.showProgressbar(getContext());
         }
-        call1.enqueue(new Callback<List<Booking>>() {
+        call1.enqueue(new Callback<List<DropBooking>>() {
             @Override
-            public void onResponse(Call<List<Booking>> call, Response<List<Booking>> response) {
+            public void onResponse(Call<List<DropBooking>> call, Response<List<DropBooking>> response) {
                 bookingList = response.body();
                 datafetched=true;
                 //bookingList=;
                 if(bookingList.size()>0) {
-                    bookingList = DateSorter.getBookings("Overdue", response.body(),false);
+                    bookingList = DateSorter.getDropBookings("Overdue", response.body(),false);
 
                     DropAdapter adapter = new DropAdapter(bookingList, getContext());
                     recyclerView.setAdapter(adapter);
@@ -83,7 +84,7 @@ public class ExtendedDrop extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<Booking>> call, Throwable t) {
+            public void onFailure(Call<List<DropBooking>> call, Throwable t) {
                 Toast.makeText(getContext(),""+t.toString(),Toast.LENGTH_LONG).show();
                 Log.e("JWT ERR",t.toString());
             }
@@ -106,9 +107,9 @@ public class ExtendedDrop extends Fragment {
         });
         final SearchView searchView = (SearchView) searchItem.getActionView();
         EditText searchEditText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        /*searchEditText.setTextColor(getResources().getColor(R.color.value_color));
+        searchEditText.setTextColor(getResources().getColor(R.color.value_color));
         searchEditText.setHintTextColor(getResources().getColor(R.color.value_color));
-        searchEditText.setBackgroundColor(getResources().getColor(R.color.white));*/
+        searchEditText.setBackgroundColor(getResources().getColor(R.color.white));
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
@@ -138,9 +139,9 @@ public class ExtendedDrop extends Fragment {
     private void updateSearch(String query) {
         try {
             if (datafetched) {
-                List<Booking> search = new ArrayList<>();
-                for (Booking b : bookingList) {
-                    if (b.getBoonggBookingId().contains(query.toUpperCase())||b.getWebuserId().getProfile().getMobileNumber().contains(query)||b.getWebuserId().getProfile().getName().toUpperCase().contains(query.toUpperCase())) {
+                List<DropBooking> search = new ArrayList<>();
+                for (DropBooking b : bookingList) {
+                    if (b.get_rentPoolKey().getRegistrationNumber().contains(query.toUpperCase())||b.getBoonggBookingId().contains(query.toUpperCase())||b.get_webuserId().getProfile().getMobileNumber().contains(query)||b.get_webuserId().getProfile().getName().toUpperCase().contains(query.toUpperCase())) {
                         search.add(b);
                     }
                 }

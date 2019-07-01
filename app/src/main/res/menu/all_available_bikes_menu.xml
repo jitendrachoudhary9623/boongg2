@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_available"
+        android:icon="@drawable/ic_pickup"
+        android:title="Available" />
+
+    <item
+        android:id="@+id/nav_onbooking"
+        android:icon="@drawable/ic_drop"
+
+        android:title="On Booking" />
+
+    <item
+        android:id="@+id/nav_maintainance"
+        android:icon="@drawable/ic_payment"
+
+        android:title="Maintainance" />
+
+</menu>

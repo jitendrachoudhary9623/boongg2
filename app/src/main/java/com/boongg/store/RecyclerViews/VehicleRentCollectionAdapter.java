@@ -33,6 +33,9 @@ import com.boongg.store.R;
 import com.boongg.store.Utilities.AlertBoxUtils;
 import com.boongg.store.Utilities.JWTUtils;
 import com.boongg.store.Utilities.LoginToken;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
@@ -90,19 +93,27 @@ public class VehicleRentCollectionAdapter extends RecyclerView.Adapter<VehicleRe
             engine=(TextView)itemView.findViewById(R.id.rent_inventory_all_engine);
             quantity=(TextView)itemView.findViewById(R.id.rent_inventory_all_qty);
             prichart=(TextView)itemView.findViewById(R.id.rent_inventory_all_button);
+
         }
         public void bindData(final int position) {
 
                 final RentBikeResponse rent = vehicleList.get(position);
             try {
-                Toast.makeText(mContext,rent.getPictures().get(0).toString(),Toast.LENGTH_LONG).show();
                 bikename.setText(rent.getBrand() + "  " + rent.getModel());
                 status.setText(rent.getStatus());
 
                 engine.setText("Engine " + rent.getEngineCapacity() + " CC");
                 quantity.setText("Total Qty : " + Math.round(rent.getQuantity()));
-            }catch (Exception e){
 
+             /*   Glide.with(mContext)
+                        .load(rent.getThumbUrl()) // or URI/path
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .priority(Priority.IMMEDIATE)
+                        .error(R.drawable.motorcycle)
+                        .skipMemoryCache(false)
+                        .into(vehicleImage);*/
+            }catch (Exception e){
+Toast.makeText(mContext,e.toString(),Toast.LENGTH_LONG).show();
             }
 
         prichart.setOnClickListener(new View.OnClickListener() {

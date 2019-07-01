@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,10 @@ import com.boongg.store.Utilities.ProgressbarUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,46 +49,54 @@ public class HistoryFragment extends Fragment {
     List<Booking> bookingList;
     TextView msg;
     boolean datafetched;
-
+    BookingRequest bookingRequest;
+    CompositeDisposable compositeDisposable=new CompositeDisposable();
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_cancelled_booking, container, false);
         setHasOptionsMenu(true);
         datafetched=false;
+        bookingList=new ArrayList<>();
         recyclerView=(RecyclerView)rootView.findViewById(R.id.rv_cancelled_booking);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         ProgressbarUtil.showProgressbar(getContext());
-        BookingRequest bookingRequest= OAPIClient.getClient().create(BookingRequest.class);
-        Call<List<Booking>> call1 = bookingRequest.getCompletedBooking();
-
-
+        bookingRequest= OAPIClient.getClient().create(BookingRequest.class);
         msg=(TextView)rootView.findViewById(R.id.cancel_no_msg);
         msg.setText("No Completed Bookings");
-        call1.enqueue(new Callback<List<Booking>>() {
-            @Override
-            public void onResponse(Call<List<Booking>> call, Response<List<Booking>> response) {
-                bookingList = new ArrayList<>();
-
-                bookingList = response.body();
-                datafetched=true;
-                if(bookingList.size()>0) {
-                    HistoryAdapter adapter = new HistoryAdapter(bookingList, getContext());
-                    recyclerView.setAdapter(adapter);
-                    msg.setVisibility(View.GONE);
-                    ProgressbarUtil.hideProgressBar();
-                }
-                else{
-                    msg.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Booking>> call, Throwable t) {
-
-            }
-        });
+        fetchData();
         return rootView;
+    }
+
+    private void fetchData() {
+        compositeDisposable.add(bookingRequest.getCompletedBooking().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<Booking>>() {
+            @Override
+            public void accept(List<Booking> bookings) throws Exception {
+                datafetched=true;
+                bookingList=bookings;
+                displayData(bookings);
+
+            }
+        }));
+    }
+
+    private void displayData(List<Booking> bookings) {
+        if(bookings.size()<1){
+            msg.setVisibility(View.VISIBLE);
+        }
+        else {
+            msg.setVisibility(View.GONE);
+            HistoryAdapter adapter = new HistoryAdapter(bookings, getContext());
+            recyclerView.setAdapter(adapter);
+        }
+        ProgressbarUtil.hideProgressBar();
+
+    }
+
+    @Override
+    public void onStop() {
+        compositeDisposable.clear();
+        super.onStop();
     }
 
     @Override
@@ -95,16 +108,22 @@ public class HistoryFragment extends Fragment {
         refresh.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                //fetchData(true);
+                ProgressbarUtil.showProgressbar(getContext());
+                fetchData();
                 return false;
             }
         });
         final SearchView searchView = (SearchView) searchItem.getActionView();
+        EditText searchEditText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+
+        searchEditText.setTextColor(getResources().getColor(R.color.value_color));
+        searchEditText.setHintTextColor(getResources().getColor(R.color.value_color));
+        searchEditText.setBackgroundColor(getResources().getColor(R.color.white));
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
                 if(datafetched){
-                    DropAdapter adapter = new DropAdapter(bookingList, getContext());
+                    HistoryAdapter adapter = new HistoryAdapter(bookingList, getContext());
                     recyclerView.setAdapter(adapter);
                     recyclerView.setVisibility(View.VISIBLE);
                 }

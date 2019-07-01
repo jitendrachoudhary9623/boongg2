@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_root"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/rounded_cards"
+    >
+    <TextView
+        android:theme="@style/dialog_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Edit Booking"
+        />
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+      android:layout_margin="10dp"
+        android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:padding="5dp"
+                        android:id="@+id/add_bike_model"/>
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_margin="5dp"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:id="@+id/add_bike_brand"/>
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:padding="5dp"
+                        android:id="@+id/add_bike_model_year"/>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/rounded"
+                        android:paddingTop="1dp"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="3dp">
+                        <EditText android:id="@+id/add_bike_color"
+                            android:padding="6dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:layout_marginBottom="2dp"
+                            android:hint="Enter Bike Color" />
+                    </android.support.design.widget.TextInputLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.8dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@color/grayShade1"/>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/rounded"
+                        android:paddingTop="1dp"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="3dp">
+                        <EditText android:id="@+id/add_bike_engine_capacity"
+                            android:padding="6dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:layout_marginBottom="2dp"
+                            android:hint="Enter Engine Capacity" />
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/rounded"
+                        android:paddingTop="1dp"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="3dp">
+                        <EditText android:id="@+id/add_bike_chassis_number"
+                            android:padding="6dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:layout_marginBottom="2dp"
+                            android:hint="Enter Chasis Number" />
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/rounded"
+                        android:paddingTop="1dp"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="3dp">
+                        <EditText android:id="@+id/add_bike_engine_number"
+                            android:padding="6dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:layout_marginBottom="2dp"
+                            android:hint="Enter Engine Number" />
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/rounded"
+                        android:paddingTop="1dp"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="3dp">
+                        <EditText android:id="@+id/add_bike_registration"
+                            android:padding="6dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:layout_marginBottom="2dp"
+                            android:hint="Enter Registration Number" />
+                    </android.support.design.widget.TextInputLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.8dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@color/grayShade1"/>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="3dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded"
+                        android:paddingTop="1dp">
+
+                        <EditText
+                            android:id="@+id/add_bike_owner_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:hint="Enter Owner Number"
+                            android:inputType="text"
+                            android:padding="6dp" />
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="3dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded"
+                        android:paddingTop="1dp">
+
+                        <EditText
+                            android:id="@+id/add_bike_owner_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:hint="Enter Email Address"
+                            android:inputType="textEmailAddress"
+                            android:padding="6dp" />
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="3dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded"
+                        android:paddingTop="1dp">
+
+                        <EditText
+                            android:id="@+id/add_bike_owner_contact"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:hint="Enter Contact Number"
+                            android:inputType="phone"
+                            android:padding="6dp" />
+                    </android.support.design.widget.TextInputLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.8dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@color/grayShade1"/>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/rounded"
+                        android:paddingTop="1dp"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="3dp">
+                        <EditText android:id="@+id/add_bike_purchase_cost"
+                            android:padding="6dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberSigned"
+                            android:layout_marginBottom="2dp"
+                            android:hint="Enter Purchase Cost" />
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/rounded"
+                        android:paddingTop="1dp"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="3dp">
+                        <EditText android:id="@+id/add_bike_sell_cost"
+                            android:padding="6dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberSigned"
+                            android:layout_marginBottom="2dp"
+                            android:hint="Enter Selling Price" />
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/rounded"
+                        android:paddingTop="1dp"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="3dp">
+                        <EditText android:id="@+id/add_bike_km_travelled"
+                            android:padding="6dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:layout_marginBottom="2dp"
+                            android:hint="Enter Km Travelled" />
+                    </android.support.design.widget.TextInputLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.8dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@color/grayShade1"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:layout_margin="20dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@color/colorPrimary"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:id="@+id/add_bike_button_2"
+                        android:visibility="visible"
+                        android:text="Update Bike" />
+
+                </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
+</LinearLayout>

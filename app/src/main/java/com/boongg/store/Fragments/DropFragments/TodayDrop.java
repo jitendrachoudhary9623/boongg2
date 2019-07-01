@@ -1,7 +1,9 @@
 package com.boongg.store.Fragments.DropFragments;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,10 +16,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.boongg.store.Models.Booking;
+import com.boongg.store.Models.Responses.Drop.DropBooking;
 import com.boongg.store.Networking.BookingRequest;
 import com.boongg.store.Networking.OAPIClient;
 import com.boongg.store.R;
@@ -26,68 +30,87 @@ import com.boongg.store.Utilities.DateSorter;
 import com.boongg.store.Utilities.ProgressbarUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TodayDrop extends Fragment {
     RecyclerView recyclerView;
-    List<Booking> bookingList = new ArrayList<>();
+    List<DropBooking> bookingList = new ArrayList<>();
     TextView msg;
     boolean datafetched;
+    BookingRequest bookingRequest;
+    CompositeDisposable compositeDisposable=new CompositeDisposable();
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_drop_today, container, false);
-setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
         datafetched=false;
         recyclerView=(RecyclerView)rootView.findViewById(R.id.rv_today_drop);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-         msg=(TextView)rootView.findViewById(R.id.drop_today_no_msg);
-
+        recyclerView.setHasFixedSize(true);
+        msg=(TextView)rootView.findViewById(R.id.drop_today_no_msg);
          fetchData(false);
         return rootView;
     }
 
     private void fetchData(final boolean isrefresh) {
         BookingRequest bookingRequest= OAPIClient.getClient().create(BookingRequest.class);
-        Call<List<Booking>> call1 = bookingRequest.getDropBookings();
-        if(isrefresh){
+
             ProgressbarUtil.showProgressbar(getContext());
-        }
-        call1.enqueue(new Callback<List<Booking>>() {
+
+        compositeDisposable.add(bookingRequest.getRDropBookings().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<DropBooking>>() {
             @Override
-            public void onResponse(Call<List<Booking>> call, Response<List<Booking>> response) {
-                bookingList=new ArrayList<>();
-                bookingList = response.body();
+            public void accept(List<DropBooking> bookings) throws Exception {
                 datafetched=true;
-                //bookingList=;
+                bookingList=bookings;
                 if(bookingList.size()>0) {
-                    bookingList = DateSorter.getBookings("Today", response.body(),false);
+                    bookingList = DateSorter.getDropBookings("Today", bookings,false);
 
                     DropAdapter adapter = new DropAdapter(bookingList, getContext());
                     recyclerView.setAdapter(adapter);
                     msg.setVisibility(View.GONE);
-                    if(isrefresh){
                         ProgressbarUtil.hideProgressBar();
-                    }
+
                 }
                 else{
                     msg.setVisibility(View.VISIBLE);
                 }
-                //    Toast.makeText(getContext(),"Size "+bookingList.size(),Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(Call<List<Booking>> call, Throwable t) {
+                displayData(bookings);
 
             }
-        });
+        }));
 
+
+    }
+
+    private void displayData(List<DropBooking> bookings) {
+        if(bookings.size()<1){
+            msg.setVisibility(View.VISIBLE);
+        }
+        else {
+            recyclerView.setItemViewCacheSize(bookings.size());
+
+            msg.setVisibility(View.GONE);
+            DropAdapter adapter = new DropAdapter(bookings, getContext());
+            recyclerView.setAdapter(adapter);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        compositeDisposable.clear();
+        super.onStop();
     }
 
     @Override
@@ -103,7 +126,27 @@ setHasOptionsMenu(true);
                 return false;
             }
         });
+        MenuItem sortItems=menu.findItem(R.id.sort);
+        sortItems.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Collections.sort(bookingList);
+
+                if(datafetched){
+                    DropAdapter adapter = new DropAdapter(bookingList, getContext());
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
+                return false;
+            }
+        });
         final SearchView searchView = (SearchView) searchItem.getActionView();
+        EditText searchEditText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+
+        searchEditText.setTextColor(getResources().getColor(R.color.value_color));
+        searchEditText.setHintTextColor(getResources().getColor(R.color.value_color));
+        searchEditText.setBackgroundColor(getResources().getColor(R.color.white));
+
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
@@ -133,9 +176,9 @@ setHasOptionsMenu(true);
     private void updateSearch(String query) {
         try {
             if (datafetched) {
-                List<Booking> search = new ArrayList<>();
-                for (Booking b : bookingList) {
-                    if (b.getBoonggBookingId().contains(query.toUpperCase())||b.getWebuserId().getProfile().getMobileNumber().contains(query)||b.getWebuserId().getProfile().getName().toUpperCase().contains(query.toUpperCase())) {
+                List<DropBooking> search = new ArrayList<>();
+                for (DropBooking b : bookingList) {
+                    if (b.get_rentPoolKey().getRegistrationNumber().contains(query.toUpperCase())||b.getBoonggBookingId().contains(query.toUpperCase())||b.get_webuserId().getProfile().getMobileNumber().contains(query)||b.get_webuserId().getProfile().getName().toUpperCase().contains(query.toUpperCase())) {
                         search.add(b);
                     }
                 }

@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -110,6 +111,11 @@ public class TodayPickUp extends Fragment {
             }
         });
         final SearchView searchView = (SearchView) searchItem.getActionView();
+        EditText searchEditText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+
+        searchEditText.setTextColor(getResources().getColor(R.color.value_color));
+        searchEditText.setHintTextColor(getResources().getColor(R.color.value_color));
+        searchEditText.setBackgroundColor(getResources().getColor(R.color.white));
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
