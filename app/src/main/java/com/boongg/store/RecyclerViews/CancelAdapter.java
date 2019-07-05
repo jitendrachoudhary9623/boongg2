@@ -109,7 +109,7 @@ public class CancelAdapter extends RecyclerView.Adapter<CancelAdapter.CancelView
             }
             catch(Exception e)
             {
-                Toast.makeText(mContext,e.toString(),Toast.LENGTH_LONG).show();
+                //Toast.makeText(mContext,e.toString(),Toast.LENGTH_LONG).show();
             }
             finally {
 

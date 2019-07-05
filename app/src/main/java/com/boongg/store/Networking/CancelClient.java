@@ -6,6 +6,8 @@ import com.boongg.store.Utilities.LoginToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -16,6 +18,10 @@ public class CancelClient {
 
     public static Retrofit getClient() {
         Log.e("JWT",BASE_URL);
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(logging);
         if (retrofit == null) {
             Gson gson = new GsonBuilder()
                     .setLenient()
@@ -23,6 +29,7 @@ public class CancelClient {
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(httpClient.build())
                     .build();
         }
         return retrofit;

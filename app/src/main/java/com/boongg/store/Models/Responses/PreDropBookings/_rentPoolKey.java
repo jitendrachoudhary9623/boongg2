@@ -61,13 +61,13 @@ public class _rentPoolKey implements Parcelable
     private List<Owner> owner = null;
     @SerializedName("licenceFiles")
     @Expose
-    private List<Object> licenceFiles = null;
+    private List<LicenceFile> licenceFiles = null;
     @SerializedName("pucFiles")
     @Expose
-    private List<Object> pucFiles = null;
+    private List<PucFile> pucFiles = null;
     @SerializedName("rcFiles")
     @Expose
-    private List<Object> rcFiles = null;
+    private List<RcFile> rcFiles = null;
     @SerializedName("id")
     @Expose
     private String id;
@@ -105,9 +105,9 @@ public class _rentPoolKey implements Parcelable
         this._storeKey = ((String) in.readValue((String.class.getClassLoader())));
         this.__v = ((Double) in.readValue((Double.class.getClassLoader())));
         in.readList(this.owner, (com.boongg.store.Models.Responses.PreDropBookings.Owner.class.getClassLoader()));
-        in.readList(this.licenceFiles, (java.lang.Object.class.getClassLoader()));
-        in.readList(this.pucFiles, (java.lang.Object.class.getClassLoader()));
-        in.readList(this.rcFiles, (java.lang.Object.class.getClassLoader()));
+        in.readList(this.licenceFiles, (com.boongg.store.Models.Responses.PreDropBookings.LicenceFile.class.getClassLoader()));
+        in.readList(this.pucFiles, (com.boongg.store.Models.Responses.PreDropBookings.PucFile.class.getClassLoader()));
+        in.readList(this.rcFiles, (com.boongg.store.Models.Responses.PreDropBookings.RcFile.class.getClassLoader()));
         this.id = ((String) in.readValue((String.class.getClassLoader())));
     }
 
@@ -242,27 +242,27 @@ public class _rentPoolKey implements Parcelable
         this.owner = owner;
     }
 
-    public List<Object> getLicenceFiles() {
+    public List<LicenceFile> getLicenceFiles() {
         return licenceFiles;
     }
 
-    public void setLicenceFiles(List<Object> licenceFiles) {
+    public void setLicenceFiles(List<LicenceFile> licenceFiles) {
         this.licenceFiles = licenceFiles;
     }
 
-    public List<Object> getPucFiles() {
+    public List<PucFile> getPucFiles() {
         return pucFiles;
     }
 
-    public void setPucFiles(List<Object> pucFiles) {
+    public void setPucFiles(List<PucFile> pucFiles) {
         this.pucFiles = pucFiles;
     }
 
-    public List<Object> getRcFiles() {
+    public List<RcFile> getRcFiles() {
         return rcFiles;
     }
 
-    public void setRcFiles(List<Object> rcFiles) {
+    public void setRcFiles(List<RcFile> rcFiles) {
         this.rcFiles = rcFiles;
     }
 

@@ -39,6 +39,8 @@ import com.boongg.store.Interfaces.OnImageClickListener;
 import com.boongg.store.LoginActivity;
 import com.boongg.store.MainActivity;
 import com.boongg.store.Models.Booking;
+import com.boongg.store.Models.Requests.AddressUpdate.UpdateAddress;
+import com.boongg.store.Models.Requests.BikeList;
 import com.boongg.store.Models.Requests.CheckIn;
 import com.boongg.store.Models.Requests.CreateBookingRequest;
 import com.boongg.store.Models.Requests.CreateUser;
@@ -48,7 +50,6 @@ import com.boongg.store.Models.Requests.VerifyOtpRequest;
 import com.boongg.store.Models.Requests.ViewOffer;
 import com.boongg.store.Models.Responses.AvailableVehicles.VehicleInventoryResponse;
 import com.boongg.store.Models.Responses.CancelledData.Cancel;
-import com.boongg.store.Models.Responses.CreateBooking.BikeList;
 import com.boongg.store.Models.Responses.CreateBooking.CreateBookingResponse;
 import com.boongg.store.Models.Responses.CreateBooking.CreateBookingSuccessResponse;
 import com.boongg.store.Models.Responses.CreateUserResponse;
@@ -119,6 +120,8 @@ public class CreateBookingFragment extends Fragment {
     SearchUSer su;
     private OnImageClickListener listner;
     public Result selectedVehicle;
+    public String usersAddress;
+    String uAddress="";
 
     @Nullable
     @Override
@@ -150,12 +153,16 @@ public class CreateBookingFragment extends Fragment {
         email_search=(EditText)rootView.findViewById(R.id.create_search_email) ;
         submitOtp = (Button) rootView.findViewById(R.id.submit_otp);
 
-        setDateUsingDatePicker(startDate);
-        setDateUsingDatePicker(endDate);
+        setDateUsingDatePicker(startDate,false);
+        setDateUsingDatePicker(endDate,true);
         searchb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String number = search.getText().toString();
+                if(number.length()<10||number.length()>10||number.isEmpty()){
+                    search.setError("Enter Valid Number");
+                    return;
+                }
                 SearchUser searchUser = APIClient.getClient().create(SearchUser.class);
                 Call<List<SearchUSer>> call1 = searchUser.searchUser(number);
                 showProgressBar();
@@ -168,28 +175,36 @@ public class CreateBookingFragment extends Fragment {
                             List<SearchUSer> users = response.body();
                             switch (users.size()) {
                                 case 0:
-                                    Toast.makeText(getContext(), "No User Found", Toast.LENGTH_LONG).show();
-
+                                  //  Toast.makeText(getContext(), "No User Found", Toast.LENGTH_LONG).show();
                                     nouser.setVisibility(View.VISIBLE);
                                     userfound.setVisibility(View.GONE);
                                     createUser.setVisibility(View.VISIBLE);
                                     AlertBoxUtils.showAlert(getContext(), "error", "User Search Result", "User not found");
+                                    recyclerView.setVisibility(View.GONE);
 
                                     createUserProfile(number);
                                     break;
                                 case 1:
-
+                                    usersAddress=users.get(0).getProfile().getAddress();
                                     nouser.setVisibility(View.GONE);
                                     userfound.setVisibility(View.VISIBLE);
                                     createUser.setVisibility(View.GONE);
                                     su = users.get(0);
+                                    String uAddress=su.getProfile().getAddress();
                                     username.setText(su.getProfile().getName());
                                     email_search.setText(su.getEmail());
+                                    username.setEnabled(false);
+                                    email_search.setEnabled(false);
                                     AlertBoxUtils.showAlert(getContext(), "success", "User Search Result", "User found");
-
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    try{
+                                        recyclerView.setAdapter(null);
+                                    }catch(Exception e){
+                                    }
                                     creatingBooking();
-
                                     break;
+                                    default:
+                                        AlertBoxUtils.showAlert(getContext(),"error","Users Found","Multiple Users found with Phone Number "+number);
                             }
                         }catch (Exception e){
 
@@ -199,7 +214,7 @@ public class CreateBookingFragment extends Fragment {
                     @Override
                     public void onFailure(Call<List<SearchUSer>> call, Throwable t) {
                         progressDialog.hide();
-                        Toast.makeText(getContext(), t.toString(), Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getContext(), t.toString(), Toast.LENGTH_LONG).show();
 
                     }
                 });
@@ -207,7 +222,6 @@ public class CreateBookingFragment extends Fragment {
         });
         return rootView;
     }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -253,12 +267,12 @@ public class CreateBookingFragment extends Fragment {
                                     }
                                 });
                                 recyclerView.setAdapter(adapter);
-                                Toast.makeText(getContext(), "" + response.body().getCitys(), Toast.LENGTH_LONG).show();
+                               // Toast.makeText(getContext(), "" + response.body().getCitys(), Toast.LENGTH_LONG).show();
                             }
 
                             @Override
                             public void onFailure(Call<Vehicle> call, Throwable t) {
-                                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_LONG).show();
+                             //   Toast.makeText(getContext(), t.toString(), Toast.LENGTH_LONG).show();
                                 Log.e("JWT", t.toString());
                                 Log.d("JWT", "ok  " + call.request().url().toString());
                             }
@@ -292,21 +306,24 @@ public class CreateBookingFragment extends Fragment {
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialog);
         alertDialogBuilder.setView(promptsView);
         final EditText trent, srent, totalCalculatedRent;
-        TextView payNow;
+        TextView payNow,cancelNow;
         trent = (EditText) promptsView.findViewById(R.id.pay_total_rent);
+        trent.setEnabled(false);
         srent = (EditText) promptsView.findViewById(R.id.pay_selected_rent);
+        srent.setEnabled(false);
         totalCalculatedRent = (EditText) promptsView.findViewById(R.id.total_calculated_rent);
-        StoreDetail sd = new StoreDetail();
-        sd = SharedPrefUtils.returnObject(LoginToken.OWNER_INFO, sd, getContext());
+        totalCalculatedRent.setEnabled(false);
+        StoreDetail sd2 = new StoreDetail();
+        final StoreDetail sd = SharedPrefUtils.returnObject(LoginToken.OWNER_INFO, sd2, getContext());
         try {
             if (!sd.getGstNumber().equals("") && sd.getGstNumber() != null) {
-                gst = 0.00;
-            } else {
                 gst = 0.06;
+            } else {
+                gst = 0.00;
             }
         } catch (Exception e) {
             //Toast.makeText(getContext(),e.toString(),Toast.LENGTH_LONG).show();
-            gst = 0.06;
+            gst = 0.00;
         }
         //spinner = (Spinner)promptsView.findViewById(R.id.payment_method_spinner);
         final NiceSpinner spinner = (NiceSpinner) promptsView.findViewById(R.id.payment_method_spinner);
@@ -316,7 +333,10 @@ public class CreateBookingFragment extends Fragment {
         final EditText sgst = (EditText) promptsView.findViewById(R.id.pay_sgst);
         final CheckBox applyDiscount = (CheckBox) promptsView.findViewById(R.id.applyDiscount_checkbox);
         final Spinner discountOffer = (Spinner) promptsView.findViewById(R.id.applyDiscount_spinner);
+        discountOffer.setVisibility(View.GONE);
         final TextView discountText = (TextView) promptsView.findViewById(R.id.discount_msg);
+        cgst.setEnabled(false);
+        sgst.setEnabled(false);
         final List<String> discount = new ArrayList<>();
         final List<ViewOffer> viewOffersq = new ArrayList<>();
         OfferRequest offerRequest = APIClient.getClient().create(OfferRequest.class);
@@ -326,7 +346,11 @@ public class CreateBookingFragment extends Fragment {
                 discount.add("No Offer 0% OFF");
                 viewOffersq.addAll(viewOffers);
                 for (ViewOffer offer : viewOffers) {
-                    discount.add(offer.getCoupenCode() + " " + offer.getDiscountInPrecentOrFlat() + " % OFF");
+                    String text=" % OFF";
+                    if(!offer.getDiscountType().equals("Percent")){
+                        text=" Rs FLAT";
+                    }
+                    discount.add(offer.getCoupenCode() + " " + offer.getDiscountInPrecentOrFlat() + text);
                 }
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                         getContext(),
@@ -346,8 +370,7 @@ public class CreateBookingFragment extends Fragment {
                         maxDiscount=0;
                         if (applyDiscount.isChecked()) {
                             discountText.setText("Minimum of "+discountPercent + "% on total amount or "+maxDiscount+" Rs discount is applied");
-                            trent.setText("" + Double.parseDouble(srent.getText().toString()));
-
+                            trent.setText("" + Math.round(Double.parseDouble(srent.getText().toString())));
                         }
                         break;
 
@@ -355,17 +378,30 @@ public class CreateBookingFragment extends Fragment {
                         try {
                             discountPercent = viewOffersq.get(position - 1).getDiscountInPrecentOrFlat();
                             maxDiscount=viewOffersq.get(position-1).getMaxDiscount();
+                            ViewOffer offer=viewOffersq.get(position-1);
                             if (applyDiscount.isChecked()) {
-                                discountText.setText("Minimum of "+discountPercent + "% on total amount or "+maxDiscount+" Rs discount is applied");
                                 double rent2 = Double.parseDouble(srent.getText().toString());
-                                double rent1=rent2;
-                                rent1=rent1-maxDiscount;
-                                rent2 = rent2 - (rent2 * (discountPercent / 100));
-                                trent.setText("" + Math.min(rent1,rent2));
+                                if(rent2>=offer.getMinTransaction()) {
+                                    if(offer.getDiscountType().equals("Percent")) {
+                                        discountText.setText("Minimum of " + discountPercent + "% on total amount or " + maxDiscount + " Rs discount is applied");
+                                        double rent1 = Double.parseDouble(srent.getText().toString());
+                                        rent1 = rent1 - maxDiscount;
+                                        rent2 = rent2 - (rent2 * (discountPercent / 100));
+                                        trent.setText("" + Math.round(Math.max(rent1, rent2)));
+                                    }else{
+                                        discountText.setText(maxDiscount + " Rs discount is applied");
+                                        double rent1 = Double.parseDouble(srent.getText().toString());
+                                        rent1 = rent1 - maxDiscount;
+                                        trent.setText(""+Math.round(rent1));
+                                    }
+                                }
+                                else{
+                                    discountText.setText("For using "+viewOffersq.get(position-1).getCoupenCode()+" coupon , minimum transaction required is "+viewOffersq.get(position-1).getMinTransaction());
+                                }
                             }
                             break;
                         } catch (Exception e) {
-                            Toast.makeText(getContext(), "size " + viewOffersq.size(), Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getContext(), "size " + viewOffersq.size(), Toast.LENGTH_LONG).show();
                         }
                 }
             }
@@ -381,13 +417,21 @@ public class CreateBookingFragment extends Fragment {
                 trent.setText("" + Double.parseDouble(trent.getText().toString()));
                 discountText.setText("Minimum of "+discountPercent + "% on total amount or "+maxDiscount+" Rs discount is applied");
                 if (isChecked) {
+                    discountOffer.setSelection(0);
+
+                    discountOffer.setVisibility(View.VISIBLE);
                 } else {
-                    discountText.setText("Minimum of "+0 + "% on total amount or "+0+" Rs discount is applied");
+                    discountOffer.setVisibility(View.GONE);
+                    trent.setText("" + Double.parseDouble(srent.getText().toString()));
+
+                    discountText.setText("No Discount Coupon Applied,");
                 }
             }
         });
 
         payNow = (TextView) promptsView.findViewById(R.id.payment_pay_now);
+        cancelNow = (TextView) promptsView.findViewById(R.id.payment_cancel);
+
         final List<String> paymentMethods = new ArrayList<>();
         final List<PaymentMethod> paymentObjects = new LinkedList<>();
         final PaymentMethod[] payObject = new PaymentMethod[1];
@@ -397,7 +441,7 @@ public class CreateBookingFragment extends Fragment {
         pcall.enqueue(new Callback<List<PaymentMethod>>() {
             @Override
             public void onResponse(Call<List<PaymentMethod>> call, Response<List<PaymentMethod>> response) {
-                Toast.makeText(getContext(), response.body().size() + "", Toast.LENGTH_LONG).show();
+         //       Toast.makeText(getContext(), response.body().size() + "", Toast.LENGTH_LONG).show();
                 for (PaymentMethod m : response.body()) {
                     paymentMethods.add(m.getPaymentType());
                     paymentObjects.add(m);
@@ -434,22 +478,28 @@ public class CreateBookingFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
-
             @Override
             public void afterTextChanged(Editable s) {
                 try {
                     totalCalculatedRent.setText(formatString("" + (Double.parseDouble(sgst.getText().toString()) * 2 + Double.parseDouble(trent.getText().toString()))));
-
+                    sgst.setText("" + formatString("" + (Double.parseDouble(trent.getText().toString()) * gst)));
+                    cgst.setText(formatString("" + (Double.parseDouble(trent.getText().toString()) * gst)));
                 } catch (Exception e) {
 
                 }
             }
         });
-        sgst.setText("" + formatString("" + (vehichle.getRentCalculated() * gst)));
-        cgst.setText(formatString("" + (vehichle.getRentCalculated() * gst)));
+        sgst.setText("" + formatString("" + (Double.parseDouble(trent.getText().toString()) * gst)));
+        cgst.setText(formatString("" + (Double.parseDouble(trent.getText().toString()) * gst)));
         totalCalculatedRent.setText(formatString("" + (Double.parseDouble(sgst.getText().toString()) * 2 + Double.parseDouble(trent.getText().toString()))));
         final AlertDialog alertDialog = alertDialogBuilder.create();
-
+        alertDialog.setCancelable(false);
+        cancelNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
         payNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -457,13 +507,24 @@ public class CreateBookingFragment extends Fragment {
                 try{
                     booking.setUsername(su.getProfile().getName());
                 booking.setEmailid(su.getEmail());
-                booking.setIsGstApplicable(true);
+                    try {
+                        if (!sd.getGstNumber().equals("") && sd.getGstNumber() != null) {
+                            booking.setIsGstApplicable(true);
+                        } else {
+                            booking.setIsGstApplicable(false);
+                        }
+                    } catch (Exception e) {
+                   //     Toast.makeText(getContext(),e.toString(),Toast.LENGTH_LONG).show();
+                        booking.setIsGstApplicable(false);
+                    }
                 booking.setMobileNo(su.getProfile().getMobileNumber());
                 booking.setLocation(o.getLocality().get(0));
                 booking.setMobileNo(su.getProfile().getMobileNumber());
                 booking.setPaymentType("OFFLINE");
                 booking.setPaymentTypeMode(payObject[0].get_id()); //paymenttype getlist
-                booking.setRecivableAmountWithTax(Double.parseDouble(trent.getText().toString()));
+
+                    //Change here
+                booking.setRecivableAmountWithTax(Double.parseDouble(totalCalculatedRent.getText().toString()));
                 booking.setRentTotal(Double.parseDouble(trent.getText().toString()));
                 booking.setSuggestedRent(Double.parseDouble(trent.getText().toString()));  //change here
                 booking.setStoreKey(LoginToken.id);
@@ -485,9 +546,9 @@ public class CreateBookingFragment extends Fragment {
                 bike.setCartQuantity(vehichle.getQuantity());
                 bike.setStartDate(Long.parseLong(DateSorter.convertStringToTimestamp(startDate.getText().toString())));
                 bike.setEndDate(Long.parseLong(DateSorter.convertStringToTimestamp(endDate.getText().toString())));
-
+                bike.setCartQuantity(1.0);
+                bike.setCartRent(Double.parseDouble(trent.getText().toString()));
                 bikes.add(bike);
-
                 booking.setBikeList(bikes);
         }catch(Exception e){}
 
@@ -536,14 +597,24 @@ public class CreateBookingFragment extends Fragment {
     AlertDialog dialog2;
     List<String> ds = new ArrayList<>();
     List<VehicleInventoryResponse> vehicleList = new ArrayList<>();
+    boolean addressPresent=false;
 
     private void directCheckOut(final List<CreateBookingResponse> body) {
         LayoutInflater li = LayoutInflater.from(getContext());
         View promptsView = li.inflate(R.layout.alert_checkin, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 getContext());
+
         final EditText start = (EditText) promptsView.findViewById(R.id.startKm);
         final EditText totalRent=(EditText)promptsView.findViewById(R.id.totalRent);
+        final EditText address=(EditText)promptsView.findViewById(R.id.emergency_address);
+        try {
+            address.setText(usersAddress);
+            if(!uAddress.equals("")){
+                addressPresent=true;
+            }
+        }catch (Exception e){}
+
         totalRent.setText(""+body.get(0).getRentTotal());
         final CheckBox modifyBikeCheckBox, helmentProvidedCheckBox;
         modifyBikeCheckBox = (CheckBox) promptsView.findViewById(R.id.modify_bike_checkbox);
@@ -657,6 +728,7 @@ public class CreateBookingFragment extends Fragment {
 
             }
         });
+
         helmentProvidedCheckBox = (CheckBox) promptsView.findViewById(R.id.helmet_provided);
         alertDialogBuilder.setView(promptsView);
         alertDialogBuilder
@@ -676,7 +748,52 @@ public class CreateBookingFragment extends Fragment {
                                     @Override
                                     public void onResponse(Call<Void> call, Response<Void> response) {
 
-                                        AlertBoxUtils.showAlert(getContext(), "success", "Check In", "Check in successfull ! please wait we will take you to the main screem");
+                                        if(addressPresent==false||uAddress.equals(address.getText().toString())==false){
+                                            //update Address
+                                            try {
+                                                String phoneNo = su.getProfile().getMobileNumber();
+                                                final SearchUser user=APIClient.getClient().create(SearchUser.class);
+                                                Call<List<SearchUSer>> scall=user.searchUser(phoneNo);
+                                                scall.enqueue(new Callback<List<SearchUSer>>() {
+                                                    @Override
+                                                    public void onResponse(Call<List<SearchUSer>> call, Response<List<SearchUSer>> response) {
+                                                        switch (response.body().size()){
+                                                            case 1:
+                                                                UpdateAddress update=new UpdateAddress();
+                                                                update.setId(response.body().get(0));
+                                                                update.setAddress(address.getText().toString());
+                                                                Call<Void> updateA=user.updateAddress(update);
+                                                                updateA.enqueue(new Callback<Void>() {
+                                                                    @Override
+                                                                    public void onResponse(Call<Void> call, Response<Void> response) {
+
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onFailure(Call<Void> call, Throwable t) {
+
+                                                                    }
+                                                                });
+                                                                break;
+                                                            default:
+                                                                break;
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(Call<List<SearchUSer>> call, Throwable t) {
+
+                                                    }
+                                                });
+
+                                            }catch (Exception e){}
+                                            dialog2.dismiss();
+                                            AlertBoxUtils.showAlert(getContext(), "success", "Check In", "Check in successfull");
+
+                                        }else {
+                                            AlertBoxUtils.showAlert(getContext(), "success", "Check In", "Check in successfull");
+                                        }
+                                        //AlertBoxUtils.showAlert(getContext(), "success", "Check In", "Check in successfull ! please wait we will take you to the main screem");
                                         getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
                                     }
@@ -696,6 +813,7 @@ public class CreateBookingFragment extends Fragment {
 
                             }
                         });
+
         dialog2 = alertDialogBuilder.create();
         dialog2.show();
     }
@@ -708,15 +826,25 @@ public class CreateBookingFragment extends Fragment {
 
             final String fullname = fname.getText().toString() + " " + lname.getText().toString();
             final String email_ = email.getText().toString();
+            if(fname.getText().toString().matches("^[0-9]+")){
+                fname.setError("Enter Valid Input");
+                return;
+            }
+             if(lname.getText().toString().matches("^[0-9]+")){
+                lname.setError("Enter Valid Input");
+                return;
+            }
+             createB.setEnabled(false);
+
             final CreateUser user = new CreateUser(fullname, number, email_);
-            final CreateUserI createUser = APIClient.getClient().create(CreateUserI.class);
+            final CreateUserI createUserApi = APIClient.getClient().create(CreateUserI.class);
             showProgressBar();
-            final Call<CreateUserSuccessResponse> call1 = createUser.createNewUser(user);
+            final Call<CreateUserSuccessResponse> call1 = createUserApi.createNewUser(user);
             call1.enqueue(new Callback<CreateUserSuccessResponse>() {
                 @Override
                 public void onResponse(Call<CreateUserSuccessResponse> call, Response<CreateUserSuccessResponse> response) {
                   progressDialog.hide();
-                    if(response.code()!=500){
+                    if(response.isSuccessful()){
                         sentOtp.setVisibility(View.VISIBLE);
                         sentOtp.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -727,7 +855,7 @@ public class CreateBookingFragment extends Fragment {
 
                                 SendOtpRequest otpRequest = new SendOtpRequest(email_,number);
                                 ProgressbarUtil.showProgressbar(getContext());
-                                Call<SendOtpResponse> otpCall = createUser.sendOtp(otpRequest);
+                                Call<SendOtpResponse> otpCall = createUserApi.sendOtp(otpRequest);
                                 otpCall.enqueue(new Callback<SendOtpResponse>() {
                                     @Override
                                     public void onResponse(Call<SendOtpResponse> call, Response<SendOtpResponse> response) {
@@ -736,19 +864,23 @@ public class CreateBookingFragment extends Fragment {
                                         submitOtp.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                submitOtp.setEnabled(false);
                                                 VerifyOtpRequest verifyOtpRequest=new VerifyOtpRequest(email_, number, storeOtp.getText().toString());
                                                 ProgressbarUtil.showProgressbar(getContext());
-                                                Call<VerifyOtpResponse> verifyOtp = createUser.verifyOtp(verifyOtpRequest);
+                                                Call<VerifyOtpResponse> verifyOtp = createUserApi.verifyOtp(verifyOtpRequest);
                                                 verifyOtp.enqueue(new Callback<VerifyOtpResponse>() {
                                                     @Override
                                                     public void onResponse(Call<VerifyOtpResponse> call, Response<VerifyOtpResponse> response) {
                                                         ProgressbarUtil.hideProgressBar();
-
+                                                        createUser.setVisibility(View.GONE);
+                                                        nouser.setVisibility(View.GONE);
+                                                        AlertBoxUtils.showAlert(getContext(),"success","User Registartion","Successfull");
                                                     }
-
                                                     @Override
                                                     public void onFailure(Call<VerifyOtpResponse> call, Throwable t) {
                                                         ProgressbarUtil.hideProgressBar();
+                                                        AlertBoxUtils.showAlert(getContext(),"error","User Registartion","Failed");
+
                                                     }
                                                 });
 
@@ -766,7 +898,10 @@ public class CreateBookingFragment extends Fragment {
                     }
                     else{
                         sentOtp.setVisibility(View.GONE);
-                        Toast.makeText(getContext(),"Failure"+response.body().getSuccess(),Toast.LENGTH_LONG).show();
+                        createB.setEnabled(true);
+
+                        AlertBoxUtils.showAlert(getContext(),"error","User Registartion","Failed, We think you have already registered with us (check your phone number and email address!");
+
                     }
                 }
 
@@ -778,8 +913,10 @@ public class CreateBookingFragment extends Fragment {
         }
     });
     }
+     Calendar startCalendar;
 
-    public void setDateUsingDatePicker(final TextView vt){
+
+    public void setDateUsingDatePicker(final TextView vt, final boolean isEndDate){
 
         vt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -809,13 +946,32 @@ public class CreateBookingFragment extends Fragment {
                     }
                 };
 
-                new DatePickerDialog(getContext(), mDateDataSet, mCalendar.get(Calendar.YEAR),
-                        mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH)).show();
+               DatePickerDialog datePickerDialog= new DatePickerDialog(getContext(), mDateDataSet, mCalendar.get(Calendar.YEAR),
+                        mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.setCancelable(false);
+                if(isEndDate) {
+                    if(startDate.getText().toString().equals("START DATE")){
+                        Toast.makeText(getContext(),"Select Start Date First",Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                 try {
+                       SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                       Date date = sdf.parse(startDate.getText().toString());
+                       Calendar cal = Calendar.getInstance();
+                       cal.setTime(date);
+                       datePickerDialog.getDatePicker().setMinDate(cal.getTimeInMillis());
+
+                   }catch (Exception e){
+                //  Toast.makeText(getContext(),e.toString(),Toast.LENGTH_LONG).show();
+                       datePickerDialog.getDatePicker().setMinDate(Calendar.getInstance().getTimeInMillis());
+
+                   }
+
+               }
+                datePickerDialog.show();
             }
 
         });
-
-
     }
     public String formatString(String ss){
         try {
@@ -824,7 +980,5 @@ public class CreateBookingFragment extends Fragment {
             return ss;
         }
     }
-
-
 }
 

@@ -4,11 +4,15 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.Parcelable.Creator;
 
+import com.boongg.store.Models.Responses.Drop.DropBooking;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class Booking implements Parcelable
+
+public class Booking implements Parcelable,Comparable<Booking>
 {
 
     @SerializedName("_id")
@@ -458,4 +462,25 @@ public class Booking implements Parcelable
         return  0;
     }
 
+
+    @Override
+    public int compareTo(Booking o) {
+        SimpleDateFormat formatter=new SimpleDateFormat("dd-MM-yyyy h:mm a");
+        try {
+            Date d1 = formatter.parse(this.getStartDate());
+            Date d2=formatter.parse(o.getStartDate());
+            if (d1.after(d2)) {
+                return -1;
+            }
+            else if(d1.before(d2)){
+                return 1;
+            }
+            else{
+                return 0;
+            }
+        }catch (Exception e){
+
+        }
+        return 0;
+    }
 }

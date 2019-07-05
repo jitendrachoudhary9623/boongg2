@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +69,7 @@ public class AvailableFragment extends Fragment {
     }
     public void setupRecycleView(List<PreDropBooking> bookings){
 
-            Toast.makeText(getContext(),"Ok",Toast.LENGTH_LONG).show();
+          //  Toast.makeText(getContext(),"Ok",Toast.LENGTH_LONG).show();
             if (recyclerView == null) {
                 recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_inventory_all_bikes);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -104,7 +105,8 @@ public class AvailableFragment extends Fragment {
         }
         catch (Exception e)
         {
-            Toast.makeText(getContext(),e.toString(),Toast.LENGTH_LONG).show();
+            Log.e("AVAILABLE FRAGMENT",e.toString());
+           // Toast.makeText(getContext(),e.toString(),Toast.LENGTH_LONG).show();
         }    }
 
     @Override
@@ -123,7 +125,9 @@ public class AvailableFragment extends Fragment {
         }
         catch (Exception e)
         {
-            Toast.makeText(getContext(),e.toString(),Toast.LENGTH_LONG).show();
+            Log.e("AVAILABLE FRAGMENT",e.toString());
+
+            //  Toast.makeText(getContext(),e.toString(),Toast.LENGTH_LONG).show();
         }    }
 
     List<PreDropBooking> avaialble,maintainance,ongoining;

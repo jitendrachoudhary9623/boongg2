@@ -60,7 +60,7 @@ public class PriceChart implements Parcelable
     private Double twentyDayRate;
     @SerializedName("isAdminRentApplied")
     @Expose
-    private Boolean isAdminRentApplied;
+    private Object isAdminRentApplied;
     public final static Parcelable.Creator<PriceChart> CREATOR = new Creator<PriceChart>() {
 
 
@@ -95,7 +95,7 @@ public class PriceChart implements Parcelable
         this.sevenDayRate = ((Double) in.readValue((Double.class.getClassLoader())));
         this.tenDayRate = ((Double) in.readValue((Double.class.getClassLoader())));
         this.twentyDayRate = ((Double) in.readValue((Double.class.getClassLoader())));
-        this.isAdminRentApplied = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+        this.isAdminRentApplied = ((Object) in.readValue((Object.class.getClassLoader())));
     }
 
     public PriceChart() {
@@ -229,11 +229,11 @@ public class PriceChart implements Parcelable
         this.twentyDayRate = twentyDayRate;
     }
 
-    public Boolean getIsAdminRentApplied() {
+    public Object getIsAdminRentApplied() {
         return isAdminRentApplied;
     }
 
-    public void setIsAdminRentApplied(Boolean isAdminRentApplied) {
+    public void setIsAdminRentApplied(Object isAdminRentApplied) {
         this.isAdminRentApplied = isAdminRentApplied;
     }
 

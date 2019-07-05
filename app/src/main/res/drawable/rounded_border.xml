@@ -3,6 +3,6 @@
     <solid
         android:color="@color/green_pay"/>
     <corners
-        android:radius="10dp"/>
+        android:radius="30dp"/>
 
 </shape>

@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/rounded_cards"
-    app:cardCornerRadius="15dp"
-    android:layout_margin="30dp">
+   >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,11 +22,7 @@
               android:theme="@style/dialog_header"
                 android:padding="10dp"
                 />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_margin="5dp"
-                android:background="@color/grayShade1"/>
+
         </LinearLayout>
 
     <LinearLayout
@@ -39,12 +34,12 @@
             android:id="@+id/alert_drop_extend_date_picker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Select Date and Time "
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:textStyle="bold"
-           android:background="@color/grayShade1"
-            android:padding="5dp"
-            android:textFontWeight="20dp"/>
+            android:theme="@style/timepicker_textview"
+            android:datePickerMode="calendar"
+           android:background="@color/light_gray"
+            android:drawableLeft="@drawable/textview_calendar"
+            android:text="Extension Date"
+            />
 
         <TextView
             android:layout_gravity="center_horizontal"
@@ -54,8 +49,7 @@
             android:layout_height="wrap_content"
             android:text="Calculate Rent"
             android:id="@+id/alert_drop_extend_calculate_rent"
-
-            android:background="@color/blue"
+            android:background="@color/colorPrimary"
             android:textColor="@color/white"/>
     </LinearLayout>
         <LinearLayout
@@ -68,11 +62,11 @@
                 android:text="Calculated Rent is 3500"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:textStyle="bold"
-                android:background="@color/grayShade1"
+                android:background="@color/light_gray"
                 android:padding="8dp"
                 android:layout_margin="10dp"
                 android:id="@+id/alert_drop_extend_date_rent_calculate"
-                android:textFontWeight="20dp"/>
+               />
             <TextView
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="15dp"

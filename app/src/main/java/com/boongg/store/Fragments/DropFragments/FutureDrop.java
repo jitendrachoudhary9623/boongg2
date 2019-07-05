@@ -26,6 +26,7 @@ import com.boongg.store.Utilities.DateSorter;
 import com.boongg.store.Utilities.ProgressbarUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,12 +62,14 @@ public class FutureDrop extends Fragment {
         call1.enqueue(new Callback<List<DropBooking>>() {
             @Override
             public void onResponse(Call<List<DropBooking>> call, Response<List<DropBooking>> response) {
-                bookingList = response.body();
+                bookingList.clear();
+                bookingList=response.body();
                 datafetched=true;
                 //bookingList=;
                 if(bookingList.size()>0) {
-                    bookingList = DateSorter.getDropBookings("Future", response.body(),false);
-
+                    bookingList = DateSorter.getDropBookings("Future", bookingList,false);
+                    Collections.sort(bookingList);
+                    Log.e("Date",response.body().size()+"");
                     DropAdapter adapter = new DropAdapter(bookingList, getContext());
                     recyclerView.setAdapter(adapter);
                     msg.setVisibility(View.GONE);
@@ -82,7 +85,7 @@ public class FutureDrop extends Fragment {
 
             @Override
             public void onFailure(Call<List<DropBooking>> call, Throwable t) {
-                Toast.makeText(getContext(),""+t.toString(),Toast.LENGTH_LONG).show();
+           //     Toast.makeText(getContext(),""+t.toString(),Toast.LENGTH_LONG).show();
                 Log.e("JWT ERR",t.toString());
             }
         });
@@ -101,6 +104,20 @@ public class FutureDrop extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 fetchData(true);
+                return false;
+            }
+        });
+        MenuItem sortItems=menu.findItem(R.id.sort);
+        sortItems.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Collections.reverse(bookingList);
+
+                if(datafetched){
+                    DropAdapter adapter = new DropAdapter(bookingList, getContext());
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
                 return false;
             }
         });
@@ -141,7 +158,7 @@ public class FutureDrop extends Fragment {
             if (datafetched) {
                 List<DropBooking> search = new ArrayList<>();
                 for (DropBooking b : bookingList) {
-                    if (b.get_rentPoolKey().getRegistrationNumber().contains(query.toUpperCase())||b.getBoonggBookingId().contains(query.toUpperCase())||b.get_webuserId().getProfile().getMobileNumber().contains(query)||b.get_webuserId().getProfile().getName().toUpperCase().contains(query.toUpperCase())) {
+                    if (b.get_rentPoolKey().getRegistrationNumber().toUpperCase().equals(query.toUpperCase())||b.get_rentPoolKey().getRegistrationNumber().contains(query.toUpperCase())||b.getBoonggBookingId().contains(query.toUpperCase())||b.get_webuserId().getProfile().getMobileNumber().contains(query)||b.get_webuserId().getProfile().getName().toUpperCase().contains(query.toUpperCase())) {
                         search.add(b);
                     }
                 }

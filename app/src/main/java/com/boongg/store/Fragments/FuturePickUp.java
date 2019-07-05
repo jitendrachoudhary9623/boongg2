@@ -23,10 +23,12 @@ import com.boongg.store.Networking.BookingRequest;
 import com.boongg.store.Networking.OAPIClient;
 import com.boongg.store.R;
 import com.boongg.store.RecyclerViews.BookingAdapter;
+import com.boongg.store.RecyclerViews.DropAdapter;
 import com.boongg.store.Utilities.DateSorter;
 import com.boongg.store.Utilities.ProgressbarUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -80,6 +82,7 @@ public class FuturePickUp extends Fragment {
                 try {
                     bookingList = DateSorter.getBookings("Future", bookingList,true);
                     if (bookingList.size() > 0) {
+                        Collections.sort(bookingList);
                         BookingAdapter adapter = new BookingAdapter(bookingList, getContext());
                         recyclerView.setAdapter(adapter);
                         msg.setVisibility(View.GONE);
@@ -92,7 +95,7 @@ public class FuturePickUp extends Fragment {
 
             @Override
             public void onFailure(Call<List<Booking>> call, Throwable t) {
-                Toast.makeText(getContext(),""+t.toString(),Toast.LENGTH_LONG).show();
+               // Toast.makeText(getContext(),""+t.toString(),Toast.LENGTH_LONG).show();
                 Log.e("JWT ERR",t.toString());
             }
         });
@@ -114,6 +117,22 @@ public class FuturePickUp extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 fetchData(true);
+                return false;
+            }
+        });
+        MenuItem sortItems=menu.findItem(R.id.sort);
+        sortItems.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Collections.reverse(bookingList);
+
+                if(datafetched){
+                    Log.e("DROP","After Sort MENU"+bookingList.size());
+
+                    BookingAdapter adapter = new BookingAdapter(bookingList, getContext());
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
                 return false;
             }
         });

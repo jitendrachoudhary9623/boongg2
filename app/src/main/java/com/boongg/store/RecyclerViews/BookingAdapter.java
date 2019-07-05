@@ -33,8 +33,10 @@ import com.boongg.store.MainActivity;
 import com.boongg.store.Models.Booking;
 import com.boongg.store.Models.Buttons;
 import com.boongg.store.Models.Cancel;
+import com.boongg.store.Models.Requests.AddressUpdate.UpdateAddress;
 import com.boongg.store.Models.Requests.CheckIn;
 import com.boongg.store.Models.Responses.AvailableVehicles.VehicleInventoryResponse;
+import com.boongg.store.Models.Responses.SearchUSer;
 import com.boongg.store.Models.Token;
 import com.boongg.store.Models.UpdateResponse;
 import com.boongg.store.Networking.APIClient;
@@ -45,9 +47,11 @@ import com.boongg.store.Networking.CheckInRequest;
 import com.boongg.store.Networking.LoginRequest;
 import com.boongg.store.Networking.OAPIClient;
 import com.boongg.store.Networking.OwnerInventory;
+import com.boongg.store.Networking.SearchUser;
 import com.boongg.store.R;
 import com.boongg.store.Utilities.AlertBoxUtils;
 import com.boongg.store.Utilities.DateSorter;
+import com.boongg.store.Utilities.DateUtils;
 import com.boongg.store.Utilities.JWTUtils;
 import com.boongg.store.Utilities.LoginToken;
 import com.boongg.store.Utilities.ProgressbarUtil;
@@ -100,6 +104,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
     public int getItemCount() {
         return this.bookings.size();
     }
+     String uAddress="";
 
     public class BookingViewHolder extends RecyclerView.ViewHolder {
 
@@ -128,17 +133,17 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
         AlertDialog dialog2;
 
         private List<String> updateVehicleList(final boolean modify, final Booking booking) {
-            Toast.makeText(mContext,"Called on "+modify,Toast.LENGTH_LONG).show();
+         //   Toast.makeText(mContext,"Called on "+modify,Toast.LENGTH_LONG).show();
 
             return ds;
         }
-
+        boolean addressPresent=false;
         public void bindData(final int position) {
             final Booking booking=bookings.get(position);
             bookingId.setText(""+booking.getBoonggBookingId());
             try {
-                startDate.setText(DateSorter.getFormattedDate(booking.getStartDate()));
-                endDate.setText(" - "+DateSorter.getFormattedDate(booking.getEndDate()));
+                startDate.setText(DateUtils.getIST(booking.getStartDate()));
+                endDate.setText(DateUtils.getIST(booking.getEndDate()));
             }catch (Exception e){
 
             }
@@ -149,10 +154,11 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             mode.setText(booking.getBookingType());
             vehicleName.setText(booking.getBrand()+" - "+booking.getModel());
 
-booking.getWebuserId().getProfile().getLocation();
+
             checkIn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     LayoutInflater li = LayoutInflater.from(mContext);
 
                     View promptsView = li.inflate(R.layout.alert_checkin, null);
@@ -162,20 +168,34 @@ booking.getWebuserId().getProfile().getLocation();
                     final EditText start=(EditText)promptsView.findViewById(R.id.startKm);
                     final EditText address=(EditText)promptsView.findViewById(R.id.emergency_address);
                     final CheckBox modifyBikeCheckBox,helmentProvidedCheckBox;
-                    address.setText(booking.getWebuserId().getProfile().getLocation().toString());
+
                     modifyBikeCheckBox=(CheckBox)promptsView.findViewById(R.id.modify_bike_checkbox);
                     totalRent.setText(""+booking.getRentWithDiscount());
-                    final Spinner niceSpinner = (Spinner) promptsView.findViewById(R.id.select_bike_spinner);
-                  /*  ArrayAdapter<String> adapter = new ArrayAdapter<String >(
-                            mContext,
-                            android.R.layout.simple_spinner_item,
-                            ds
-                    );
+                    SearchUser searchUser = APIClient.getClient().create(SearchUser.class);
+                    Call<List<SearchUSer>> call1 = searchUser.searchUser(booking.getWebuserId().getProfile().getMobileNumber());
+                    call1.enqueue(new Callback<List<SearchUSer>>() {
+                        @Override
+                        public void onResponse(Call<List<SearchUSer>> call, Response<List<SearchUSer>> response) {
+                            try {
+                                uAddress=response.body().get(0).getProfile().getAddress();
+                                if(!uAddress.equals("")){
+                                    addressPresent=true;
+                                }
+                                address.setText(response.body().get(0).getProfile().getAddress());
+                            }catch (Exception e){
 
-                    niceSpinner.setAdapter(new NothingSelectedSpinnerAdapter(
-                            adapter,
-                            R.layout.spinner_row_nothing_selected,
-                            mContext));*/
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<SearchUSer>> call, Throwable t) {
+
+                        }
+                    });
+                    final Spinner niceSpinner = (Spinner) promptsView.findViewById(R.id.select_bike_spinner);
+
                     OwnerInventory inventory=APIClient.getClient().create(OwnerInventory.class);
                     Call<List<VehicleInventoryResponse>> call2= inventory.getAvailableVehicles(LoginToken.id);
                     call2.enqueue(new Callback<List<VehicleInventoryResponse>>() {
@@ -191,8 +211,8 @@ booking.getWebuserId().getProfile().getLocation();
                                         ds.add("(" + vir.getRegistrationNumber() + ") " + vir.getBrand() + " " + vir.getVehicleModel());
                                     }
                             }
-                            for(String s : ds){
-                                Log.e("JWT",s);
+                            if(ds.size()==0){
+                                ds.add("No Bikes Available / Please contact admin");
                             }
                             ArrayAdapter<String> adapter = new ArrayAdapter<String >(
                                     mContext,
@@ -279,12 +299,11 @@ booking.getWebuserId().getProfile().getLocation();
                                     default:
                                         VehicleInventoryResponse v2 = vehicleList.get(position-1);
                                         bId[0] = v2.get_id();
-
                                         break;
                                 }
 
                             }catch (Exception e){
-                                AlertBoxUtils.showAlert(mContext,"error","",""+e.toString());
+                                AlertBoxUtils.showAlert(mContext,"error","Bike Not Available","Selected Bike is Not Available / Contact Admin");
                             }
                         }
 
@@ -301,37 +320,93 @@ booking.getWebuserId().getProfile().getLocation();
                             .setCancelable(false)
                             .setPositiveButton("Check In",
                                     new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog,int id) {
-                                            boolean isHelmetProvide=false;
-                                            if(helmentProvidedCheckBox.isChecked()) {
-                                                isHelmetProvide=true;
+                                        public void onClick(final DialogInterface dialog, int id) {
+                                            if (bId[0].equals("")) {
+                                                address.setError("Bike is not selected");
+                                                dialog.dismiss();
+                                                AlertBoxUtils.showAlert(mContext,"error","Check in failed","Bike was not selected properly, please select bike again");
                                             }
-                                            String startKm=start.getText().toString();
-                                            Log.e("JWT",booking.toString());
-                                            CheckIn check=new CheckIn(bId[0],isHelmetProvide,booking.getId(),startKm);
-                                            Log.e("JWT",booking.getRentBikeKey().getId());
-                                            CheckInRequest checkInRequest= APIClient.getClient().create(CheckInRequest.class);
-                                            Call<Void> call1 = checkInRequest.checkIn(check);
-                                            ProgressbarUtil.showProgressbar(mContext);
-                                            call1.enqueue(new Callback<Void>() {
-                                                @Override
-                                                public void onResponse(Call<Void> call, Response<Void> response) {
-                                                    bookings.remove(position);
-                                                    notifyItemRemoved(position);
-                                                    notifyItemRangeChanged(position, bookings.size());
-                                                    ProgressbarUtil.hideProgressBar();
-                                                    AlertBoxUtils.showAlert(mContext,"success","Check In","Check in successfull");
-                                                }
+                                            else if (start.getText().toString().equals("")) {
+                                                start.setError("Enter Start Km for the bike");
+                                                dialog.dismiss();
+                                                AlertBoxUtils.showAlert(mContext,"error","Check in failed","Start KM should be added");
 
-                                                @Override
-                                                public void onFailure(Call<Void> call, Throwable t) {
-                                                    //Toast.makeText(mContext,"Something went wrong"+t.toString(),Toast.LENGTH_LONG).show();
-                                                    ProgressbarUtil.hideProgressBar();
-
-                                                    AlertBoxUtils.showAlert(mContext,"error","Something wet wrong ",""+t.toString());
-                                                    Log.e("JWT",t.toString());
+                                            } else {
+                                                boolean isHelmetProvide = false;
+                                                if (helmentProvidedCheckBox.isChecked()) {
+                                                    isHelmetProvide = true;
                                                 }
-                                            });
+                                                String startKm = start.getText().toString();
+                                                Log.e("JWT", booking.toString());
+                                                CheckIn check = new CheckIn(bId[0], isHelmetProvide, booking.getId(), startKm);
+                                                Log.e("JWT", booking.getRentBikeKey().getId());
+                                                CheckInRequest checkInRequest = APIClient.getClient().create(CheckInRequest.class);
+                                                Call<Void> call1 = checkInRequest.checkIn(check);
+                                                ProgressbarUtil.showProgressbar(mContext);
+                                                call1.enqueue(new Callback<Void>() {
+                                                    @Override
+                                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                                        bookings.remove(position);
+                                                        notifyItemRemoved(position);
+                                                        notifyItemRangeChanged(position, bookings.size());
+                                                        ProgressbarUtil.hideProgressBar();
+                                                        if(addressPresent==false||uAddress.equals(address.getText().toString())==false){
+                                                            //update Address
+                                                            try {
+                                                                String phoneNo = booking.getWebuserId().getProfile().getMobileNumber();
+                                                                final SearchUser user=APIClient.getClient().create(SearchUser.class);
+                                                                Call<List<SearchUSer>> scall=user.searchUser(phoneNo);
+                                                                scall.enqueue(new Callback<List<SearchUSer>>() {
+                                                                    @Override
+                                                                    public void onResponse(Call<List<SearchUSer>> call, Response<List<SearchUSer>> response) {
+                                                                        switch (response.body().size()){
+                                                                            case 1:
+                                                                                UpdateAddress update=new UpdateAddress();
+                                                                                update.setId(response.body().get(0));
+                                                                                update.setAddress(address.getText().toString());
+                                                                                Call<Void> updateA=user.updateAddress(update);
+                                                                                updateA.enqueue(new Callback<Void>() {
+                                                                                    @Override
+                                                                                    public void onResponse(Call<Void> call, Response<Void> response) {
+
+                                                                                    }
+
+                                                                                    @Override
+                                                                                    public void onFailure(Call<Void> call, Throwable t) {
+
+                                                                                    }
+                                                                                });
+                                                                                break;
+                                                                                default:
+                                                                                    break;
+                                                                        }
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onFailure(Call<List<SearchUSer>> call, Throwable t) {
+
+                                                                    }
+                                                                });
+
+                                                            }catch (Exception e){}
+                                                            dialog2.dismiss();
+                                                            AlertBoxUtils.showAlert(mContext, "success", "Check In", "Check in successfull");
+
+                                                        }else {
+                                                            AlertBoxUtils.showAlert(mContext, "success", "Check In", "Check in successfull");
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(Call<Void> call, Throwable t) {
+                                                        //Toast.makeText(mContext,"Something went wrong"+t.toString(),Toast.LENGTH_LONG).show();
+                                                        ProgressbarUtil.hideProgressBar();
+
+                                                        AlertBoxUtils.showAlert(mContext, "error", "Something wet wrong ", "" + t.toString());
+                                                        Log.e("JWT", t.toString());
+                                                    }
+                                                });
+                                            }
                                         }
                                     })
                             .setNegativeButton("Cancel",
@@ -382,13 +457,13 @@ booking.getWebuserId().getProfile().getLocation();
 
                     alertDialogBuilder
                             .setCancelable(false)
-                            .setPositiveButton("Don't Cancel it",
+                            .setNegativeButton("Don't Cancel it",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog,int id) {
                                             dialog.cancel();
                                         }
                                     })
-                            .setNegativeButton("Cancel the booking",
+                            .setPositiveButton("Cancel the booking",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog,int id) {
                                             //Log.d("Cancel Id",booking.getId());
@@ -398,14 +473,16 @@ booking.getWebuserId().getProfile().getLocation();
                                             call1.enqueue(new Callback<Cancel>() {
                                                 @Override
                                                 public void onResponse(Call<Cancel> call, Response<Cancel> response) {
-                                                    Toast.makeText(mContext,"Booking Cancelled ",Toast.LENGTH_LONG).show();
+                                                    //Toast.makeText(mContext,"Booking Cancelled ",Toast.LENGTH_LONG).show();
                                                     bookings.remove(position);
                                                     notifyItemRemoved(position);
                                                     notifyItemRangeChanged(position, bookings.size());
+                                                    AlertBoxUtils.showAlert(mContext,"success","Booking Cancelled","Success");
+
                                                 }
                                                 @Override
                                                 public void onFailure(Call<Cancel> call, Throwable t) {
-                                                    Toast.makeText(mContext,""+t.toString(),Toast.LENGTH_LONG).show();
+                                                 //   Toast.makeText(mContext,""+t.toString(),Toast.LENGTH_LONG).show();
                                                 }
                                             });
                                         }

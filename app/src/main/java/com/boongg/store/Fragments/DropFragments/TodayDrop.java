@@ -73,9 +73,14 @@ public class TodayDrop extends Fragment {
             @Override
             public void accept(List<DropBooking> bookings) throws Exception {
                 datafetched=true;
-                bookingList=bookings;
-                if(bookingList.size()>0) {
-                    bookingList = DateSorter.getDropBookings("Today", bookings,false);
+                if(bookings.size()>0) {
+                    bookings = DateSorter.getDropBookings("Today", bookings,false);
+                    bookingList.clear();
+                    bookingList.addAll(bookings);
+
+                    Log.e("DROP","Before Sort "+bookingList.size()+" "+bookings.size());
+                    Collections.sort(bookings);
+                    Log.e("DROP","After Sort "+bookingList.size()+" "+bookings.size());
 
                     DropAdapter adapter = new DropAdapter(bookingList, getContext());
                     recyclerView.setAdapter(adapter);
@@ -130,9 +135,11 @@ public class TodayDrop extends Fragment {
         sortItems.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Collections.sort(bookingList);
+                Collections.reverse(bookingList);
 
                 if(datafetched){
+                    Log.e("DROP","After Sort MENU"+bookingList.size());
+
                     DropAdapter adapter = new DropAdapter(bookingList, getContext());
                     recyclerView.setAdapter(adapter);
                     recyclerView.setVisibility(View.VISIBLE);
@@ -178,7 +185,7 @@ public class TodayDrop extends Fragment {
             if (datafetched) {
                 List<DropBooking> search = new ArrayList<>();
                 for (DropBooking b : bookingList) {
-                    if (b.get_rentPoolKey().getRegistrationNumber().contains(query.toUpperCase())||b.getBoonggBookingId().contains(query.toUpperCase())||b.get_webuserId().getProfile().getMobileNumber().contains(query)||b.get_webuserId().getProfile().getName().toUpperCase().contains(query.toUpperCase())) {
+                    if (b.get_rentPoolKey().getRegistrationNumber().toUpperCase().equals(query.toUpperCase())||b.get_rentPoolKey().getRegistrationNumber().contains(query.toUpperCase())||b.getBoonggBookingId().contains(query.toUpperCase())||b.get_webuserId().getProfile().getMobileNumber().contains(query)||b.get_webuserId().getProfile().getName().toUpperCase().contains(query.toUpperCase())) {
                         search.add(b);
                     }
                 }

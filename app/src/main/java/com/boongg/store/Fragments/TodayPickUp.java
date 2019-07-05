@@ -35,6 +35,7 @@ import com.boongg.store.Utilities.JWTUtils;
 import com.boongg.store.Utilities.LoginToken;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -78,6 +79,7 @@ public class TodayPickUp extends Fragment {
                 try {
                     bookingList = DateSorter.getBookings("Today", bookingList,true);
                     if (bookingList.size() > 0) {
+                        Collections.sort(bookingList);
                         BookingAdapter adapter = new BookingAdapter(bookingList, getContext());
                         recyclerView.setAdapter(adapter);
                         msg.setVisibility(View.GONE);
@@ -107,6 +109,22 @@ public class TodayPickUp extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 fetchData(true);
+                return false;
+            }
+        });
+        MenuItem sortItems=menu.findItem(R.id.sort);
+        sortItems.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Collections.reverse(bookingList);
+
+                if(datafetched){
+                    Log.e("DROP","After Sort MENU"+bookingList.size());
+
+                    BookingAdapter adapter = new BookingAdapter(bookingList, getContext());
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
                 return false;
             }
         });

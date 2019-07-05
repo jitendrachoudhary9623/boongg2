@@ -96,7 +96,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             }
             catch(Exception e)
             {
-                Toast.makeText(mContext,e.toString(),Toast.LENGTH_LONG).show();
+             //   Toast.makeText(mContext,e.toString(),Toast.LENGTH_LONG).show();
             }
             finally {
 

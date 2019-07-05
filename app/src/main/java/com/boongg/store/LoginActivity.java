@@ -102,7 +102,6 @@ CompositeDisposable compositeDisposable=new CompositeDisposable();
             return;
         }
 
-        _loginButton.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setIndeterminate(true);
@@ -111,9 +110,7 @@ CompositeDisposable compositeDisposable=new CompositeDisposable();
 
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
-
-        // TODO: Implement your own authentication logic here.
-       LoginRequest loginRequest= APIClient.getClient().create(LoginRequest.class);
+        LoginRequest loginRequest= APIClient.getClient().create(LoginRequest.class);
         Call<Token> call1 = loginRequest.userLogin(email,password);
         call1.enqueue(new Callback<Token>() {
             @Override
@@ -129,15 +126,13 @@ CompositeDisposable compositeDisposable=new CompositeDisposable();
                             //Toast.makeText(getApplicationContext(), "This is id " + id, Toast.LENGTH_LONG).show();
                             LoginToken.id = id;
                             LoginToken.tokenId = token.getToken();
-
                             SharedPreferences sp = getSharedPreferences(LoginToken.PREFS, Context.MODE_PRIVATE);
                             sp.edit().putString(LoginToken.TOKEN, token.getToken()).commit();
                             sp.edit().putString(LoginToken.TOKEN_ID, id).commit();
-
-                           getOwnerData();
+                            getOwnerData();
                             onLoginSuccess();
                         } catch (Exception e) {
-                            Toast.makeText(getApplicationContext(), "Error"+e.toString(), Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getApplicationContext(), "Error"+e.toString(), Toast.LENGTH_LONG).show();
                             e.printStackTrace();
                         }
                     }else{
@@ -183,7 +178,6 @@ CompositeDisposable compositeDisposable=new CompositeDisposable();
                         }catch (Exception e){
                             Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
                         }
-
                     }
                 }
         ));
@@ -194,9 +188,6 @@ CompositeDisposable compositeDisposable=new CompositeDisposable();
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
-
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
                 this.finish();
             }
         }
@@ -218,13 +209,11 @@ CompositeDisposable compositeDisposable=new CompositeDisposable();
 
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
         _loginButton.setEnabled(true);
     }
 
     public boolean validate() {
         boolean valid = true;
-
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
@@ -234,14 +223,12 @@ CompositeDisposable compositeDisposable=new CompositeDisposable();
         } else {
             _emailText.setError(null);
         }
-
-        if (password.isEmpty() || password.length() < 1 || password.length() > 10) {
+        if (password.isEmpty() || password.length() < 1) {
             _passwordText.setError("Enter Valid password");
             valid = false;
         } else {
             _passwordText.setError(null);
         }
-
         return valid;
     }
 }

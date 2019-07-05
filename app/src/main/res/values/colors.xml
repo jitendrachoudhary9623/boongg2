@@ -14,5 +14,6 @@
     <color name="label_color">#627364</color>
     <color name="value_color">#020304</color>
     <color name="light_purple">#D8BFD8</color>
+    <color name="light_red">#FFCDD2</color>
 
 </resources>

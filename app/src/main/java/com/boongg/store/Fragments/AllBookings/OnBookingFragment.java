@@ -66,10 +66,11 @@ public class OnBookingFragment extends Fragment {
     VehicleInventoryAdapter adapter;
     public void setupRecycleView(List<PreDropBooking> bookings){
         if (bookings.size() > 0) {
+            notifier.notify(1, bookings.size());
+            msg.setText("Wait data is loading ..");
             adapter = new VehicleInventoryAdapter(bookings, getContext(),getActivity());
             recyclerView.setAdapter(adapter);
             msg.setVisibility(View.GONE);
-            notifier.notify(1, bookings.size());
         } else {
             notifier.notify(1, 0);
 
@@ -95,7 +96,7 @@ public class OnBookingFragment extends Fragment {
         }
         catch (Exception e)
         {
-            Toast.makeText(getContext(),e.toString(),Toast.LENGTH_LONG).show();
+           // Toast.makeText(getContext(),e.toString(),Toast.LENGTH_LONG).show();
         }    }
 
     @Override
@@ -114,7 +115,7 @@ public class OnBookingFragment extends Fragment {
         }
         catch (Exception e)
         {
-            Toast.makeText(getContext(),e.toString(),Toast.LENGTH_LONG).show();
+           // Toast.makeText(getContext(),e.toString(),Toast.LENGTH_LONG).show();
         }    }
 
 
@@ -130,11 +131,6 @@ public class OnBookingFragment extends Fragment {
 
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("Intent","Outside Adapter");
 
-        adapter.onActivityResult(requestCode, resultCode, data);
-    }
 
 }

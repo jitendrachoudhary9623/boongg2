@@ -30,25 +30,18 @@ import retrofit2.Response;
 import retrofit2.http.Path;
 
 public class ModifyAlertBox {
-
+    static final int[] selectedPosition = {0};
+    public static List<VehicleList> vehicleLists=new ArrayList<>();
     public static void modifyVehicle(final Context context, final DropBooking booking){
         LayoutInflater li = LayoutInflater.from(context);
         View promptsView = li.inflate(R.layout.alert_modify_vehicle, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         final Spinner spinner = (Spinner) promptsView.findViewById(R.id.modify_vehicle);
         final TextView modfiyButton=(TextView)promptsView.findViewById(R.id.modify_vehicle_button);
+        modfiyButton.setVisibility(View.GONE);
         final OwnerInventory inventory= APIClient.getClient().create(OwnerInventory.class);
         alertDialogBuilder.setView(promptsView);
-        alertDialogBuilder
-                .setCancelable(false)
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-                                dialog.cancel();
 
-                            }
-                        });
-        final AlertDialog alertDialog = alertDialogBuilder.create();
 
         Call<List<VehicleList>>  call1 = inventory.getVehicleList(LoginToken.id);
         call1.enqueue(new Callback<List<VehicleList>>() {
@@ -56,7 +49,7 @@ public class ModifyAlertBox {
             public void onResponse(Call<List<VehicleList>> call, Response<List<VehicleList>> response) {
                 Toast.makeText(context,"Success",Toast.LENGTH_LONG).show();
 
-                final List<VehicleList> vehicleLists=response.body();
+               vehicleLists=response.body();
                 final List<String> vehicelDisplay=new ArrayList<>();
                 for(VehicleList v : response.body()){
                     vehicelDisplay.add(v.getBrand()+" "+v.getVehicleModel()+" "+v.getRegistrationNumber());
@@ -64,7 +57,6 @@ public class ModifyAlertBox {
                 ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, vehicelDisplay);
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(dataAdapter);
-                final int[] selectedPosition = {0};
 
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -80,6 +72,21 @@ public class ModifyAlertBox {
                 modfiyButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<List<VehicleList>> call, Throwable t) {
+                Toast.makeText(context,t.toString(),Toast.LENGTH_LONG).show();
+            }
+        });
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Modify Vehicle", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, int which) {
                         int p=selectedPosition[0];
                         ModifyRequest request=new ModifyRequest();
                         request.setBookingId(booking.get_id());
@@ -91,26 +98,29 @@ public class ModifyAlertBox {
                         call3.enqueue(new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
-                                Toast.makeText(context,"Success",Toast.LENGTH_LONG).show();
-                                alertDialog.dismiss();
+
+                                dialog.dismiss();
+                                AlertBoxUtils.showAlert(context,"success","Modify Vehicle","Success");
                             }
 
                             @Override
                             public void onFailure(Call<Void> call, Throwable t) {
-                                Toast.makeText(context,"Failure "+t.toString(),Toast.LENGTH_LONG).show();
-                                alertDialog.dismiss();
+                                dialog.dismiss();
+                                AlertBoxUtils.showAlert(context,"error","Modify Vehicle","Failed");
+
 
                             }
                         });
                     }
-                });
-            }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
 
-            @Override
-            public void onFailure(Call<List<VehicleList>> call, Throwable t) {
-                Toast.makeText(context,t.toString(),Toast.LENGTH_LONG).show();
-            }
-        });
+                            }
+                        });
+        final AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
 
     }

@@ -22,11 +22,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded"
-                android:paddingTop="1dp"
+                android:padding="2dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="5dp">
                 <EditText android:id="@+id/create_search_user"
-                    android:background="@android:color/transparent"
+                    android:background="@color/light_gray"
                     android:padding="6dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -39,10 +39,12 @@
                 android:id="@+id/create_search_user_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
+                android:layout_weight="6"
                 android:background="@color/colorPrimary"
                 android:text="&#x2315;"
-                android:textSize="25sp"
+                android:layout_marginTop="5dp"
+                android:textSize="23sp"
+                android:textStyle="bold"
                 android:textColor="@color/white" />
         </LinearLayout>
     <View
@@ -64,9 +66,10 @@
                 android:layout_height="match_parent"
                 android:textAlignment="center"
                 android:textSize="20sp"
-
+                android:background="@color/light_red"
                 android:text="User not found"
-                android:textColor="@color/red"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:padding="5dp"
                 android:layout_gravity="center_vertical|center_horizontal"/>
         </LinearLayout>
@@ -205,24 +208,24 @@
                 android:layout_weight="1"
                 android:layout_marginBottom="8dp">
                 <EditText android:id="@+id/create_search_user_fname"
-                    android:background="@android:color/transparent"
+                    android:background="@color/light_gray"
                     android:padding="6dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
                     android:layout_marginBottom="2dp"
-                    android:backgroundTint="@color/grayShade1"
                     android:hint="Enter First Name" />
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
+
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded"
                 android:paddingTop="1dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="8dp">
                 <EditText android:id="@+id/create_search_user_lname"
-                    android:background="@android:color/transparent"
+                    android:background="@color/light_gray"
                     android:padding="6dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -239,7 +242,7 @@
                 android:layout_weight="1"
                 android:layout_marginBottom="8dp">
                 <EditText android:id="@+id/create_search_user_email"
-                    android:background="@android:color/transparent"
+                    android:background="@color/light_gray"
                     android:padding="6dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -255,14 +258,21 @@
                 android:background="@color/colorPrimary"
                 android:textColor="@color/white"
                 android:layout_margin="5dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
                 android:id="@+id/create_search_user_create_new_user_button"
                 android:text="Create user"/>
 
-
+<View
+    android:layout_width="match_parent"
+    android:layout_height="0.8dp"
+    android:background="@color/grayShade1"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"/>
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="6dp"
+                android:padding="5dp"
                 android:visibility="gone"
                 android:background="@color/colorPrimary"
                 android:textColor="@color/white"
@@ -275,7 +285,7 @@
           android:layout_height="wrap_content"
           android:id="@+id/user_otp_box"
           android:visibility="gone"
-          android:orientation="horizontal">
+          android:orientation="vertical">
           <android.support.design.widget.TextInputLayout
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
@@ -284,11 +294,12 @@
               android:layout_weight="1"
               android:layout_marginBottom="8dp">
               <EditText android:id="@+id/store_otp"
-                  android:background="@android:color/transparent"
+                  android:background="@color/light_gray"
                   android:padding="6dp"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:inputType="number"
+                  android:enabled="false"
                   android:layout_marginBottom="2dp"
                   android:hint="Store OTP" />
           </android.support.design.widget.TextInputLayout>
@@ -300,13 +311,13 @@
               android:layout_weight="1"
               android:layout_marginBottom="8dp">
               <EditText android:id="@+id/user_otp"
-                  android:background="@android:color/transparent"
+                  android:background="@color/light_gray"
                   android:padding="6dp"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:inputType="number"
                   android:layout_marginBottom="2dp"
-                  android:hint="Enter USer OTP" />
+                  android:hint="Enter User OTP" />
           </android.support.design.widget.TextInputLayout>
           <Button
               android:layout_width="match_parent"

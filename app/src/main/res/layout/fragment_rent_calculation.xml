@@ -38,7 +38,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:theme="@style/timepicker_textview"
-               />
+                android:drawableLeft="@drawable/textview_calendar"
+
+                />
 
             <View
                 android:layout_width="match_parent"
@@ -53,7 +55,10 @@
                 android:id="@+id/rent_end_date"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:theme="@style/timepicker_textview"/>
+                android:theme="@style/timepicker_textview"
+                android:drawableLeft="@drawable/textview_calendar_end_date"
+
+                />
 
             <Button
                 android:id="@+id/rent_search_user_button"

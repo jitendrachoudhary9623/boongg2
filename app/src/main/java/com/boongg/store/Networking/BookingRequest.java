@@ -5,6 +5,7 @@ import com.boongg.store.Models.Booking;
 import com.boongg.store.Models.Requests.BikeDetails.Bike;
 import com.boongg.store.Models.Requests.CreateBookingRequest;
 import com.boongg.store.Models.Requests.DropVehicleRequest;
+import com.boongg.store.Models.Requests.ModifyBikes.Modify;
 import com.boongg.store.Models.Requests.UpdateBike.UpdateB;
 import com.boongg.store.Models.Responses.CreateBooking.CreateBookingResponse;
 import com.boongg.store.Models.Responses.CreateBooking.CreateBookingSuccessResponse;
@@ -49,7 +50,7 @@ public interface BookingRequest {
     @GET("AVAILABLE")
     Observable<List<PreDropBooking>> getAvailableBikes();
 
-    @GET("MAINTAINANCE")
+    @GET("BLOCKED/MAINTENANCE")
     Observable<List<PreDropBooking>> getMaintainanceBikes();
 
     @POST("rentbooking/offline")
@@ -63,4 +64,7 @@ public interface BookingRequest {
 
     @POST("rent-pool/update-id")
     Call<UpdateB> updateBike(@Body UpdateB bike);
+
+    @POST("rentbooking/modifybookingrequest")
+    Call<Void> modifyBikeInDrop(@Body Modify m);
 }

@@ -67,7 +67,7 @@ public class CancelledBookingFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Cancel>> call, Throwable t) {
-                Toast.makeText(getContext(),""+t.toString(),Toast.LENGTH_LONG).show();
+           //     Toast.makeText(getContext(),""+t.toString(),Toast.LENGTH_LONG).show();
                 Log.e("JWT ERR",t.toString());
             }
         });

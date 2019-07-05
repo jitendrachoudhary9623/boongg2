@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -86,6 +87,7 @@ public class VehicleRentCollectionAdapter extends RecyclerView.Adapter<VehicleRe
     public class VehicleRentCollectionViewHolder extends RecyclerView.ViewHolder{
 
         TextView bikename,status,engine,quantity,prichart;
+        ImageView vehicleImage;
         public VehicleRentCollectionViewHolder(@NonNull View itemView) {
             super(itemView);
             bikename=(TextView)itemView.findViewById(R.id.rent_inventory_all_bike_name);
@@ -93,7 +95,7 @@ public class VehicleRentCollectionAdapter extends RecyclerView.Adapter<VehicleRe
             engine=(TextView)itemView.findViewById(R.id.rent_inventory_all_engine);
             quantity=(TextView)itemView.findViewById(R.id.rent_inventory_all_qty);
             prichart=(TextView)itemView.findViewById(R.id.rent_inventory_all_button);
-
+            vehicleImage=(ImageView)itemView.findViewById(R.id.vehicle_list_img);
         }
         public void bindData(final int position) {
 
@@ -105,15 +107,15 @@ public class VehicleRentCollectionAdapter extends RecyclerView.Adapter<VehicleRe
                 engine.setText("Engine " + rent.getEngineCapacity() + " CC");
                 quantity.setText("Total Qty : " + Math.round(rent.getQuantity()));
 
-             /*   Glide.with(mContext)
-                        .load(rent.getThumbUrl()) // or URI/path
+               Glide.with(mContext)
+                        .load("http://13.127.135.220:3100/api/image/motorcycle.png") // or URI/path
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .priority(Priority.IMMEDIATE)
                         .error(R.drawable.motorcycle)
                         .skipMemoryCache(false)
-                        .into(vehicleImage);*/
+                        .into(vehicleImage);
             }catch (Exception e){
-Toast.makeText(mContext,e.toString(),Toast.LENGTH_LONG).show();
+//Toast.makeText(mContext,e.toString(),Toast.LENGTH_LONG).show();
             }
 
         prichart.setOnClickListener(new View.OnClickListener() {

@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,7 @@ public class Maintainance extends Fragment {
     }
     public void setupRecycleView(List<PreDropBooking> bookings){
         if (bookings.size() > 0) {
-            VehicleInventoryAdapter adapter = new VehicleInventoryAdapter(bookings, getContext());
+            VehicleInventoryAdapter adapter = new VehicleInventoryAdapter(bookings, getContext(),true);
             recyclerView.setAdapter(adapter);
             msg.setVisibility(View.GONE);
             notifier.notify(2, bookings.size());
@@ -92,7 +93,9 @@ public class Maintainance extends Fragment {
         }
         catch (Exception e)
         {
-            Toast.makeText(getContext(),e.toString(),Toast.LENGTH_LONG).show();
+            Log.e("MAINTAINANCE FRAGMENT",e.toString());
+
+            //Toast.makeText(getContext(),e.toString(),Toast.LENGTH_LONG).show();
         }    }
 
     @Override
@@ -111,7 +114,9 @@ public class Maintainance extends Fragment {
         }
         catch (Exception e)
         {
-            Toast.makeText(getContext(),e.toString(),Toast.LENGTH_LONG).show();
+            Log.e("MAINTAINANCE FRAGMENT",e.toString());
+
+            //Toast.makeText(getContext(),e.toString(),Toast.LENGTH_LONG).show();
         }
     }
     private void getMaintainance() {

@@ -29,6 +29,7 @@ import com.boongg.store.Utilities.DateSorter;
 import com.boongg.store.Utilities.ProgressbarUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -51,7 +52,9 @@ public class ExtendedDrop extends Fragment {
         msg=(TextView)rootView.findViewById(R.id.drop_extended_no_msg);
         setHasOptionsMenu(true);
         datafetched=false;
-        fetchData(false);
+        try {
+            fetchData(false);
+        }catch(Exception e){}
         return rootView;
     }
 
@@ -69,6 +72,7 @@ public class ExtendedDrop extends Fragment {
                 //bookingList=;
                 if(bookingList.size()>0) {
                     bookingList = DateSorter.getDropBookings("Overdue", response.body(),false);
+                    Collections.sort(bookingList);
 
                     DropAdapter adapter = new DropAdapter(bookingList, getContext());
                     recyclerView.setAdapter(adapter);
@@ -85,8 +89,7 @@ public class ExtendedDrop extends Fragment {
 
             @Override
             public void onFailure(Call<List<DropBooking>> call, Throwable t) {
-                Toast.makeText(getContext(),""+t.toString(),Toast.LENGTH_LONG).show();
-                Log.e("JWT ERR",t.toString());
+
             }
         });
 
@@ -101,7 +104,24 @@ public class ExtendedDrop extends Fragment {
         refresh.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                fetchData(true);
+                try {
+                    fetchData(true);
+                }catch(Exception e){
+
+                }
+                return false;
+            }
+        });
+        MenuItem sortItems=menu.findItem(R.id.sort);
+        sortItems.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Collections.reverse(bookingList);
+                if(datafetched){
+                    DropAdapter adapter = new DropAdapter(bookingList, getContext());
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
                 return false;
             }
         });
@@ -141,7 +161,7 @@ public class ExtendedDrop extends Fragment {
             if (datafetched) {
                 List<DropBooking> search = new ArrayList<>();
                 for (DropBooking b : bookingList) {
-                    if (b.get_rentPoolKey().getRegistrationNumber().contains(query.toUpperCase())||b.getBoonggBookingId().contains(query.toUpperCase())||b.get_webuserId().getProfile().getMobileNumber().contains(query)||b.get_webuserId().getProfile().getName().toUpperCase().contains(query.toUpperCase())) {
+                    if (b.get_rentPoolKey().getRegistrationNumber().toUpperCase().equals(query.toUpperCase())||b.get_rentPoolKey().getRegistrationNumber().contains(query.toUpperCase())||b.getBoonggBookingId().contains(query.toUpperCase())||b.get_webuserId().getProfile().getMobileNumber().contains(query)||b.get_webuserId().getProfile().getName().toUpperCase().contains(query.toUpperCase())) {
                         search.add(b);
                     }
                 }

@@ -75,7 +75,7 @@ public class VehicleRentAdapter  extends RecyclerView.Adapter<VehicleRentAdapter
         public void bindData(final int position) {
             final Result v=vehicleList.get(position);
 
-            Toast.makeText(mContext,v.getThumbUrl(),Toast.LENGTH_LONG).show();
+          //  Toast.makeText(mContext,v.getThumbUrl(),Toast.LENGTH_LONG).show();
            // Picasso.with(mContext).load(v.getThumbUrl()).into(vehicleImage);
             Glide.with(mContext)
                     .load(v.getThumbUrl()) // or URI/path

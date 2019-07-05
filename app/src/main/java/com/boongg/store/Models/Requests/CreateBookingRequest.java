@@ -1,11 +1,10 @@
+
 package com.boongg.store.Models.Requests;
 
 import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.Parcelable.Creator;
-
-import com.boongg.store.Models.Responses.CreateBooking.BikeList;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -36,6 +35,9 @@ public class CreateBookingRequest implements Parcelable
     @SerializedName("recivableAmountWithTax")
     @Expose
     private Double recivableAmountWithTax;
+    @SerializedName("discountAmount")
+    @Expose
+    private Double discountAmount;
     @SerializedName("location")
     @Expose
     private String location;
@@ -51,11 +53,11 @@ public class CreateBookingRequest implements Parcelable
     @SerializedName("isGstApplicable")
     @Expose
     private Boolean isGstApplicable;
-    public final static Parcelable.Creator<CreateBookingRequest> CREATOR = new Creator<CreateBookingRequest>() {
+    public final static Creator<CreateBookingRequest> CREATOR = new Creator<CreateBookingRequest>() {
 
 
         @SuppressWarnings({
-                "unchecked"
+            "unchecked"
         })
         public CreateBookingRequest createFromParcel(Parcel in) {
             return new CreateBookingRequest(in);
@@ -66,7 +68,7 @@ public class CreateBookingRequest implements Parcelable
         }
 
     }
-            ;
+    ;
 
     protected CreateBookingRequest(Parcel in) {
         this.username = ((String) in.readValue((String.class.getClassLoader())));
@@ -77,6 +79,7 @@ public class CreateBookingRequest implements Parcelable
         this.rentTotal = ((Double) in.readValue((Double.class.getClassLoader())));
         this.suggestedRent = ((Double) in.readValue((Double.class.getClassLoader())));
         this.recivableAmountWithTax = ((Double) in.readValue((Double.class.getClassLoader())));
+        this.discountAmount = ((Double) in.readValue((Double.class.getClassLoader())));
         this.location = ((String) in.readValue((String.class.getClassLoader())));
         this.storeKey = ((String) in.readValue((String.class.getClassLoader())));
         this.webUserId = ((String) in.readValue((String.class.getClassLoader())));
@@ -151,6 +154,14 @@ public class CreateBookingRequest implements Parcelable
         this.recivableAmountWithTax = recivableAmountWithTax;
     }
 
+    public Double getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(Double discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
     public String getLocation() {
         return location;
     }
@@ -200,6 +211,7 @@ public class CreateBookingRequest implements Parcelable
         dest.writeValue(rentTotal);
         dest.writeValue(suggestedRent);
         dest.writeValue(recivableAmountWithTax);
+        dest.writeValue(discountAmount);
         dest.writeValue(location);
         dest.writeValue(storeKey);
         dest.writeValue(webUserId);
@@ -208,7 +220,7 @@ public class CreateBookingRequest implements Parcelable
     }
 
     public int describeContents() {
-        return 0;
+        return  0;
     }
 
 }

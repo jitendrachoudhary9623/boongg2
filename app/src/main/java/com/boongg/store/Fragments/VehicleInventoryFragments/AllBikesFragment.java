@@ -70,9 +70,6 @@ public class AllBikesFragment extends Fragment implements AvailableFragment.INot
         bottomNav = rootView.findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
         request=OAPIClient.getClient().create(BookingRequest.class);
-        setupBadgeAt(0);
-        setupBadgeAt(1);
-        setupBadgeAt(2);
 
         if (savedInstanceState == null) {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_2,
@@ -130,6 +127,8 @@ public class AllBikesFragment extends Fragment implements AvailableFragment.INot
         BottomNavigationItemView itemView = (BottomNavigationItemView) v;
         View badge = LayoutInflater.from(getContext()).inflate(R.layout.bottom_nav_badge, itemView, true);
         TextView text = badge.findViewById(R.id.notifications_badge);
+        text.clearComposingText();
+
         text.setText(""+data);
     }
 }

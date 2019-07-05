@@ -27,6 +27,7 @@ import com.boongg.store.Utilities.DateSorter;
 import com.boongg.store.Utilities.ProgressbarUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -77,7 +78,7 @@ public class OverduePickup  extends Fragment {
                     if (bookingList.size() > 0) {
                         BookingAdapter adapter = new BookingAdapter(DateSorter.getBookings("Overdue", bookingList,true), getContext());
                         recyclerView.setAdapter(adapter);
-                        Toast.makeText(getContext(), "Size " + bookingList.size(), Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getContext(), "Size " + bookingList.size(), Toast.LENGTH_LONG).show();
                         msg.setVisibility(View.GONE);
 
                     }
@@ -89,7 +90,7 @@ public class OverduePickup  extends Fragment {
 
             @Override
             public void onFailure(Call<List<Booking>> call, Throwable t) {
-                Toast.makeText(getContext(),""+t.toString(),Toast.LENGTH_LONG).show();
+               // Toast.makeText(getContext(),""+t.toString(),Toast.LENGTH_LONG).show();
                 Log.e("JWT ERR",t.toString());
             }
         });
@@ -108,6 +109,22 @@ public class OverduePickup  extends Fragment {
                 return false;
             }
         });
+        MenuItem sortItems=menu.findItem(R.id.sort);
+        sortItems.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Collections.reverse(bookingList);
+
+                if(datafetched){
+                    Log.e("DROP","After Sort MENU"+bookingList.size());
+
+                    BookingAdapter adapter = new BookingAdapter(bookingList, getContext());
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
+                return false;
+            }
+        });
         final SearchView searchView = (SearchView) searchItem.getActionView();
         EditText searchEditText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
 
@@ -118,6 +135,7 @@ public class OverduePickup  extends Fragment {
             @Override
             public boolean onClose() {
                 if(datafetched){
+                    Collections.sort(bookingList);
                     BookingAdapter adapter = new BookingAdapter(bookingList, getContext());
                     recyclerView.setAdapter(adapter);
                     recyclerView.setVisibility(View.VISIBLE);

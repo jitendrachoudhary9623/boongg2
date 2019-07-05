@@ -127,7 +127,7 @@ setHasOptionsMenu(true);
                                     }
                                 });
                                 recyclerView.setAdapter(adapter);
-                                Toast.makeText(getContext(), "" + response.body().getCitys(), Toast.LENGTH_LONG).show();
+                            //    Toast.makeText(getContext(), "" + response.body().getCitys(), Toast.LENGTH_LONG).show();
                             }
 
                             @Override
@@ -177,8 +177,11 @@ setHasOptionsMenu(true);
                     }
                 };
 
-                new DatePickerDialog(getContext(), mDateDataSet, mCalendar.get(Calendar.YEAR),
-                        mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH)).show();
+
+                DatePickerDialog datePickerDialog= new DatePickerDialog(getContext(), mDateDataSet, mCalendar.get(Calendar.YEAR),
+                        mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.getDatePicker().setMinDate(Calendar.getInstance().getTimeInMillis());
+                datePickerDialog.show();
             }
 
         });

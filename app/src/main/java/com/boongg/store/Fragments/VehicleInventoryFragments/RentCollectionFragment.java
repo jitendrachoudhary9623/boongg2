@@ -43,15 +43,17 @@ public class RentCollectionFragment extends Fragment {
         call.enqueue(new Callback<List<RentBikeResponse>>() {
             @Override
             public void onResponse(Call<List<RentBikeResponse>> call, Response<List<RentBikeResponse>> response) {
-                Toast.makeText(getContext(),""+response.body().size(),Toast.LENGTH_LONG).show();
-                VehicleRentCollectionAdapter adapter = new VehicleRentCollectionAdapter(response.body(), getContext());
-                recyclerView.setAdapter(adapter);
-                msg.setVisibility(View.GONE);
+              try {
+                //  Toast.makeText(getContext(), "" + response.body().size(), Toast.LENGTH_LONG).show();
+                  VehicleRentCollectionAdapter adapter = new VehicleRentCollectionAdapter(response.body(), getContext());
+                  recyclerView.setAdapter(adapter);
+                  msg.setVisibility(View.GONE);
+              }catch (Exception e){}
             }
 
             @Override
             public void onFailure(Call<List<RentBikeResponse>> call, Throwable t) {
-                Toast.makeText(getContext(),""+t.toString(),Toast.LENGTH_LONG).show();
+              //  Toast.makeText(getContext(),""+t.toString(),Toast.LENGTH_LONG).show();
                 msg.setVisibility(View.VISIBLE);
 
 

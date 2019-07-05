@@ -45,10 +45,11 @@ public class AccountFragment extends Fragment {
             storeType.setText("Role : "+object.getString("role"));
             mobile.setText("Mobile : "+object.getString("mobileNumber"));
             email.setText("Email Id : "+object.getString("email"));
-            created_at.setText("Created On : "+date.toString());
 
             StoreDetail sd=new StoreDetail();
             sd=SharedPrefUtils.returnObject(LoginToken.OWNER_INFO,sd,getContext());
+            created_at.setText("Created On : "+date.toString()+"\nGST NUMBER"+sd.getGstNumber());
+
         } catch (Exception e) {
 
             e.printStackTrace();

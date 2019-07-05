@@ -21,10 +21,10 @@ public class OAPIClient {
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
-        Log.e("JWT",BASE_URL);
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(logging);
         if (retrofit == null) {
             Gson gson = new GsonBuilder()
                     .setLenient()
@@ -33,6 +33,7 @@ public class OAPIClient {
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .client(httpClient.build())
                     .build();
         }
         return retrofit;

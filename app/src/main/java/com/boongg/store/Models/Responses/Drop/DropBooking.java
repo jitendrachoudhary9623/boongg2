@@ -4,8 +4,18 @@ package com.boongg.store.Models.Responses.Drop;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.Parcelable.Creator;
+import android.util.Log;
+
+import com.boongg.store.Utilities.DateSorter;
+import com.boongg.store.Utilities.DateUtils;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class DropBooking implements Parcelable,Comparable<DropBooking>
 {
@@ -302,9 +312,36 @@ public class DropBooking implements Parcelable,Comparable<DropBooking>
     }
 
     public void setEndDate(String endDate) {
-        this.endDate = endDate;
+        this.endDate=endDate;
+
     }
 
+    public String getIST(String date){
+
+        Log.e("DATE 2 Input",date);
+        SimpleDateFormat formatter=new SimpleDateFormat("yyyy-mm-dd hh:mm");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC+4"));
+
+        //remove unwanted data
+        date=date.replace("T"," ");
+        date=date.replace(".000Z","");
+
+        try {
+            //date
+            Date d1 = formatter.parse(date);
+            d1.toLocaleString();
+            DateFormat originalFormat = new SimpleDateFormat("EEE MMM dd kk:mm:ss yyyy", Locale.ENGLISH);
+            DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+            Date date2 = originalFormat.parse(d1.toString().replace(" GMT+05:30 ", " "));
+            String formattedDate = targetFormat.format(date2);
+            Log.e("DATE 2 Output",formattedDate);
+
+            return formattedDate;
+        }catch (Exception e){
+            Log.e("DATE",e.toString());
+        }
+        return date;
+    }
     public String getStartDate() {
         return startDate;
     }
@@ -381,6 +418,26 @@ public class DropBooking implements Parcelable,Comparable<DropBooking>
 
     @Override
     public int compareTo(DropBooking o) {
-        return this.getRentWithDiscount().compareTo(o.getRentWithDiscount());
+
+        try {
+            String t=DateUtils.getIST(this.getEndDate());
+            String ob=DateUtils.getIST(o.getEndDate());
+            SimpleDateFormat format=new SimpleDateFormat("yyyy-mm-dd hh:mm");
+            Date d1=format.parse(t);
+            Date d2=format.parse(ob);
+
+            if (d1.after(d2)) {
+                return -1;
+            }
+            else if(d1.before(d2)){
+                return 1;
+            }
+            else{
+                return 0;
+            }
+        }catch (Exception e){
+        Log.e("DATE ERR ",e.toString());
+        }
+      return 0;
     }
 }

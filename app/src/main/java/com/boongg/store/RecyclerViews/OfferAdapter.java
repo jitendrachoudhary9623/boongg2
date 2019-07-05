@@ -70,7 +70,12 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
           ViewOffer o=offer.get(position);
           try {
               coupoun_code.setText(o.getCoupenCode());
-              discount_percent.setText("" + o.getDiscountInPrecentOrFlat());
+              if(o.getDiscountType().equals("Percent")) {
+                  discount_percent.setText("" + o.getDiscountInPrecentOrFlat()+" %");
+              }else{
+                  discount_percent.setText("" + o.getDiscountInPrecentOrFlat()+" FLAT");
+
+              }
               min.setText("Min Discount : " + o.getMinTransaction());
               max.setText("Max Discount : " + o.getMaxDiscount());
               used_by.setText("Used By : " + o.getUsedByUser().size());

@@ -31,7 +31,9 @@ public class SplashScreen extends AppCompatActivity {
     String appPermissions[] = {Manifest.permission.INTERNET,
             Manifest.permission.CALL_PHONE,
             Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    Manifest.permission.READ_EXTERNAL_STORAGE,
+    Manifest.permission.CAMERA};
     private static final int PERMISSION_REQUEST_CODE = 1102;
 
     @Override

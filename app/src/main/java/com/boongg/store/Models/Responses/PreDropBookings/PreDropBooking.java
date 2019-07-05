@@ -88,6 +88,9 @@ public class PreDropBooking implements Parcelable
     @SerializedName("isBlockBike")
     @Expose
     private Boolean isBlockBike;
+    @SerializedName("checkOutSmsFlag")
+    @Expose
+    private Boolean checkOutSmsFlag;
     public final static Parcelable.Creator<PreDropBooking> CREATOR = new Creator<PreDropBooking>() {
 
 
@@ -132,6 +135,7 @@ public class PreDropBooking implements Parcelable
         this.isHelmateProvided = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
         this.startKm = ((Double) in.readValue((Double.class.getClassLoader())));
         this.isBlockBike = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+        this.checkOutSmsFlag = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
     }
 
     public PreDropBooking() {
@@ -345,6 +349,14 @@ public class PreDropBooking implements Parcelable
         this.isBlockBike = isBlockBike;
     }
 
+    public Boolean getCheckOutSmsFlag() {
+        return checkOutSmsFlag;
+    }
+
+    public void setCheckOutSmsFlag(Boolean checkOutSmsFlag) {
+        this.checkOutSmsFlag = checkOutSmsFlag;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(_id);
         dest.writeValue(updatedAt);
@@ -372,6 +384,7 @@ public class PreDropBooking implements Parcelable
         dest.writeValue(isHelmateProvided);
         dest.writeValue(startKm);
         dest.writeValue(isBlockBike);
+        dest.writeValue(checkOutSmsFlag);
     }
 
     public int describeContents() {
