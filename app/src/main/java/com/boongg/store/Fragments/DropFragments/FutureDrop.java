@@ -66,19 +66,23 @@ public class FutureDrop extends Fragment {
                 bookingList=response.body();
                 datafetched=true;
                 //bookingList=;
-                if(bookingList.size()>0) {
-                    bookingList = DateSorter.getDropBookings("Future", bookingList,false);
-                    Collections.sort(bookingList);
-                    Log.e("Date",response.body().size()+"");
-                    DropAdapter adapter = new DropAdapter(bookingList, getContext());
-                    recyclerView.setAdapter(adapter);
-                    msg.setVisibility(View.GONE);
-                    if(isrefresh){
-                        ProgressbarUtil.hideProgressBar();
+                try {
+                    if (bookingList.size() > 0) {
+                        bookingList = DateSorter.getDropBookings("Future", bookingList, false);
+                        Collections.sort(bookingList);
+                        Log.e("Date", response.body().size() + "");
+                        DropAdapter adapter = new DropAdapter(bookingList, getContext());
+                        recyclerView.setAdapter(adapter);
+                        msg.setVisibility(View.GONE);
+                        if (isrefresh) {
+                            ProgressbarUtil.hideProgressBar();
+                        }
+                    } else {
+                        msg.setVisibility(View.VISIBLE);
                     }
-                }
-                else{
+                }catch (Exception e){
                     msg.setVisibility(View.VISIBLE);
+
                 }
                 //    Toast.makeText(getContext(),"Size "+bookingList.size(),Toast.LENGTH_LONG).show();
             }

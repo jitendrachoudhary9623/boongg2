@@ -22,7 +22,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:padding="15dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/selected_bike_show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bike Name"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp"
+            android:background="@color/light_purple"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="horizontal">
         <CheckBox
             android:layout_weight="1"

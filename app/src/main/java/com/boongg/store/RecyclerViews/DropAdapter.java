@@ -38,6 +38,7 @@ import com.boongg.store.Models.Responses.ExtendDateResponse;
 import com.boongg.store.Models.Responses.PreDropBookings.PreDropBooking;
 import com.boongg.store.Models.UpdateResponse;
 import com.boongg.store.Networking.APIClient;
+import com.boongg.store.Networking.APIClientWithNULL;
 import com.boongg.store.Networking.BookingRequest;
 import com.boongg.store.Networking.CheckInRequest;
 import com.boongg.store.Networking.OAPIClient;
@@ -68,6 +69,8 @@ public class DropAdapter extends RecyclerView.Adapter<DropAdapter.DropViewHolder
 
     List<DropBooking> bookings;
     Context mContext;
+    Double apiCalc;
+
     public DropAdapter(){
 
     }
@@ -250,27 +253,29 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
         final ExtendBookingDateRequest ex=new ExtendBookingDateRequest();
         ex.setModel(booking.getModel());
         ex.setEndDate(booking.getEndDate());
-        ex.setSuggestedExtendedRent(booking.getRentWithDiscount());
+        ex.setSuggestedExtendedRent(null);
         ex.setBrand(booking.getBrand());
-        ex.setBookingId(booking.get_id());
+        ex.setBookingId(null);
         //ex.setStartDate(booking.getStartDate());
         try {
             ex.setStartDate(booking.getStartDate());
-
             ex.setScheduleTime(dateSelector.getText().toString());
         }catch(Exception e){
-         //   Toast.makeText(mContext,e.toString(),Toast.LENGTH_LONG).show();
+           Toast.makeText(mContext,e.toString(),Toast.LENGTH_LONG).show();
         }
-        final RentCalculationAPI rentCal= APIClient.getClient().create(RentCalculationAPI.class);
+
+        final RentCalculationAPI rentCal= APIClientWithNULL.getClient().create(RentCalculationAPI.class);
         Call<ExtendDateResponse> call1 = rentCal.getExtendedDateRent(ex);
         call1.enqueue(new Callback<ExtendDateResponse>() {
             @Override
             public void onResponse(Call<ExtendDateResponse> call, Response<ExtendDateResponse> response) {
-                final Double apiCalc=response.body().getCalculatedRent();
                 try {
+                      apiCalc=response.body().getCalculatedRent();
+
                 }catch(Exception e){
                     calculatedRent.setText("Calculated Rent : 0 ");
-
+                    Toast.makeText(mContext,e.toString(),Toast.LENGTH_LONG).show();
+                    apiCalc=0.0;
                 }
                 calculatedRent.setText("Calculated Rent :" +apiCalc );
 
@@ -279,6 +284,7 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
 
             @Override
             public void onFailure(Call<ExtendDateResponse> call, Throwable t) {
+                Toast.makeText(mContext,t.toString(),Toast.LENGTH_LONG).show();
 
             }
         });
@@ -295,10 +301,8 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
         try {
             if (!sd.getGstNumber().equals("") && sd.getGstNumber() != null) {
                 request.setIsGstApplicable(true);
-
             } else {
                 request.setIsGstApplicable(false);
-
             }
         } catch (Exception e) {
             request.setIsGstApplicable(false);
@@ -307,7 +311,7 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
         request.setRentPoolKey(booking.get_rentBikeKey().get_id());
         request.setSuggestedExtendedRent((int)Math.round(apiCalc));
         request.setTotalExtendedBikeRent((int)Math.round(apiCalc));
-        request.setScheduleTime(new Date(dateSelector.getText().toString()).toString());
+        request.setScheduleTime(dateSelector.getText().toString().substring(0,dateSelector.getText().toString().length()-8));
         request.setStartDate(booking.getStartDate());
         Call<ExtendDateAfterRentResponse> call2 = rentCal.getExtendedDateAfterResponse(request);
         call2.enqueue(new Callback<ExtendDateAfterRentResponse>() {
@@ -495,7 +499,7 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
                 final Calendar mCalendar;
                 mCalendar = Calendar.getInstance();
                 //2019-06-18T07:34:34.787Z
-                mSimpleDateFormat = new SimpleDateFormat("yyyy-mm-dd'T'HH:mm:ss.'000Z'", Locale.getDefault());
+                mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.'000Z'", Locale.getDefault());
                 final TimePickerDialog.OnTimeSetListener mTimeDataSet = new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -510,7 +514,7 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
                         mCalendar.set(Calendar.YEAR, year);
                         mCalendar.set(Calendar.MONTH, monthOfYear);
                         mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        TimePickerDialog picker=new TimePickerDialog(context, mTimeDataSet, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), false);
+                        TimePickerDialog picker=new TimePickerDialog(context,android.R.style.Theme_Holo_Light_Dialog, mTimeDataSet, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), false);
                         picker.show();
                     }
                 };

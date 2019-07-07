@@ -89,7 +89,6 @@ public class TodayPickUp extends Fragment {
                     msg.setVisibility(View.VISIBLE);
 
                 }
-                //    Toast.makeText(getContext(),"Size "+bookingList.size(),Toast.LENGTH_LONG).show();
             }
 
             @Override

@@ -608,6 +608,8 @@ public class CreateBookingFragment extends Fragment {
         final EditText start = (EditText) promptsView.findViewById(R.id.startKm);
         final EditText totalRent=(EditText)promptsView.findViewById(R.id.totalRent);
         final EditText address=(EditText)promptsView.findViewById(R.id.emergency_address);
+        TextView selectedBikeText=(TextView)promptsView.findViewById(R.id.selected_bike_show);
+        selectedBikeText.setText("Booking for : "+body.get(0).getBrand()+" "+body.get(0).getModel());
         try {
             address.setText(usersAddress);
             if(!uAddress.equals("")){
@@ -618,6 +620,7 @@ public class CreateBookingFragment extends Fragment {
         totalRent.setText(""+body.get(0).getRentTotal());
         final CheckBox modifyBikeCheckBox, helmentProvidedCheckBox;
         modifyBikeCheckBox = (CheckBox) promptsView.findViewById(R.id.modify_bike_checkbox);
+        modifyBikeCheckBox.setVisibility(View.GONE);
         final Spinner niceSpinner = (Spinner) promptsView.findViewById(R.id.select_bike_spinner);
         OwnerInventory inventory = APIClient.getClient().create(OwnerInventory.class);
         Call<List<VehicleInventoryResponse>> call2 = inventory.getAvailableVehicles(LoginToken.id);
@@ -649,60 +652,7 @@ public class CreateBookingFragment extends Fragment {
                 AlertBoxUtils.showAlert(getContext(), "error", "", "" + t.toString());
             }
         });
-        modifyBikeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
-                if (dialog2.isShowing()) {
-                    dialog2.dismiss();
-                }
-                AlertBoxUtils.showLoadingAlert(getContext());
-                OwnerInventory inventory = APIClient.getClient().create(OwnerInventory.class);
-                Call<List<VehicleInventoryResponse>> call2 = inventory.getAvailableVehicles(LoginToken.id);
-                call2.enqueue(new Callback<List<VehicleInventoryResponse>>() {
-                    @Override
-                    public void onResponse(Call<List<VehicleInventoryResponse>> call, Response<List<VehicleInventoryResponse>> response) {
-                        ds = null;
-                        ds = new ArrayList<>();
-                        //ds.add("Select Vehicle")
-                        if (isChecked) {
-                            ds.add("Select Vehicle for modification");
-                        } else {
-                            ds.add("Select Vehicle");
-                        }
-                        for (VehicleInventoryResponse vir : response.body()) {
 
-                            if (isChecked) {
-                                vehicleList.add(vir);
-                                ds.add("(" + vir.getRegistrationNumber() + ") " + vir.getBrand() + " " + vir.getVehicleModel());
-                            } else {
-                                if (body.get(0).getModel().equals(vir.getVehicleModel())) {
-                                    Log.e("JWT", body.get(0).getBrand() + " " + body.get(0).getModel() + " ---- " + vir.getBrand() + " ----- " + vir.getVehicleModel());
-                                    vehicleList.add(vir);
-                                    ds.add("(" + vir.getRegistrationNumber() + ") " + vir.getBrand() + " " + vir.getVehicleModel());
-                                }
-                            }
-                        }
-
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String >(
-                                getContext(),
-                                android.R.layout.simple_spinner_item,
-                                ds
-                        );
-                        niceSpinner.setAdapter(adapter);
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<VehicleInventoryResponse>> call, Throwable t) {
-                        AlertBoxUtils.showAlert(getContext(), "error", "", "" + t.toString());
-
-                    }
-                });
-                AlertBoxUtils.hideLoadingAlert();
-                if (!dialog2.isShowing()) {
-                    dialog2.show();
-                }
-            }
-        });
 
         final String[] bId = {""};
         final String selectedBike[] = {""};

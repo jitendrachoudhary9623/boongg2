@@ -53,7 +53,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         return this.bookings.size();
     }
     public class HistoryViewHolder extends RecyclerView.ViewHolder {
-
         TextView bookingId,startDate,endDate,customberName,phoneNo,amount,status,vehicleName,mode,cancelledOn;
         LinearLayout call;
         public HistoryViewHolder(View itemView) {

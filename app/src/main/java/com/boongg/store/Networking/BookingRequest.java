@@ -5,6 +5,7 @@ import com.boongg.store.Models.Booking;
 import com.boongg.store.Models.Requests.BikeDetails.Bike;
 import com.boongg.store.Models.Requests.CreateBookingRequest;
 import com.boongg.store.Models.Requests.DropVehicleRequest;
+import com.boongg.store.Models.Requests.ModifyBikes.BikeModify;
 import com.boongg.store.Models.Requests.ModifyBikes.Modify;
 import com.boongg.store.Models.Requests.UpdateBike.UpdateB;
 import com.boongg.store.Models.Responses.CreateBooking.CreateBookingResponse;
@@ -17,7 +18,9 @@ import com.boongg.store.Utilities.LoginToken;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -29,7 +32,10 @@ public interface BookingRequest {
     @GET("BOOKED")
     Call<List<Booking>> getAllBookings();
 
-
+    @GET("BOOKED")
+    Single<List<Booking>> getRAllBookings();
+    @GET("ONGOING")
+    Single<List<DropBooking>> getDashboardDropBookings();
 
     //
     @GET("COMPLETED")
@@ -67,4 +73,7 @@ public interface BookingRequest {
 
     @POST("rentbooking/modifybookingrequest")
     Call<Void> modifyBikeInDrop(@Body Modify m);
+
+    @POST("rentbooking/update")
+    Call<Void> modifyBike(@Body BikeModify bm);
 }
