@@ -2,9 +2,11 @@ package com.boongg.store.Networking;
 
 
 import com.boongg.store.Models.Booking;
+import com.boongg.store.Models.Requests.AvailableBikes.AvailableBike;
 import com.boongg.store.Models.Requests.BikeDetails.Bike;
 import com.boongg.store.Models.Requests.CreateBookingRequest;
 import com.boongg.store.Models.Requests.DropVehicleRequest;
+import com.boongg.store.Models.Requests.MaintainanceBikes.MaintenanceBike;
 import com.boongg.store.Models.Requests.ModifyBikes.BikeModify;
 import com.boongg.store.Models.Requests.ModifyBikes.Modify;
 import com.boongg.store.Models.Requests.UpdateBike.UpdateB;
@@ -37,6 +39,11 @@ public interface BookingRequest {
     @GET("ONGOING")
     Single<List<DropBooking>> getDashboardDropBookings();
 
+    @GET("BLOCKED/MAINTENANCE")
+    Call<List<PreDropBooking>> getSMaintainanceBikes();
+
+    @GET("BLOCKED/MAINTENANCE")
+    Call<List<MaintenanceBike>> getCMaintainanceBikes();
     //
     @GET("COMPLETED")
     Observable<List<Booking>> getCompletedBooking();
@@ -55,6 +62,9 @@ public interface BookingRequest {
 
     @GET("AVAILABLE")
     Observable<List<PreDropBooking>> getAvailableBikes();
+
+    @GET("rent-pool/all-list-store/{token}")
+    Observable<List<AvailableBike>> getSAvailableBikes(@Path("token") String token);
 
     @GET("BLOCKED/MAINTENANCE")
     Observable<List<PreDropBooking>> getMaintainanceBikes();

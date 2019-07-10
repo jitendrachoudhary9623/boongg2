@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,19 +20,24 @@ import android.widget.ProgressBar;
 import com.boongg.store.MainActivity;
 import com.boongg.store.Models.Booking;
 import com.boongg.store.Models.Buttons;
+import com.boongg.store.Models.DashboardInfo;
 import com.boongg.store.Models.MainPageSlider;
 import com.boongg.store.Models.Responses.Drop.DropBooking;
 import com.boongg.store.Models.Responses.PreDropBookings.PreDropBooking;
+import com.boongg.store.Networking.APIClient;
 import com.boongg.store.Networking.BookingRequest;
+import com.boongg.store.Networking.Dashboard;
 import com.boongg.store.Networking.OAPIClient;
 import com.boongg.store.PageAdapters.SliderAdapter;
 import com.boongg.store.R;
 import com.boongg.store.RecyclerViews.MainButtons;
 import com.boongg.store.Utilities.DateSorter;
+import com.boongg.store.Utilities.LoginToken;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -100,7 +106,7 @@ public class MainFragment extends Fragment {
     int drop=0;
     private void fetchData() {
         final BookingRequest bookingRequest = OAPIClient.getClient().create(BookingRequest.class);
-        bookingRequest.getRAllBookings().subscribeOn(Schedulers.io())
+       /* bookingRequest.getRAllBookings().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<List<Booking>>() {
                     @Override
@@ -135,9 +141,45 @@ public class MainFragment extends Fragment {
 
                     }
                 });
+*/
+       try {
+           final Dashboard dashboard = APIClient.getClient().create(Dashboard.class);
+           dashboard.getDashboardInfo(LoginToken.id)
+                   .subscribeOn(Schedulers.io())
+                   .observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableSingleObserver<DashboardInfo>() {
+               @Override
+               public void onSuccess(DashboardInfo d) {
+                   try {
+                       DecimalFormat format = new DecimalFormat("0.#");
 
+                       sliderData.add(new MainPageSlider("Pickup", "Drop", "" + format.format(d.getPickup()), "" + format.format(d.getDrop()), "Today's Booking"));
+                       sliderData.add(new MainPageSlider("Today", "Monthly", getResources().getString(R.string.rs) + " " + Math.round(d.getTodayCollection()), getResources().getString(R.string.rs) + " " + Math.round(d.getMonthlyCollection()), "Collection", 2));
+                       sliderData.add(new MainPageSlider("Maintainance", "Available", "" + format.format(d.getMaintainance()), "" +format.format(d.getAvailable()), "Bikes", "On-Going", "" + format.format(d.getOngoing()), 3));
+                   }catch (Exception e){
+                       sliderData.add(new MainPageSlider("Pickup", "Drop", "" + d.getPickup(), "" + d.getDrop(), "Today's Booking"));
+                       sliderData.add(new MainPageSlider("Today", "Monthly", getResources().getString(R.string.rs) + " " + Math.round(d.getTodayCollection()), getResources().getString(R.string.rs) + " " + Math.round(d.getMonthlyCollection()), "Collection", 2));
+                       sliderData.add(new MainPageSlider("Maintainance", "Available", "" + d.getMaintainance(), "" + d.getAvailable(), "Bikes", "On-Going", "" + d.getOngoing(), 3));
 
+                   }
+                   pb.setVisibility(View.GONE);
+                   viewPager.setVisibility(View.VISIBLE);
+                   indicator.setVisibility(View.VISIBLE);
+                   viewPager.setAdapter(new SliderAdapter(getContext(), sliderData));
+                   indicator.setupWithViewPager(viewPager, true);
+                   Timer timer = new Timer();
+                   timer.scheduleAtFixedRate(new SliderTimer(), 6000, 6000);
+               }
 
+               @Override
+               public void onError(Throwable e) {
+                   Log.d("DATA",e.toString());
+
+               }
+           });
+       }catch (Exception e){
+
+           Log.d("DATA",e.toString());
+       }
     }
 
     private class SliderTimer extends TimerTask {

@@ -63,34 +63,81 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <CheckBox
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:layout_weight="1"
-                android:id="@+id/all_inventory_rc"
-                android:text="RC"/>
-            <CheckBox
-                android:id="@+id/all_inventory_puc"
+                android:orientation="horizontal"
+                android:padding="2dp">
+                <ImageView
+                    android:src="@drawable/cancel_2"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:id="@+id/all_inventory_rc"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="RC"
+                    android:textAlignment="center"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:textStyle="bold"/>
+            </LinearLayout>
 
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:layout_weight="1"
-                android:text="PUC"/>
-            <CheckBox
-
+                android:orientation="horizontal"
+                android:padding="2dp">
+                <ImageView
+                    android:src="@drawable/cancel_2"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:id="@+id/all_inventory_puc"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="PUC"
+                    android:textAlignment="center"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:padding="2dp">
+                <ImageView
+                    android:src="@drawable/cancel_2"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:id="@+id/all_inventory_insuarance"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Insurance"
+                    android:textAlignment="center"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:textStyle="bold"/>
+            </LinearLayout>
 
-                android:id="@+id/all_inventory_insuarance"
-
-                android:text="Insurance"/>
 
         </LinearLayout>
     </LinearLayout>

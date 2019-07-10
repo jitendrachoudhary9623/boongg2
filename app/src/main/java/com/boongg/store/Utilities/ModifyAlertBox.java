@@ -88,29 +88,33 @@ public class ModifyAlertBox {
                     @Override
                     public void onClick(final DialogInterface dialog, int which) {
                         int p=selectedPosition[0];
-                        ModifyRequest request=new ModifyRequest();
-                        request.setBookingId(booking.get_id());
-                        request.setBrand(vehicleLists.get(p).getBrand());
-                        request.setModel(vehicleLists.get(p).getVehicleModel());
-                        request.setPreviousBikePoolKey(booking.get_id());
-                        request.setNewBikePoolKey(vehicleLists.get(p).get_id());
-                        Call<Void> call3=inventory.modifyVehicle(request);
-                        call3.enqueue(new Callback<Void>() {
-                            @Override
-                            public void onResponse(Call<Void> call, Response<Void> response) {
+                        try {
+                            ModifyRequest request = new ModifyRequest();
+                            request.setBookingId(booking.get_id());
+                            request.setBrand(vehicleLists.get(p).getBrand());
+                            request.setModel(vehicleLists.get(p).getVehicleModel());
+                            request.setPreviousBikePoolKey(booking.get_rentPoolKey().get_id()); //error
+                            request.setNewBikePoolKey(vehicleLists.get(p).get_id());
+                            Call<Void> call3 = inventory.modifyVehicle(request);
+                            call3.enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
 
-                                dialog.dismiss();
-                                AlertBoxUtils.showAlert(context,"success","Modify Vehicle","Success");
-                            }
+                                    dialog.dismiss();
+                                    AlertBoxUtils.showAlert(context, "success", "Modify Vehicle", "Success");
+                                }
 
-                            @Override
-                            public void onFailure(Call<Void> call, Throwable t) {
-                                dialog.dismiss();
-                                AlertBoxUtils.showAlert(context,"error","Modify Vehicle","Failed");
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+                                    dialog.dismiss();
+                                    AlertBoxUtils.showAlert(context, "error", "Modify Vehicle", "Failed");
 
 
-                            }
-                        });
+                                }
+                            });
+                        }catch (Exception e){
+                            AlertBoxUtils.showAlert(context,"error","Error","Bike Modification Failed");
+                        }
                     }
                 })
                 .setNegativeButton("Cancel",

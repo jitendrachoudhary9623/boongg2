@@ -2,6 +2,7 @@ package com.boongg.store.Utilities;
 
 import android.util.Log;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,6 +34,29 @@ public class DateUtils {
                 Log.e("DATE",e.toString());
         }
         return date;
+    }
+    public static String getUTC(String date){
+
+        String temp=date;
+        date=date.replace("T"," ");
+        date=date.substring(0,19);
+        Log.e("DATE1",date);
+        SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        mSimpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        try{
+            Date d=mSimpleDateFormat.parse(date);
+            Timestamp timestamp = new Timestamp(d.getTime());
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(timestamp.getTime());
+            cal.setTimeInMillis(timestamp.getTime());
+            cal.add(Calendar.SECOND, -19080);
+            timestamp = new Timestamp(cal.getTime().getTime());
+            Log.e("DATE1 parsed",timestamp.toString());
+            return d.toString();
+        }catch (Exception e){
+            Log.e("DATE1",e.toString());
+        }
+        return temp;
     }
 
     public static String getTodaysDate(){

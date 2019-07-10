@@ -39,23 +39,46 @@ public class SliderAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.main_page_item_slider, null);
 
-        TextView t1 = (TextView) view.findViewById(R.id.slider_title_1);
-        TextView t2= (TextView) view.findViewById(R.id.slider_title_2);
-        TextView v1 = (TextView) view.findViewById(R.id.slider_value_1);
-        TextView v2 = (TextView) view.findViewById(R.id.slider_value_2);
-        TextView heading =(TextView) view.findViewById(R.id.slider_heading);
+        View view;
+        if(sliderList.get(position).getLevel()==3) {
+             view = inflater.inflate(R.layout.main_page_item_slider_2, null);
+            TextView t1 = (TextView) view.findViewById(R.id.slider_title_1);
+            TextView t2 = (TextView) view.findViewById(R.id.slider_title_2);
+            TextView v1 = (TextView) view.findViewById(R.id.slider_value_1);
+            TextView v2 = (TextView) view.findViewById(R.id.slider_value_2);
+            TextView t3 = (TextView) view.findViewById(R.id.slider_title_3);
+            TextView v3 = (TextView) view.findViewById(R.id.slider_value_3);
+            TextView heading = (TextView) view.findViewById(R.id.slider_heading);
 
-        //  LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
-        t1.setText(sliderList.get(position).getItem1());
-        t2.setText(sliderList.get(position).getItem2());
-        v1.setText(sliderList.get(position).getValue1());
-        v2.setText(sliderList.get(position).getValue2());
-        heading.setText(sliderList.get(position).getTitle());
-        //textView.setText(colorName.get(position));
-        //linearLayout.setBackgroundColor(color.get(position));
+            //  LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
+            t1.setText(sliderList.get(position).getItem1());
+            t2.setText(sliderList.get(position).getItem2());
+            v1.setText(sliderList.get(position).getValue1());
+            v2.setText(sliderList.get(position).getValue2());
+            t3.setText(sliderList.get(position).getItem3());
+            v3.setText(sliderList.get(position).getValue3());
+            heading.setText(sliderList.get(position).getTitle());
+        }
+        else {
 
+             view = inflater.inflate(R.layout.main_page_item_slider, null);
+
+            TextView t1 = (TextView) view.findViewById(R.id.slider_title_1);
+            TextView t2 = (TextView) view.findViewById(R.id.slider_title_2);
+            TextView v1 = (TextView) view.findViewById(R.id.slider_value_1);
+            TextView v2 = (TextView) view.findViewById(R.id.slider_value_2);
+            TextView heading = (TextView) view.findViewById(R.id.slider_heading);
+
+            //  LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
+            t1.setText(sliderList.get(position).getItem1());
+            t2.setText(sliderList.get(position).getItem2());
+            v1.setText(sliderList.get(position).getValue1());
+            v2.setText(sliderList.get(position).getValue2());
+            heading.setText(sliderList.get(position).getTitle());
+            //textView.setText(colorName.get(position));
+            //linearLayout.setBackgroundColor(color.get(position));
+        }
         ViewPager viewPager = (ViewPager) container;
         viewPager.addView(view, 0);
 

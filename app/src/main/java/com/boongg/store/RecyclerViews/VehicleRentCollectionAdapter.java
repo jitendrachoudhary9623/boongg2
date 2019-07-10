@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.boongg.store.Models.Requests.CheckIn;
+import com.boongg.store.Models.Requests.StoreInfo.StoreDetail;
 import com.boongg.store.Models.Requests.UpdateBikePrice;
 import com.boongg.store.Models.Responses.Owners.BikePriceChart;
 
@@ -34,6 +35,7 @@ import com.boongg.store.R;
 import com.boongg.store.Utilities.AlertBoxUtils;
 import com.boongg.store.Utilities.JWTUtils;
 import com.boongg.store.Utilities.LoginToken;
+import com.boongg.store.Utilities.SharedPrefUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -249,9 +251,11 @@ public class VehicleRentCollectionAdapter extends RecyclerView.Adapter<VehicleRe
                                     UpdateBikePrice ubp=new UpdateBikePrice();
                                     try {
                                         JSONObject o= JWTUtils.getUserLoginDetailsFromJWT(LoginToken.tokenId);
-                                        String e[]=o.getString("email").split("@");
+                                        StoreDetail sd=new StoreDetail();
+                                        sd= SharedPrefUtils.returnObject(LoginToken.OWNER_INFO,sd,mContext);
+                                        String location=sd.getLocality().get(0);
                                         try {
-                                            ubp.setLocation(e[0]);
+                                            ubp.setLocation(location);
                                         }catch (Exception e2){
                                             ubp.setLocation("");
                                         }

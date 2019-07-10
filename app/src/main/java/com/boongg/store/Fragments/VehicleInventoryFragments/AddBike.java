@@ -48,13 +48,14 @@ public class AddBike extends Fragment {
     CardView s1,s2,s3,s4;
     List<CardView>cardViews;
     int current=0;
+    ProgressBar pb;
     String year_s,model_s,brand_s;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate(R.layout.fragment_add_bike, container, false);
-        final ProgressBar pb = (ProgressBar) rootView.findViewById(R.id.pb);
+        pb = (ProgressBar) rootView.findViewById(R.id.pb);
         final int[] progressStatus = {0};
 
         final Spinner year=(Spinner)rootView.findViewById(R.id.add_bike_model_year);
@@ -91,11 +92,15 @@ public class AddBike extends Fragment {
             @Override
             public void onClick(View v) {
 
-                createBiike(year_s,model_s,brand_s,getViewText(owner_name_s),getViewText(owner_contact),getViewText(owner_email),
-                        getViewText(color),getViewText(kmTravelled),getViewText(registration_id),
-                        getViewText(chassis_id),getViewText(engine_id),getViewText(engine_capacity),
-                        getViewText(purchaseCost),getViewText(selllCost)
-                );
+                try {
+                    createBiike(year_s, model_s, brand_s, getViewText(owner_name_s), getViewText(owner_contact), getViewText(owner_email),
+                            getViewText(color), getViewText(kmTravelled), getViewText(registration_id),
+                            getViewText(chassis_id), getViewText(engine_id), getViewText(engine_capacity),
+                            getViewText(purchaseCost), getViewText(selllCost)
+                    );
+                }catch (Exception e){
+
+                }
             }
         });
 
@@ -152,14 +157,14 @@ public class AddBike extends Fragment {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             BrandList b = response.body().get(position);
-                            model_s = b.getBrandName();
+                            brand_s = b.getBrandName();
                             ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, b.getModels());
                             brandAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             brand.setAdapter(brandAdapter);
                             brand.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                    brand_s = brand.getSelectedItem().toString();
+                                    model_s = brand.getSelectedItem().toString();
                                 }
 
                                 @Override
@@ -243,6 +248,7 @@ public class AddBike extends Fragment {
                             .setTitleText("Success")
                             .setContentText("Bike Added! Please check in the tab")
                             .show();
+                    pb.setProgress(100);
 
                 }
 
@@ -252,6 +258,7 @@ public class AddBike extends Fragment {
                             .setTitleText("Bike Adding Failed")
                             .setContentText("Due to technical faults bike adding failed")
                             .show();
+                    pb.setProgress(0);
                 }
             });
         }catch(Exception e){

@@ -45,9 +45,11 @@ public class RentCollectionFragment extends Fragment {
             public void onResponse(Call<List<RentBikeResponse>> call, Response<List<RentBikeResponse>> response) {
               try {
                 //  Toast.makeText(getContext(), "" + response.body().size(), Toast.LENGTH_LONG).show();
-                  VehicleRentCollectionAdapter adapter = new VehicleRentCollectionAdapter(response.body(), getContext());
-                  recyclerView.setAdapter(adapter);
-                  msg.setVisibility(View.GONE);
+                 if(response.body().size()!=0) {
+                     VehicleRentCollectionAdapter adapter = new VehicleRentCollectionAdapter(response.body(), getContext());
+                     recyclerView.setAdapter(adapter);
+                     msg.setVisibility(View.GONE);
+                 }
               }catch (Exception e){}
             }
 

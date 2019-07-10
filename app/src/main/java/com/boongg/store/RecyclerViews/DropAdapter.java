@@ -54,6 +54,7 @@ import com.boongg.store.Utilities.SharedPrefUtils;
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -213,19 +214,29 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
             final TextView dateSelector = (TextView) promptsView.findViewById(R.id.alert_drop_extend_date_picker);
             final TextView calculateRent = (TextView) promptsView.findViewById(R.id.alert_drop_extend_calculate_rent);
             final TextView calculatedRent = (TextView) promptsView.findViewById(R.id.alert_drop_extend_date_rent_calculate);
+            calculatedRent.setText("Click on Calculate Rent For Extended Date");
             final TextView extendDate = (TextView) promptsView.findViewById(R.id.alert_drop_extend_date_api_call);
             extendDate.setVisibility(View.GONE);
 
-            setDateUsingDatePicker(dateSelector, mContext);
+            setDateUsingDatePicker(dateSelector, mContext,booking);
             alertDialogBuilder.setView(promptsView);
             alertDialogBuilder
                     .setCancelable(false)
                     .setPositiveButton("Extend Date", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            extend(booking, calculatedRent.getText().toString().split(":")[1], dateSelector);
-                            dialog.cancel();
 
+                            if(calculatedRent.getText().equals("Click on Calculate Rent For Extended Date")){
+                                dialog.cancel();
+                                AlertBoxUtils.showAlert(mContext,"error","Extend Date","First Click on Calculate Rent");
+                            }else if(booking.get_rentPoolKey().get_id()==null){
+                                dialog.cancel();
+                                AlertBoxUtils.showAlert(mContext,"error","Extend Date","No Operation can be performed on this bike, the rent pool is null, please contact the system admin");
+                            }
+                            else {
+                                extend(booking, calculatedRent.getText().toString().split(":")[1], dateSelector);
+                                dialog.cancel();
+                            }
                         }
                     })
                     .setNegativeButton("Cancel",
@@ -252,7 +263,6 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
     private void calRent(final AlertDialog alertDialog, final DropBooking booking, final TextView dateSelector, final TextView calculatedRent, TextView calculateRent, final TextView extendDate) {
         final ExtendBookingDateRequest ex=new ExtendBookingDateRequest();
         ex.setModel(booking.getModel());
-        ex.setEndDate(booking.getEndDate());
         ex.setSuggestedExtendedRent(null);
         ex.setBrand(booking.getBrand());
         ex.setBookingId(null);
@@ -260,6 +270,8 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
         try {
             ex.setStartDate(booking.getStartDate());
             ex.setScheduleTime(dateSelector.getText().toString());
+            ex.setEndDate(dateSelector.getText().toString());
+
         }catch(Exception e){
            Toast.makeText(mContext,e.toString(),Toast.LENGTH_LONG).show();
         }
@@ -308,7 +320,7 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
             request.setIsGstApplicable(false);
 
         }
-        request.setRentPoolKey(booking.get_rentBikeKey().get_id());
+        request.setRentPoolKey(booking.get_rentPoolKey().get_id());
         request.setSuggestedExtendedRent((int)Math.round(apiCalc));
         request.setTotalExtendedBikeRent((int)Math.round(apiCalc));
         request.setScheduleTime(dateSelector.getText().toString().substring(0,dateSelector.getText().toString().length()-8));
@@ -490,7 +502,7 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
         });
     }
 
-    public void setDateUsingDatePicker(final TextView vt, final Context context){
+    public void setDateUsingDatePicker(final TextView vt, final Context context, final DropBooking booking){
 
         vt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -519,8 +531,20 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
                     }
                 };
 
-                new DatePickerDialog(context, mDateDataSet, mCalendar.get(Calendar.YEAR),
-                        mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                DatePickerDialog picker=new DatePickerDialog(context, mDateDataSet, mCalendar.get(Calendar.YEAR),
+                        mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
+
+                String dateS=DateUtils.getIST(booking.getEndDate());
+                DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+                try {
+                    Date d = targetFormat.parse(dateS);
+
+                    picker.getDatePicker().setMinDate(d.getTime());
+                }catch (Exception e){
+
+                }
+
+                picker.show();
             }
 
         });

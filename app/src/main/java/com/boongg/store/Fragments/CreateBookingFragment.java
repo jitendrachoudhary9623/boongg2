@@ -259,7 +259,12 @@ public class CreateBookingFragment extends Fragment {
                             public void onResponse(Call<Vehicle> call, Response<Vehicle> response) {
                                 progressDialog.hide();
 
-                                List<Result> vehicle = response.body().getResults();
+                                List<Result> vehicle = new ArrayList<Result>();
+                                for(Result r:response.body().getResults()){
+                                    if(r.getQuantity()!=0){
+                                        vehicle.add(r);
+                                    }
+                                }
                                 VehicleSelectAdapter adapter = new VehicleSelectAdapter(vehicle, getContext(), new OnImageClickListener() {
                                     @Override
                                     public void onImageClick(Result vehichle) {

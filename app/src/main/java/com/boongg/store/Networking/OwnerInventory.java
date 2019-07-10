@@ -10,12 +10,14 @@ import com.boongg.store.Models.Responses.AvailableVehicles.VehicleInventoryRespo
 import com.boongg.store.Models.Responses.NearbyVehicles.Vehicle;
 import com.boongg.store.Models.Responses.Owners.BikePriceChart;
 import com.boongg.store.Models.Responses.Owners.Owner;
+import com.boongg.store.Models.Responses.PreDropBookings.PreDropBooking;
 import com.boongg.store.Models.Responses.RentBikeResponse;
 import com.boongg.store.Models.Responses.VehicleList.VehicleList;
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -36,6 +38,10 @@ public interface OwnerInventory {
 
     @GET("rent-pool/list/{token}")  //all-list-store
     Call<List<VehicleInventoryResponse>> getAvailableVehicles(@Path("token") String token);
+
+    @GET("rent-pool/all-list-store/{token}")  //all-list-store
+    Call<List<PreDropBooking>> getSAllVehicles(@Path("token") String token);
+
 
     @GET("rent-pool/list/{token}/")
     Call<List<VehicleList>> getVehicleList(@Path("token") String token);
@@ -60,5 +66,8 @@ public interface OwnerInventory {
 
     @POST("rentbooking/block")
     Call<Void> maintainance(@Body BikeMaintaince bike);
+
+    @GET("rentbooking/unblock/{bikeId}")
+    Call<Void> unblock(@Path("bikeId") String bikeId);
 }
 

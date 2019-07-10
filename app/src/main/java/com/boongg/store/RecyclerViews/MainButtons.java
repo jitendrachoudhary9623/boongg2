@@ -125,6 +125,9 @@ CardView button;
                             SharedPreferences preferences = mContext.getSharedPreferences(LoginToken.PREFS, 0);
                             preferences.edit().remove(LoginToken.TOKEN_ID).commit();
                             preferences.edit().remove(LoginToken.TOKEN).commit();
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.clear();
+                            editor.commit();
                             Intent i=new Intent(mContext, LoginActivity.class);
                             try {
                                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
