@@ -38,23 +38,32 @@ public class DateUtils {
     public static String getUTC(String date){
 
         String temp=date;
-        date=date.replace("T"," ");
-        date=date.substring(0,19);
-        Log.e("DATE1",date);
+        try {
+            date = date.replace("T", " ");
+            date = date.substring(0, 19);
+            Log.e("DATE1", date);
+        }catch (Exception e){
+
+        }
         SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        mSimpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         try{
             Date d=mSimpleDateFormat.parse(date);
-            Timestamp timestamp = new Timestamp(d.getTime());
+            Log.e("REM 1",d.toString());
+
             Calendar cal = Calendar.getInstance();
-            cal.setTimeInMillis(timestamp.getTime());
-            cal.setTimeInMillis(timestamp.getTime());
-            cal.add(Calendar.SECOND, -19080);
-            timestamp = new Timestamp(cal.getTime().getTime());
-            Log.e("DATE1 parsed",timestamp.toString());
-            return d.toString();
+// remove next line if you're always using the current time.
+            cal.setTime(d);
+            cal.add(Calendar.HOUR, -5);
+            cal.add(Calendar.MINUTE,-30);
+            Date d1 = cal.getTime();
+            Log.e("REM 2",d1.toString());
+            DateFormat originalFormat = new SimpleDateFormat("EEE MMM dd kk:mm:ss yyyy", Locale.ENGLISH);
+            DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            Date date2 = originalFormat.parse(d1.toString().replace(" GMT+05:30 ", " "));
+            String formattedDate = targetFormat.format(date2);
+            return formattedDate+".000Z";
         }catch (Exception e){
-            Log.e("DATE1",e.toString());
+            Log.e("REM",e.toString());
         }
         return temp;
     }

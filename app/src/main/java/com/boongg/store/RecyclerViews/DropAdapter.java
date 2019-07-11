@@ -270,7 +270,7 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
         try {
             ex.setStartDate(booking.getStartDate());
             ex.setScheduleTime(dateSelector.getText().toString());
-            ex.setEndDate(dateSelector.getText().toString());
+            ex.setEndDate(DateUtils.getUTC(dateSelector.getText().toString()));
 
         }catch(Exception e){
            Toast.makeText(mContext,e.toString(),Toast.LENGTH_LONG).show();
@@ -323,7 +323,7 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
         request.setRentPoolKey(booking.get_rentPoolKey().get_id());
         request.setSuggestedExtendedRent((int)Math.round(apiCalc));
         request.setTotalExtendedBikeRent((int)Math.round(apiCalc));
-        request.setScheduleTime(dateSelector.getText().toString().substring(0,dateSelector.getText().toString().length()-8));
+        request.setScheduleTime(DateUtils.getUTC(dateSelector.getText().toString().substring(0,dateSelector.getText().toString().length()-8)));
         request.setStartDate(booking.getStartDate());
         Call<ExtendDateAfterRentResponse> call2 = rentCal.getExtendedDateAfterResponse(request);
         call2.enqueue(new Callback<ExtendDateAfterRentResponse>() {
@@ -518,6 +518,7 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
                         mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         mCalendar.set(Calendar.MINUTE, minute);
                         vt.setText(mSimpleDateFormat.format(mCalendar.getTime()));
+                        Log.e("REM",DateUtils.getUTC(vt.getText().toString()));
                     }
                 };
                 final DatePickerDialog.OnDateSetListener mDateDataSet = new DatePickerDialog.OnDateSetListener() {

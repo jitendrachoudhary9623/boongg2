@@ -54,7 +54,6 @@ public class AvailableFragment extends Fragment {
      TextView msg;
     INotifier notifier;
     List<AvailableBike> b = new ArrayList<>();
-
     View rootView;
     @Nullable
     @Override
