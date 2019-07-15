@@ -102,6 +102,7 @@ CardView button;
                 public void onClick(View v) {
                     Fragment myFragment=null;
                     switch(i.getButtton()){
+
                        // Toast.makeText(mContext,"Button Clicked"+buttonName.getText(),Toast.LENGTH_LONG).show();
                         case "Current Booking":
                              myFragment = new CurrentBooking();
