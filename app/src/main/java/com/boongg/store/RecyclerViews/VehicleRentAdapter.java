@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.boongg.store.Interfaces.OnImageClickListener;
 import com.boongg.store.Models.Responses.NearbyVehicles.Result;
@@ -17,7 +16,6 @@ import com.boongg.store.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 

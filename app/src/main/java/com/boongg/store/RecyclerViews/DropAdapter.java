@@ -136,42 +136,42 @@ public class DropAdapter extends RecyclerView.Adapter<DropAdapter.DropViewHolder
             bookingId.setText(""+booking.getBoonggBookingId());
             name.setText(""+booking.get_webuserId().getProfile().getName());
             phone.setText(""+booking.get_webuserId().getProfile().getMobileNumber());
-           amount.setText(mContext.getResources().getString(R.string.rs)+" "+String.format("%.2f",booking.getTotalAmountRecived()));
-           vehicle.setText(booking.getBrand()+" - "+booking.getModel());
-           phone.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                   //Toast.makeText(mContext,"Clicked",Toast.LENGTH_LONG).show();
-                   Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + booking.get_webuserId().getProfile().getMobileNumber()));
-                   mContext.startActivity(intent);
-               }
-           });
-          dropLayout.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                  BookingRequest request=OAPIClient.getClient().create(BookingRequest.class);
-                  Call<List<PreDropBooking>> call3=request.getPreDropBookings();
-                  call3.enqueue(new Callback<List<PreDropBooking>>() {
-                      @Override
-                      public void onResponse(Call<List<PreDropBooking>> call, Response<List<PreDropBooking>> response) {
+            amount.setText(mContext.getResources().getString(R.string.rs)+" "+String.format("%.2f",booking.getTotalAmountRecived()));
+            vehicle.setText(booking.getBrand()+" - "+booking.getModel());
+            phone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(mContext,"Clicked",Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + booking.get_webuserId().getProfile().getMobileNumber()));
+                    mContext.startActivity(intent);
+                }
+            });
+            dropLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    BookingRequest request=OAPIClient.getClient().create(BookingRequest.class);
+                    Call<List<PreDropBooking>> call3=request.getPreDropBookings();
+                    call3.enqueue(new Callback<List<PreDropBooking>>() {
+                        @Override
+                        public void onResponse(Call<List<PreDropBooking>> call, Response<List<PreDropBooking>> response) {
 
-                          dropLayoutClick(booking,response.body(),position);
+                            dropLayoutClick(booking,response.body(),position);
 
-                      }
+                        }
 
-                      @Override
-                      public void onFailure(Call<List<PreDropBooking>> call, Throwable t) {
-AlertBoxUtils.showAlert(mContext,"error","",t.toString());
-                      }
-                  });
-              }
-          });
-          extendLayout.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                  extendBooking(booking);
-              }
-          });
+                        @Override
+                        public void onFailure(Call<List<PreDropBooking>> call, Throwable t) {
+                            AlertBoxUtils.showAlert(mContext,"error","",t.toString());
+                        }
+                    });
+                }
+            });
+            extendLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    extendBooking(booking);
+                }
+            });
 
             sendLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -255,7 +255,7 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
                 }
             });
         }catch (Exception e){
-         //   Toast.makeText(mContext,e.toString(),Toast.LENGTH_LONG).show();
+            //   Toast.makeText(mContext,e.toString(),Toast.LENGTH_LONG).show();
         }
     }
 
@@ -273,7 +273,7 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
             ex.setEndDate(DateUtils.getUTC(dateSelector.getText().toString()));
 
         }catch(Exception e){
-           Toast.makeText(mContext,e.toString(),Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext,e.toString(),Toast.LENGTH_LONG).show();
         }
 
         final RentCalculationAPI rentCal= APIClientWithNULL.getClient().create(RentCalculationAPI.class);
@@ -282,7 +282,7 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
             @Override
             public void onResponse(Call<ExtendDateResponse> call, Response<ExtendDateResponse> response) {
                 try {
-                      apiCalc=response.body().getCalculatedRent();
+                    apiCalc=response.body().getCalculatedRent();
 
                 }catch(Exception e){
                     calculatedRent.setText("Calculated Rent : 0 ");
@@ -329,7 +329,7 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
         call2.enqueue(new Callback<ExtendDateAfterRentResponse>() {
             @Override
             public void onResponse(Call<ExtendDateAfterRentResponse> call, Response<ExtendDateAfterRentResponse> response) {
-               // Toast.makeText(mContext,"Success",Toast.LENGTH_LONG).show();
+                // Toast.makeText(mContext,"Success",Toast.LENGTH_LONG).show();
                 AlertBoxUtils.showAlert(mContext,"success","Date Extenstion","As you requested to extend date, yur request is fulfilled");
             }
 
@@ -345,7 +345,7 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
 
     //drop button click
     private void dropLayoutClick(final DropBooking booking, List<PreDropBooking> preDrop, final int positionBooking) {
-         final List<PreDropBooking> rentObject = new LinkedList<>();
+        final List<PreDropBooking> rentObject = new LinkedList<>();
         for(PreDropBooking preDropBooking:preDrop){
             if(booking.get_rentBikeKey().get_id().equals(preDropBooking.get_rentBikeKey().get_id())){
                 rentObject.add(preDropBooking);
@@ -403,7 +403,7 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
                     double diff = Double.parseDouble(s.toString()) - Double.parseDouble(startKm.getText().toString());
                     totalKm.setText(""+diff);
                 }catch (Exception e){
-                  //  Toast.makeText(mContext,""+e.toString(),Toast.LENGTH_LONG).show();
+                    //  Toast.makeText(mContext,""+e.toString(),Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -476,7 +476,7 @@ AlertBoxUtils.showAlert(mContext,"error","",t.toString());
     }
 
     private void dropVehicle(final DropBooking booking, final int positionBooking, String bikeBookingId, String startKm_, String totalKm_, String rto, String bike_, String fine, String rentPoolKey) {
-       int endKm=(int)Math.round(Double.parseDouble(bike_));
+        int endKm=(int)Math.round(Double.parseDouble(bike_));
         DropVehicleRequest drop=new DropVehicleRequest();
         drop.set_rentPoolKey(rentPoolKey);
         drop.setBikeBookedId(bikeBookingId);

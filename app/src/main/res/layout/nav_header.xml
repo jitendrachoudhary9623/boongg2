@@ -1,16 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:background="@android:color/black"
-    android:gravity="bottom"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
+<LinearLayout
+    android:layout_marginTop="25dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:background="@drawable/circular_textview"
+        android:gravity="center"
+        android:id="@+id/title_nav"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:text="K"/>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/logo" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:text="username"
+            android:id="@+id/username_nav"
+            android:textAlignment="textStart"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:text="location"
+            android:layout_weight="1"
+            android:id="@+id/location_nav"
+            android:textAlignment="textStart"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/circular_textview_small"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="&#x2714;"
+                android:id="@+id/gst_nav"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
+<View
+    android:layout_marginTop="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="0.8dp"
+    android:background="@color/colorPrimary"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:padding="5dp"
+        android:layout_height="wrap_content"
+        android:text="PLATINUM FRANCHISE"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:background="#e5e4e2"
+        android:id="@+id/franchise_nav"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"/>
+    <View
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:background="@color/colorPrimary"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mobile Number"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="6dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="8sp"/>
+    <TextView
+        android:id="@+id/mobile_nav"
+        android:layout_margin="6dp"
+        android:padding="3dp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_theme_textview"
+        android:text="9999999999"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email Id"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="6dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="8sp"/>
+    <TextView
+        android:id="@+id/email_nav"
+        android:layout_margin="6dp"
+        android:padding="3dp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_theme_textview"
+        android:text="xyz@boongg.com"/>
+    <View
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:background="@color/colorPrimary"/>
 </LinearLayout>

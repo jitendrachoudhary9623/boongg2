@@ -11,14 +11,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.boongg.store.Models.Booking;
 import com.boongg.store.Models.Requests.ModifyRequest;
 import com.boongg.store.Models.Responses.Drop.DropBooking;
-import com.boongg.store.Models.Responses.Owners.Owner;
 import com.boongg.store.Models.Responses.VehicleList.VehicleList;
 import com.boongg.store.Networking.APIClient;
 import com.boongg.store.Networking.OwnerInventory;
-import com.boongg.store.Networking.RentCalculationAPI;
 import com.boongg.store.R;
 
 import java.util.ArrayList;
@@ -27,7 +24,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Path;
 
 public class ModifyAlertBox {
     static final int[] selectedPosition = {0};

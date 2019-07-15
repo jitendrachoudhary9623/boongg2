@@ -1,14 +1,11 @@
 package com.boongg.store.Fragments.DropFragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,9 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.boongg.store.Models.Booking;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import com.boongg.store.Models.Responses.Drop.DropBooking;
 import com.boongg.store.Networking.BookingRequest;
 import com.boongg.store.Networking.OAPIClient;
@@ -125,7 +121,7 @@ public class ExtendedDrop extends Fragment {
                 return false;
             }
         });
-        final SearchView searchView = (SearchView) searchItem.getActionView();
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         EditText searchEditText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         searchEditText.setTextColor(getResources().getColor(R.color.value_color));
         searchEditText.setHintTextColor(getResources().getColor(R.color.value_color));

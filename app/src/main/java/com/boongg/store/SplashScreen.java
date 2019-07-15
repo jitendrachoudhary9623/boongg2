@@ -1,20 +1,20 @@
 package com.boongg.store;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.widget.TextView;
 
 import com.boongg.store.Utilities.JWTUtils;
@@ -165,7 +165,7 @@ finish();
         finish();
 
     }
-    public AlertDialog showDialog(String title,String msg,String positiveLabel,DialogInterface.OnClickListener positiveClick,String negativeLabel,DialogInterface.OnClickListener negativeOnClick,boolean isCancelAble){
+    public AlertDialog showDialog(String title, String msg, String positiveLabel, DialogInterface.OnClickListener positiveClick, String negativeLabel, DialogInterface.OnClickListener negativeOnClick, boolean isCancelAble){
 
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
         builder.setTitle(title);

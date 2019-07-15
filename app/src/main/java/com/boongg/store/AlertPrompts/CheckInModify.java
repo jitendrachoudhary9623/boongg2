@@ -3,14 +3,12 @@ package com.boongg.store.AlertPrompts;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.boongg.store.Models.Booking;
 import com.boongg.store.Models.Requests.AddressUpdate.UpdateAddress;
@@ -18,7 +16,6 @@ import com.boongg.store.Models.Requests.ExtendBookingDateRequest;
 import com.boongg.store.Models.Requests.ModifyBikes.BikeModify;
 import com.boongg.store.Models.Requests.StoreInfo.StoreDetail;
 import com.boongg.store.Models.Responses.AvailableVehicles.VehicleInventoryResponse;
-import com.boongg.store.Models.Responses.CreateBooking.CreateBookingResponse;
 import com.boongg.store.Models.Responses.ExtendDateResponse;
 import com.boongg.store.Models.Responses.SearchUSer;
 import com.boongg.store.Networking.APIClient;
@@ -27,12 +24,12 @@ import com.boongg.store.Networking.BookingRequest;
 import com.boongg.store.Networking.RentCalculationAPI;
 import com.boongg.store.Networking.SearchUser;
 import com.boongg.store.R;
-import com.boongg.store.Utilities.AlertBoxUtils;
 import com.boongg.store.Utilities.LoginToken;
 import com.boongg.store.Utilities.ProgressbarUtil;
 import com.boongg.store.Utilities.SharedPrefUtils;
 
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

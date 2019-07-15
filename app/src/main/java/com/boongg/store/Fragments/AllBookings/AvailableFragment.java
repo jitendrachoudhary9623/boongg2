@@ -1,10 +1,10 @@
 package com.boongg.store.Fragments.AllBookings;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,26 +19,23 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.Activity;
+
+
 
 import com.boongg.store.Fragments.VehicleInventoryFragments.AllBikesFragment;
-import com.boongg.store.Interfaces.INotifier;
-import com.boongg.store.MainActivity;
-import com.boongg.store.Models.Booking;
 import com.boongg.store.Models.Requests.AvailableBikes.AvailableBike;
 import com.boongg.store.Models.Requests.MaintainanceBikes.MaintenanceBike;
 import com.boongg.store.Models.Responses.AvailableVehicles.VehicleInventoryResponse;
 import com.boongg.store.Networking.APIClient;
 import com.boongg.store.Networking.BookingRequest;
-import com.boongg.store.Networking.DataFetchers.GetAvailableBikes;
 import com.boongg.store.Networking.OAPIClient;
 import com.boongg.store.Networking.OwnerInventory;
 import com.boongg.store.R;
-import com.boongg.store.RecyclerViews.BookingAdapter;
 import com.boongg.store.RecyclerViews.VehicleInventoryAdapter;
 import com.boongg.store.Utilities.LoginToken;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -116,7 +113,7 @@ public class AvailableFragment extends Fragment {
             }
         });
 
-        final SearchView searchView = (SearchView) searchItem.getActionView();
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         EditText searchEditText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
 
         searchEditText.setTextColor(getResources().getColor(R.color.value_color));

@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:id="@+id/vehicle_list_img"
-            android:src="@mipmap/logo"/>
+            app:srcCompat="@mipmap/logo"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

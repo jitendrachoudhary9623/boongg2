@@ -3,6 +3,7 @@ package com.boongg.store.Fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,20 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.boongg.store.Models.Booking;
-import com.boongg.store.Models.Requests.MaintainanceBikes.MaintenanceBike;
+
 import com.boongg.store.Models.Responses.CancelledData.Cancel;
-import com.boongg.store.Models.Token;
 import com.boongg.store.Networking.APIClient;
-import com.boongg.store.Networking.BookingRequest;
 import com.boongg.store.Networking.CancelledData;
-import com.boongg.store.Networking.OAPIClient;
 import com.boongg.store.R;
-import com.boongg.store.RecyclerViews.BookingAdapter;
 import com.boongg.store.RecyclerViews.CancelAdapter;
-import com.boongg.store.Utilities.DateSorter;
 import com.boongg.store.Utilities.LoginToken;
 
 import java.util.ArrayList;
@@ -44,22 +38,23 @@ public class CancelledBookingFragment extends Fragment {
     View rootView;
     RecyclerView recyclerView;
     TextView msg;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragment_cancelled_booking, container, false);
-        recyclerView=(RecyclerView)rootView.findViewById(R.id.rv_cancelled_booking);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_cancelled_booking);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         setHasOptionsMenu(true);
-        msg=(TextView)rootView.findViewById(R.id.cancel_no_msg);
+        msg = (TextView) rootView.findViewById(R.id.cancel_no_msg);
         fetchData();
         return rootView;
     }
 
     private void fetchData() {
-        CancelledData cancelRequest= APIClient.getClient().create(CancelledData.class);
+        CancelledData cancelRequest = APIClient.getClient().create(CancelledData.class);
         Call<List<Cancel>> call1 = cancelRequest.getCancelledDate(LoginToken.id);
         call1.enqueue(new Callback<List<Cancel>>() {
             @Override
@@ -71,18 +66,17 @@ public class CancelledBookingFragment extends Fragment {
             @Override
             public void onFailure(Call<List<Cancel>> call, Throwable t) {
                 //     Toast.makeText(getContext(),""+t.toString(),Toast.LENGTH_LONG).show();
-                Log.e("JWT ERR",t.toString());
+                Log.e("JWT ERR", t.toString());
             }
         });
     }
 
     private void setupRecycler(List<Cancel> bookingList) {
-        if(this.bookingList.size()>0) {
+        if (this.bookingList.size() > 0) {
             CancelAdapter adapter = new CancelAdapter(this.bookingList, getContext());
             recyclerView.setAdapter(adapter);
             msg.setVisibility(View.GONE);
-        }
-        else{
+        } else {
             msg.setVisibility(View.VISIBLE);
         }
     }
@@ -90,9 +84,9 @@ public class CancelledBookingFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        inflater.inflate(R.menu.inventory_menu,menu);
+        inflater.inflate(R.menu.inventory_menu, menu);
         final MenuItem searchItem = menu.findItem(R.id.i_search);
-        MenuItem refresh=menu.findItem(R.id.i_refresh);
+        MenuItem refresh = menu.findItem(R.id.i_refresh);
         refresh.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -101,8 +95,8 @@ public class CancelledBookingFragment extends Fragment {
             }
         });
 
-        final SearchView searchView = (SearchView) searchItem.getActionView();
-        EditText searchEditText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        EditText searchEditText = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
 
         searchEditText.setTextColor(getResources().getColor(R.color.value_color));
         searchEditText.setHintTextColor(getResources().getColor(R.color.value_color));
@@ -134,15 +128,15 @@ public class CancelledBookingFragment extends Fragment {
         try {
             List<Cancel> search = new ArrayList<>();
             for (Cancel b : bookingList) {
-                if (b.getWebuserId().getProfile().getMobileNumber().toUpperCase().contains(query.toUpperCase())||b.getModel().toUpperCase().contains(query.toUpperCase())||b.getBrand().toUpperCase().contains(query.toUpperCase())||b.getBoonggBookingId().contains(query.toUpperCase())) {
+                if (b.getWebuserId().getProfile().getMobileNumber().toUpperCase().contains(query.toUpperCase()) || b.getModel().toUpperCase().contains(query.toUpperCase()) || b.getBrand().toUpperCase().contains(query.toUpperCase()) || b.getBoonggBookingId().contains(query.toUpperCase())) {
                     search.add(b);
                 }
             }
-            if(search.isEmpty()){
+            if (search.isEmpty()) {
                 msg.setText("No Search Results found");
                 msg.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
-            }else {
+            } else {
                 recyclerView.setVisibility(View.VISIBLE);
 
                 msg.setVisibility(View.GONE);
@@ -150,6 +144,7 @@ public class CancelledBookingFragment extends Fragment {
             }
 
 
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
     }
 }

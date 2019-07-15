@@ -1,31 +1,17 @@
 package com.boongg.store.RecyclerViews;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.boongg.store.Models.Booking;
-import com.boongg.store.Models.Requests.CheckIn;
 import com.boongg.store.Models.Responses.CancelledData.Cancel;
-import com.boongg.store.Models.UpdateResponse;
-import com.boongg.store.Networking.APIClient;
-import com.boongg.store.Networking.CancelClient;
-import com.boongg.store.Networking.CancelRequest;
-import com.boongg.store.Networking.CheckInRequest;
 import com.boongg.store.R;
 import com.boongg.store.Utilities.DateSorter;
 

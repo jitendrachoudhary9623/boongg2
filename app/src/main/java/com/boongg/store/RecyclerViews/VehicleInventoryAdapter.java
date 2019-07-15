@@ -5,19 +5,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.media.Image;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.provider.MediaStore;
-import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,19 +18,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.boongg.store.Interfaces.OnImageClickListener;
-import com.boongg.store.MainActivity;
 import com.boongg.store.Models.BrandList;
 import com.boongg.store.Models.Requests.AvailableBikes.AvailableBike;
 import com.boongg.store.Models.Requests.BikeDetails.Bike;
 import com.boongg.store.Models.Requests.BikeMaintaince;
 import com.boongg.store.Models.Requests.UpdateBike.StatusType;
 import com.boongg.store.Models.Requests.UpdateBike.UpdateB;
-import com.boongg.store.Models.Responses.AvailableVehicles.VehicleInventoryResponse;
-import com.boongg.store.Models.Responses.NearbyVehicles.Result;
-import com.boongg.store.Models.Responses.NearbyVehicles.Vehicle;
 import com.boongg.store.Networking.APIClient;
 import com.boongg.store.Networking.BookingRequest;
 import com.boongg.store.Networking.OwnerInventory;
@@ -53,12 +37,9 @@ import com.boongg.store.Utilities.DateUtils;
 import com.boongg.store.Utilities.JWTUtils;
 import com.boongg.store.Utilities.LoginToken;
 import com.boongg.store.Utilities.ProgressbarUtil;
-import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -69,8 +50,6 @@ import java.util.TimeZone;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static android.app.Activity.RESULT_OK;
 
 public class VehicleInventoryAdapter  extends RecyclerView.Adapter<VehicleInventoryAdapter.VehicleViewHolder> {
 

@@ -6,8 +6,6 @@ import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,23 +19,20 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.app.AlertDialog;
 
 import com.boongg.store.Interfaces.OnImageClickListener;
 import com.boongg.store.Models.Responses.NearbyVehicles.Result;
 import com.boongg.store.Models.Responses.NearbyVehicles.Vehicle;
 import com.boongg.store.Models.Responses.Owners.Owner;
-import com.boongg.store.Models.Responses.SearchUSer;
 import com.boongg.store.Networking.APIClient;
 import com.boongg.store.Networking.OwnerInventory;
-import com.boongg.store.Networking.SearchUser;
 import com.boongg.store.R;
 import com.boongg.store.RecyclerViews.VehicleRentAdapter;
-import com.boongg.store.RecyclerViews.VehicleSelectAdapter;
 import com.boongg.store.Utilities.DateSorter;
 import com.boongg.store.Utilities.LoginToken;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

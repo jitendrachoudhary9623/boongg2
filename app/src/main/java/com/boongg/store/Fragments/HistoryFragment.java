@@ -2,12 +2,10 @@ package com.boongg.store.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,20 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 
 import com.boongg.store.Models.Booking;
-import com.boongg.store.Models.Responses.CancelledData.Cancel;
-import com.boongg.store.Networking.APIClient;
 import com.boongg.store.Networking.BookingRequest;
-import com.boongg.store.Networking.CancelledData;
 import com.boongg.store.Networking.OAPIClient;
 import com.boongg.store.R;
-import com.boongg.store.RecyclerViews.CancelAdapter;
-import com.boongg.store.RecyclerViews.DropAdapter;
 import com.boongg.store.RecyclerViews.HistoryAdapter;
-import com.boongg.store.Utilities.AlertBoxUtils;
-import com.boongg.store.Utilities.LoginToken;
 import com.boongg.store.Utilities.ProgressbarUtil;
 
 import java.util.ArrayList;
@@ -39,9 +32,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class HistoryFragment extends Fragment {
 
@@ -113,7 +103,7 @@ public class HistoryFragment extends Fragment {
                 return false;
             }
         });
-        final SearchView searchView = (SearchView) searchItem.getActionView();
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         EditText searchEditText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
 
         searchEditText.setTextColor(getResources().getColor(R.color.value_color));

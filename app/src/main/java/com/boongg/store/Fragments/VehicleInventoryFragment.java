@@ -6,6 +6,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.MenuItemCompat;
+import android.app.AlertDialog;
+
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,11 +16,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.boongg.store.Fragments.DropFragments.ExtendedDrop;
-import com.boongg.store.Fragments.DropFragments.FutureDrop;
-import com.boongg.store.Fragments.DropFragments.TodayDrop;
 import com.boongg.store.Fragments.VehicleInventoryFragments.AddBike;
-import com.boongg.store.Fragments.VehicleInventoryFragments.AddBikeMain;
 import com.boongg.store.Fragments.VehicleInventoryFragments.AllBikesFragment;
 import com.boongg.store.Fragments.VehicleInventoryFragments.RentCollectionFragment;
 import com.boongg.store.R;

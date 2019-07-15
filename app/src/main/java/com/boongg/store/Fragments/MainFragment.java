@@ -1,9 +1,9 @@
 package com.boongg.store.Fragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -17,13 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.boongg.store.MainActivity;
-import com.boongg.store.Models.Booking;
 import com.boongg.store.Models.Buttons;
 import com.boongg.store.Models.DashboardInfo;
 import com.boongg.store.Models.MainPageSlider;
-import com.boongg.store.Models.Responses.Drop.DropBooking;
-import com.boongg.store.Models.Responses.PreDropBookings.PreDropBooking;
 import com.boongg.store.Networking.APIClient;
 import com.boongg.store.Networking.BookingRequest;
 import com.boongg.store.Networking.Dashboard;
@@ -31,11 +27,7 @@ import com.boongg.store.Networking.OAPIClient;
 import com.boongg.store.PageAdapters.SliderAdapter;
 import com.boongg.store.R;
 import com.boongg.store.RecyclerViews.MainButtons;
-import com.boongg.store.Utilities.DateSorter;
 import com.boongg.store.Utilities.LoginToken;
-
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -43,12 +35,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
@@ -78,9 +66,13 @@ public class MainFragment extends Fragment {
         btn.add(new Buttons("Rent Calculator",R.drawable.calculator));
         btn.add(new Buttons("Vehicle Inventory",R.drawable.vespa));
         btn.add(new Buttons("Offers",R.drawable.banking));
-        btn.add(new Buttons("Account",R.drawable.customer_support));
-        btn.add(new Buttons("SOP",R.drawable.management));
-        btn.add(new Buttons("Logout",R.drawable.exit));
+        btn.add(new Buttons("Pending Payments",R.drawable.pending));
+
+        btn.add(new Buttons("Bike Locations",R.drawable.map_location));
+        btn.add(new Buttons("",0));
+       // btn.add(new Buttons("Account",R.drawable.customer_support));
+       // btn.add(new Buttons("SOP",R.drawable.management));
+       // btn.add(new Buttons("Logout",R.drawable.exit));
 
 
         buttons = new MainButtons(btn, getContext());

@@ -3,6 +3,7 @@ package com.boongg.store.Fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,14 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.boongg.store.Models.Booking;
 import com.boongg.store.Networking.BookingRequest;
 import com.boongg.store.Networking.OAPIClient;
 import com.boongg.store.R;
 import com.boongg.store.RecyclerViews.BookingAdapter;
-import com.boongg.store.RecyclerViews.DropAdapter;
 import com.boongg.store.Utilities.DateSorter;
 import com.boongg.store.Utilities.ProgressbarUtil;
 
@@ -106,7 +106,7 @@ public class FuturePickUp extends Fragment {
         menu.clear();
         inflater.inflate(R.menu.current_booking,menu);
         final MenuItem searchItem = menu.findItem(R.id.search);
-        final SearchView searchView = (SearchView) searchItem.getActionView();
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         EditText searchEditText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
 
         searchEditText.setTextColor(getResources().getColor(R.color.value_color));

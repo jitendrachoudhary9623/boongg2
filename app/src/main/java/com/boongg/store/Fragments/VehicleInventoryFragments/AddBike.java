@@ -1,11 +1,11 @@
 package com.boongg.store.Fragments.VehicleInventoryFragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.app.AlertDialog;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +15,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.boongg.store.Models.BrandList;
 import com.boongg.store.Models.Requests.CreateBike;
 import com.boongg.store.Models.Requests.StatusType;
-import com.boongg.store.Models.Responses.Owners.Owner;
 import com.boongg.store.Networking.APIClient;
 import com.boongg.store.Networking.OwnerInventory;
 import com.boongg.store.R;

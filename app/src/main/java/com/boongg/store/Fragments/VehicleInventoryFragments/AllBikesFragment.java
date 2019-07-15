@@ -7,48 +7,26 @@ import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v4.view.MenuItemCompat;
+import android.app.AlertDialog;
+
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.boongg.store.Fragments.AllBookings.AvailableFragment;
 import com.boongg.store.Fragments.AllBookings.Maintainance;
 import com.boongg.store.Fragments.AllBookings.OnBookingFragment;
-import com.boongg.store.Fragments.DropFragment;
-import com.boongg.store.Fragments.HistoryFragment;
-import com.boongg.store.Fragments.PickUpFragment;
-import com.boongg.store.Interfaces.INotifier;
-import com.boongg.store.Models.Booking;
-import com.boongg.store.Models.Responses.AvailableVehicles.VehicleInventoryResponse;
-import com.boongg.store.Models.Responses.Drop.DropBooking;
 import com.boongg.store.Models.Responses.PreDropBookings.PreDropBooking;
-import com.boongg.store.Networking.APIClient;
 import com.boongg.store.Networking.BookingRequest;
 import com.boongg.store.Networking.OAPIClient;
-import com.boongg.store.Networking.OwnerInventory;
 import com.boongg.store.R;
-import com.boongg.store.RecyclerViews.BookingAdapter;
-import com.boongg.store.RecyclerViews.VehicleInventoryAdapter;
-import com.boongg.store.Utilities.BottomNavBadgeUpdate;
-import com.boongg.store.Utilities.LoginToken;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class AllBikesFragment extends Fragment implements AvailableFragment.INotifier,Maintainance.INotifier,OnBookingFragment.INotifier {
 

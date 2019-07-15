@@ -1,13 +1,11 @@
 package com.boongg.store.Fragments;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Process;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -35,10 +33,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+
+
 import com.boongg.store.Interfaces.OnImageClickListener;
-import com.boongg.store.LoginActivity;
-import com.boongg.store.MainActivity;
-import com.boongg.store.Models.Booking;
 import com.boongg.store.Models.Requests.AddressUpdate.UpdateAddress;
 import com.boongg.store.Models.Requests.BikeList;
 import com.boongg.store.Models.Requests.CheckIn;
@@ -49,10 +46,7 @@ import com.boongg.store.Models.Requests.StoreInfo.StoreDetail;
 import com.boongg.store.Models.Requests.VerifyOtpRequest;
 import com.boongg.store.Models.Requests.ViewOffer;
 import com.boongg.store.Models.Responses.AvailableVehicles.VehicleInventoryResponse;
-import com.boongg.store.Models.Responses.CancelledData.Cancel;
 import com.boongg.store.Models.Responses.CreateBooking.CreateBookingResponse;
-import com.boongg.store.Models.Responses.CreateBooking.CreateBookingSuccessResponse;
-import com.boongg.store.Models.Responses.CreateUserResponse;
 import com.boongg.store.Models.Responses.CreateUserSuccessResponse;
 import com.boongg.store.Models.Responses.NearbyVehicles.Result;
 import com.boongg.store.Models.Responses.NearbyVehicles.Vehicle;
@@ -61,10 +55,8 @@ import com.boongg.store.Models.Responses.PaymentMethod;
 import com.boongg.store.Models.Responses.SearchUSer;
 import com.boongg.store.Models.Responses.SendOtpResponse;
 import com.boongg.store.Models.Responses.VerifyOtpResponse;
-import com.boongg.store.Models.UpdateResponse;
 import com.boongg.store.Networking.APIClient;
 import com.boongg.store.Networking.BookingRequest;
-import com.boongg.store.Networking.CancelledData;
 import com.boongg.store.Networking.CheckInRequest;
 import com.boongg.store.Networking.CreateUserI;
 import com.boongg.store.Networking.OfferRequest;
@@ -72,12 +64,9 @@ import com.boongg.store.Networking.OwnerInventory;
 import com.boongg.store.Networking.Payment;
 import com.boongg.store.Networking.SearchUser;
 import com.boongg.store.R;
-import com.boongg.store.RecyclerViews.CancelAdapter;
-import com.boongg.store.RecyclerViews.DropAdapter;
 import com.boongg.store.RecyclerViews.VehicleSelectAdapter;
 import com.boongg.store.Utilities.AlertBoxUtils;
 import com.boongg.store.Utilities.DateSorter;
-import com.boongg.store.Utilities.FragmentUtils;
 import com.boongg.store.Utilities.LoginToken;
 import com.boongg.store.Utilities.ProgressbarUtil;
 import com.boongg.store.Utilities.SharedPrefUtils;
@@ -92,7 +81,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -102,10 +90,6 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
-
-import static android.support.v7.widget.LinearLayoutManager.*;
 
 public class CreateBookingFragment extends Fragment {
     TextView search, searchBike;

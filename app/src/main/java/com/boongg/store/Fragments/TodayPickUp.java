@@ -1,12 +1,10 @@
 package com.boongg.store.Fragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -19,24 +17,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.boongg.store.Models.Booking;
-import com.boongg.store.Models.Token;
-import com.boongg.store.Networking.APIClient;
 import com.boongg.store.Networking.BookingRequest;
-import com.boongg.store.Networking.LoginRequest;
 import com.boongg.store.Networking.OAPIClient;
 import com.boongg.store.R;
 import com.boongg.store.RecyclerViews.BookingAdapter;
-import com.boongg.store.RecyclerViews.MainButtons;
 import com.boongg.store.Utilities.DateSorter;
-import com.boongg.store.Utilities.JWTUtils;
-import com.boongg.store.Utilities.LoginToken;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -127,7 +118,7 @@ public class TodayPickUp extends Fragment {
                 return false;
             }
         });
-        final SearchView searchView = (SearchView) searchItem.getActionView();
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         EditText searchEditText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
 
         searchEditText.setTextColor(getResources().getColor(R.color.value_color));

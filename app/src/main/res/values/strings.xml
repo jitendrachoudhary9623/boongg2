@@ -16,4 +16,6 @@
         <item>CHEQUE</item>
 
     </string-array>
+    <string name="title_activity_bike_location">Map</string>
+    <string name="google_maps_key">AIzaSyCZ8Cz37biRfLzz3i0PP6T43NaeiHLGpNQ</string>
 </resources>

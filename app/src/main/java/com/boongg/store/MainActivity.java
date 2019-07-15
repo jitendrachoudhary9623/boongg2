@@ -1,11 +1,12 @@
 package com.boongg.store;
 
 import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -13,9 +14,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -23,9 +23,12 @@ import android.widget.Toast;
 
 import com.boongg.store.BrodcastReciever.ConnectivityReceiver;
 import com.boongg.store.Fragments.MainFragment;
-import com.boongg.store.R;
-import com.boongg.store.Utilities.AlertBoxUtils;
+import com.boongg.store.Models.Requests.StoreInfo.StoreDetail;
+import com.boongg.store.Utilities.JWTUtils;
 import com.boongg.store.Utilities.LoginToken;
+import com.boongg.store.Utilities.SharedPrefUtils;
+
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,ConnectivityReceiver.ConnectivityReceiverListener {
 
@@ -44,6 +47,68 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        View headerView = LayoutInflater.from(this).inflate(R.layout.nav_header, navigationView, false);
+        navigationView.addHeaderView(headerView);
+
+        TextView nav_home=(TextView)navigationView.findViewById(R.id.nav_home);
+        TextView logout_nav=(TextView)navigationView.findViewById(R.id.logout_nav);
+        logout_nav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer.closeDrawer(GravityCompat.START);
+
+                SharedPreferences preferences = getSharedPreferences(LoginToken.PREFS, 0);
+                preferences.edit().remove(LoginToken.TOKEN_ID).commit();
+                preferences.edit().remove(LoginToken.TOKEN).commit();
+                Intent i=new Intent(MainActivity.this,LoginActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+
+            }
+        });
+        TextView contact_us_nav=(TextView)navigationView.findViewById(R.id.contact_us_nav);
+        contact_us_nav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse("tel:7776011333"));
+                startActivity(callIntent);
+            }
+        });
+        nav_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new MainFragment()).commit();
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        });
+        TextView title=(TextView)headerView.findViewById(R.id.title_nav);
+        TextView username=(TextView)headerView.findViewById(R.id.username_nav);
+        TextView location=(TextView)headerView.findViewById(R.id.location_nav);
+        TextView franchise=(TextView)headerView.findViewById(R.id.franchise_nav);
+        TextView mobile_nav=(TextView)headerView.findViewById(R.id.mobile_nav);
+        TextView email_nav=(TextView)headerView.findViewById(R.id.email_nav);
+        TextView gst=(TextView)headerView.findViewById(R.id.gst_nav);
+        gst.setVisibility(View.GONE);
+        try {
+           JSONObject object = JWTUtils.getUserLoginDetailsFromJWT(LoginToken.tokenId);
+            title.setText(""+object.getString("username").charAt(0));
+            username.setText(""+object.getString("username"));
+            String franchisev=object.getString("franchiseType").replace("_"," ");
+            franchise.setText(""+franchisev);
+            mobile_nav.setText(""+object.getString("mobileNumber"));
+            email_nav.setText(""+object.getString("email"));
+            StoreDetail sd=new StoreDetail();
+            sd= SharedPrefUtils.returnObject(LoginToken.OWNER_INFO,sd,getApplicationContext());
+            location.setText(sd.getLocality().get(0));
+
+            if(sd.getGstNumber()!=null&&!sd.getGstNumber().equals("")){
+                gst.setVisibility(View.VISIBLE);
+            }
+        }catch (Exception e){
+Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
+        }
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,

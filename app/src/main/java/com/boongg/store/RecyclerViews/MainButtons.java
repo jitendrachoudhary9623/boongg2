@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.boongg.store.Fragments.AccountFragment;
 import com.boongg.store.Fragments.CancelledBookingFragment;
@@ -24,6 +22,7 @@ import com.boongg.store.Fragments.RentFragment;
 import com.boongg.store.Fragments.VehicleInventoryFragment;
 import com.boongg.store.LoginActivity;
 import com.boongg.store.MainActivity;
+import com.boongg.store.MapActivity;
 import com.boongg.store.Models.Buttons;
 import com.boongg.store.R;
 import com.boongg.store.Utilities.LoginToken;
@@ -94,8 +93,9 @@ CardView button;
         }
         public void bindData(final int position) {
             final Buttons i=mButtons.get(position);
-            Picasso.with(mContext).load(i.getImageId()).into(buttonImage);
-
+            try {
+                Picasso.with(mContext).load(i.getImageId()).into(buttonImage);
+            }catch(Exception e){}
             buttonName.setText(i.getButtton());
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -138,6 +138,14 @@ CardView button;
                             break;
                         case "Offers":
                             myFragment=new Offers();
+                            break;
+                        case "Bike Locations":
+                            try {
+                                Intent j=new Intent(mContext, MapActivity.class);
+                                mContext.startActivity(j);
+                            }catch (Exception e){
+
+                            }
                             break;
                         default:
                             new SweetAlertDialog(mContext, SweetAlertDialog.ERROR_TYPE)

@@ -61,7 +61,7 @@ public class Maintainance extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         OwnerInventory inventory= APIClient.getClient().create(OwnerInventory.class);
         msg=(TextView)rootView.findViewById(R.id.maintain_inventory_no_msg);
-      getMaintainance();
+        getMaintainance();
         return rootView;
     }
 

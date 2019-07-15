@@ -4,9 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,21 +13,14 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.boongg.store.Models.Requests.CheckIn;
 import com.boongg.store.Models.Requests.StoreInfo.StoreDetail;
 import com.boongg.store.Models.Requests.UpdateBikePrice;
 import com.boongg.store.Models.Responses.Owners.BikePriceChart;
-
-import com.boongg.store.Models.Responses.Owners.Location2;
-import com.boongg.store.Models.Responses.Owners.Owner;
 import com.boongg.store.Models.Responses.Owners.PriceChart;
 import com.boongg.store.Models.Responses.RentBikeResponse;
 import com.boongg.store.Networking.APIClient;
-import com.boongg.store.Networking.CheckInRequest;
 import com.boongg.store.Networking.OwnerInventory;
 import com.boongg.store.R;
 import com.boongg.store.Utilities.AlertBoxUtils;
@@ -39,14 +30,12 @@ import com.boongg.store.Utilities.SharedPrefUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

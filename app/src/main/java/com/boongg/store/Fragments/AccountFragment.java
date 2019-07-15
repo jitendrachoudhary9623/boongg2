@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.boongg.store.Models.Requests.StoreInfo.StoreDetail;
 import com.boongg.store.R;
@@ -15,7 +14,6 @@ import com.boongg.store.Utilities.JWTUtils;
 import com.boongg.store.Utilities.LoginToken;
 import com.boongg.store.Utilities.SharedPrefUtils;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Timestamp;
